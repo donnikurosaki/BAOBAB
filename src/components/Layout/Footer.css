@@ -1,37 +1,193 @@
 .footer {
   margin-top: auto;
-  border-top: 1px solid var(--color-border);
-  padding: 2rem 2rem 1rem;
+  border-top: 1px solid var(--color-line);
+  padding: 80px 32px 28px;
   position: relative;
+  background: linear-gradient(180deg, transparent 0%, var(--color-bg-2) 100%);
   transition: background 0.3s ease, border-color 0.3s ease;
 }
 
-/* Fond pour le thème sombre */
-[data-theme="dark"] .footer,
-.footer:not([data-theme]) {
-  background: linear-gradient(135deg, #1a1a1a 0%, #252525 100%);
-}
-
-/* Fond pour le thème clair */
 [data-theme="light"] .footer {
-  background: linear-gradient(135deg, var(--color-bg-secondary) 0%, var(--color-bg-tertiary) 100%);
+  background: linear-gradient(180deg, transparent 0%, var(--color-bg-3) 100%);
 }
 
-.footer-bottom {
-  max-width: 1200px;
+.footer-inner {
+  max-width: 1320px;
   margin: 0 auto;
-  text-align: center;
 }
 
-.footer-copyright {
-  color: var(--color-text-muted);
-  font-size: 0.85rem;
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: 48px;
+  margin-bottom: 60px;
+}
+
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 380px;
+}
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer-logo-mark {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, var(--color-gold-2), #8a6d1f 70%);
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+}
+
+.footer-logo-text {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--color-ink);
+}
+
+.footer-baseline {
+  font-family: var(--font-serif);
+  font-size: 28px;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  color: var(--color-ink);
   margin: 0;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
+.footer-baseline em {
+  font-style: italic;
+  color: var(--color-gold-2);
+}
+
+[data-theme="light"] .footer-baseline em {
+  color: var(--color-gold-dark, #8a6d1f);
+}
+
+.footer-tagline {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--color-ink-3);
+  margin: 0;
+}
+
+.footer-col-title {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--color-gold);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin: 0 0 18px;
+  font-weight: 500;
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer-links a {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  color: var(--color-ink-2);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer-links a:hover {
+  color: var(--color-gold-2);
+}
+
+[data-theme="light"] .footer-links a:hover {
+  color: var(--color-gold-dark, #8a6d1f);
+}
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 24px;
+  border-top: 1px solid var(--color-line);
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.footer-copyright {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-ink-3);
+  margin: 0;
+}
+
+.footer-langs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  color: var(--color-ink-3);
+}
+
+.footer-lang {
+  cursor: default;
+  transition: color 0.2s ease;
+}
+
+.footer-lang.active {
+  color: var(--color-gold);
+}
+
+.footer-lang-sep {
+  opacity: 0.4;
+}
+
+@media (max-width: 1080px) {
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 36px;
+  }
+
+  .footer-brand {
+    grid-column: span 2;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
   .footer {
-    padding: 1.5rem 1rem 1rem;
+    padding: 60px 20px 24px;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    margin-bottom: 40px;
+  }
+
+  .footer-brand {
+    grid-column: span 1;
+  }
+
+  .footer-baseline {
+    font-size: 22px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }

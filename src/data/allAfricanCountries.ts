@@ -21,7 +21,26 @@ export interface AfricanCountry {
   traditions?: string[]
   festivals?: string[]
   arts?: string[]
+  // Enrichissements design
+  region?: 'Nord' | 'Ouest' | 'Est' | 'Centre' | 'Sud'
+  tags?: string[]
 }
+
+// Mapping région par défaut (calcul basé sur la géographie des 54 pays africains)
+const COUNTRY_REGIONS: Record<string, 'Nord' | 'Ouest' | 'Est' | 'Centre' | 'Sud'> = {
+  MA: 'Nord', DZ: 'Nord', TN: 'Nord', LY: 'Nord', EG: 'Nord', SD: 'Nord', SS: 'Nord', EH: 'Nord',
+  SN: 'Ouest', GM: 'Ouest', GW: 'Ouest', GN: 'Ouest', SL: 'Ouest', LR: 'Ouest', CI: 'Ouest',
+  GH: 'Ouest', TG: 'Ouest', BJ: 'Ouest', NG: 'Ouest', NE: 'Ouest', BF: 'Ouest', ML: 'Ouest',
+  MR: 'Ouest', CV: 'Ouest',
+  ET: 'Est', ER: 'Est', DJ: 'Est', SO: 'Est', KE: 'Est', UG: 'Est', RW: 'Est', BI: 'Est',
+  TZ: 'Est', MG: 'Est', KM: 'Est', SC: 'Est', MU: 'Est',
+  TD: 'Centre', CM: 'Centre', CF: 'Centre', GQ: 'Centre', GA: 'Centre', CG: 'Centre',
+  CD: 'Centre', AO: 'Centre', ST: 'Centre',
+  ZM: 'Sud', MW: 'Sud', MZ: 'Sud', ZW: 'Sud', BW: 'Sud', NA: 'Sud', ZA: 'Sud', LS: 'Sud', SZ: 'Sud'
+}
+
+export const getCountryRegion = (id: string): 'Nord' | 'Ouest' | 'Est' | 'Centre' | 'Sud' | undefined =>
+  COUNTRY_REGIONS[id]
 
 export const allAfricanCountries: AfricanCountry[] = [
   // Afrique du Nord

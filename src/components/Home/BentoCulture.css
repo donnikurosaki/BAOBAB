@@ -1,0 +1,239 @@
+.bento-section {
+  padding: 100px 32px;
+  position: relative;
+}
+
+.bento {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-auto-rows: 180px;
+  gap: 16px;
+  max-width: 1320px;
+  margin: 0 auto;
+}
+
+.bento-card {
+  border: 1px solid var(--color-line-2);
+  border-radius: 20px;
+  padding: 28px;
+  background: linear-gradient(160deg, var(--color-bg-2) 0%, var(--color-bg-3) 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 8px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+[data-theme="light"] .bento-card {
+  background: linear-gradient(160deg, var(--color-bg-2) 0%, var(--color-bg-3) 100%);
+  box-shadow: 0 4px 16px rgba(45, 31, 26, 0.06);
+}
+
+.bento-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(212, 175, 55, 0.4);
+}
+
+.bento-kicker {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--color-gold);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.bento-card-title {
+  font-family: var(--font-serif);
+  font-size: 28px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  margin: 0;
+  color: var(--color-ink);
+  line-height: 1.05;
+}
+
+.bento-card-p {
+  margin: 0;
+  color: var(--color-ink-2);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+/* Tailles des cartes */
+.b-music {
+  grid-column: span 3;
+  grid-row: span 2;
+  padding: 32px;
+}
+
+.b-arts {
+  grid-column: span 3;
+  grid-row: span 1;
+}
+
+.b-history {
+  grid-column: span 3;
+  grid-row: span 1;
+}
+
+.b-food {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+.b-lang {
+  grid-column: span 2;
+  grid-row: span 1;
+}
+
+.b-heal {
+  grid-column: span 2;
+  grid-row: span 1;
+}
+
+/* Carte musique (hero) */
+.b-music .bento-card-title {
+  font-size: 44px;
+  max-width: 320px;
+}
+
+.bento-visual {
+  position: absolute;
+  inset: 0;
+  opacity: 0.6;
+  background:
+    repeating-linear-gradient(135deg, rgba(212, 175, 55, 0.06) 0 2px, transparent 2px 18px),
+    linear-gradient(160deg, rgba(212, 175, 55, 0.1), transparent 50%);
+}
+
+.bento-visual::after {
+  content: 'IMAGE · ' attr(data-label);
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: rgba(212, 175, 55, 0.6);
+  letter-spacing: 0.2em;
+  padding: 4px 8px;
+  border: 1px dashed rgba(212, 175, 55, 0.35);
+  border-radius: 4px;
+}
+
+.bento-instrument-glyph {
+  position: absolute;
+  right: 28px;
+  top: 28px;
+  opacity: 0.7;
+}
+
+.b-music .bento-card-content {
+  position: relative;
+  z-index: 1;
+}
+
+/* Timeline (Histoire) */
+.bento-timeline {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.bento-timeline-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--color-ink-3);
+  letter-spacing: 0.1em;
+}
+
+.bento-timeline-year {
+  color: var(--color-gold);
+  font-size: 13px;
+}
+
+.bento-timeline-sep {
+  height: 1px;
+  background: var(--color-line-2);
+  flex: 1;
+}
+
+/* Cuisine — pastilles */
+.bento-dots {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.bento-dot {
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, var(--color-gold-2), #8a6d1f);
+  opacity: 0.8;
+}
+
+.bento-dot:nth-child(2) {
+  background: radial-gradient(circle at 35% 30%, var(--color-terra), #6d3518);
+}
+
+.bento-dot:nth-child(3) {
+  background: radial-gradient(circle at 35% 30%, #a8522a, #4d1f0a);
+}
+
+.bento-dot:nth-child(4) {
+  background: radial-gradient(circle at 35% 30%, var(--color-gold-2), #8a6d1f);
+}
+
+.bento-dot:nth-child(5) {
+  background: radial-gradient(circle at 35% 30%, var(--color-terra), #6d3518);
+}
+
+/* Langues — grand chiffre */
+.bento-count {
+  font-family: var(--font-serif);
+  font-size: 56px;
+  font-weight: 500;
+  color: var(--color-gold-2);
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+[data-theme="light"] .bento-count {
+  color: var(--color-gold-dark);
+}
+
+@media (max-width: 960px) {
+  .bento-section {
+    padding: 60px 20px;
+  }
+
+  .bento {
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: auto;
+  }
+
+  .b-music,
+  .b-arts,
+  .b-history,
+  .b-food,
+  .b-lang,
+  .b-heal {
+    grid-column: span 2;
+    grid-row: span 1;
+  }
+
+  .b-music .bento-card-title {
+    font-size: 32px;
+  }
+
+  .bento-instrument-glyph {
+    width: 90px;
+    height: 90px;
+  }
+}

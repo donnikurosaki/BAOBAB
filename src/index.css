@@ -2,7 +2,7 @@
 @import './styles/icon-replacements.css';
 
 :root {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -10,6 +10,11 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /* Typographies du design handoff */
+  --font-serif: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Consolas, monospace;
 }
 
 /* Couleurs communes (identiques pour les deux thèmes) */
@@ -17,9 +22,13 @@
 [data-theme="dark"],
 [data-theme="light"] {
   --color-gold: #d4af37;
+  --color-gold-2: #f4d03f;
   --color-gold-light: #f4d03f;
   --color-gold-bright: #ffd700;
   --color-gold-dark: #b8941f;
+  --color-gold-soft: rgba(212, 175, 55, 0.15);
+  --color-terra: #c26a3d;
+  --color-sand: #e8d4b8;
 }
 
 /* Thème sombre (par défaut) */
@@ -34,7 +43,10 @@
   --color-accent: #3d2a1f;
   --color-accent-light: #4d3a2f;
   --color-accent-dark: #2d1f1a;
-  --color-bg: #1a1410;
+  --color-bg: #14100c;
+  --color-bg-2: #1a1410;
+  --color-bg-3: #231a14;
+  --color-bg-4: #2d1f1a;
   --color-bg-secondary: #2d1f1a;
   --color-bg-tertiary: #3d2a1f;
   --color-bg-light: rgba(255, 255, 255, 0.08);
@@ -44,6 +56,12 @@
   --color-text: rgba(255, 255, 255, 0.95);
   --color-text-light: rgba(255, 255, 255, 0.8);
   --color-text-muted: rgba(255, 255, 255, 0.6);
+  /* Ink scale (alignée sur le design handoff) */
+  --color-ink: rgba(255, 255, 255, 0.94);
+  --color-ink-2: rgba(255, 255, 255, 0.72);
+  --color-ink-3: rgba(255, 255, 255, 0.48);
+  --color-line: rgba(255, 255, 255, 0.09);
+  --color-line-2: rgba(255, 255, 255, 0.14);
   --color-border: rgba(212, 175, 55, 0.3);
   --color-border-light: rgba(61, 42, 31, 0.5);
   --color-shadow: rgba(0, 0, 0, 0.5);
@@ -66,6 +84,9 @@
   --color-accent-light: #f4d03f;
   --color-accent-dark: #b8941f;
   --color-bg: #faf5f0;
+  --color-bg-2: #f5e6d3;
+  --color-bg-3: #efe0c7;
+  --color-bg-4: #e8d4b8;
   --color-bg-secondary: #f5e6d3;
   --color-bg-tertiary: #e8d4b8;
   --color-bg-light: rgba(45, 31, 26, 0.08);
@@ -76,6 +97,12 @@
   --color-text: #1a1410;
   --color-text-light: #2d1f1a;
   --color-text-muted: #4d3a2f;
+  /* Ink scale (équivalent sombre sur clair) */
+  --color-ink: rgba(26, 20, 16, 0.94);
+  --color-ink-2: rgba(26, 20, 16, 0.72);
+  --color-ink-3: rgba(26, 20, 16, 0.48);
+  --color-line: rgba(26, 20, 16, 0.09);
+  --color-line-2: rgba(26, 20, 16, 0.16);
   --color-border: rgba(212, 175, 55, 0.5);
   --color-border-light: rgba(45, 31, 26, 0.3);
   --color-shadow: rgba(0, 0, 0, 0.15);
@@ -102,7 +129,7 @@ body {
 /* Fond pour le thème sombre */
 [data-theme="dark"] body,
 body:not([data-theme]) {
-  background: linear-gradient(135deg, #1a1410 0%, #2d1f1a 30%, #3d2a1f 70%, #2d1f1a 100%);
+  background: linear-gradient(135deg, #14100c 0%, #1a1410 30%, #231a14 70%, #1a1410 100%);
 }
 
 /* Fond pour le thème clair */
@@ -152,6 +179,8 @@ a:hover {
 h1, h2, h3, h4, h5, h6 {
   margin: 0;
   line-height: 1.2;
+  font-family: var(--font-serif);
+  letter-spacing: -0.02em;
 }
 
 button {
