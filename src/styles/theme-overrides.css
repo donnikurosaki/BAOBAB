@@ -79,3 +79,892 @@
   color: var(--color-gold) !important;
 }
 
+/* =====================================================
+   HOME PAGE
+   ===================================================== */
+[data-theme="light"] .hero-subtitle {
+  color: var(--color-text-light) !important;
+  text-shadow: none;
+}
+
+[data-theme="light"] .section-subtitle {
+  color: var(--color-text-muted) !important;
+}
+
+[data-theme="light"] .search-icon {
+  color: var(--color-text-muted) !important;
+}
+
+[data-theme="light"] .countries-search .search-input {
+  background: var(--color-bg-elevated) !important;
+  border-color: var(--color-border-light) !important;
+  color: var(--color-text) !important;
+}
+
+[data-theme="light"] .countries-search .search-input:focus {
+  background: var(--color-bg-elevated) !important;
+  border-color: var(--color-gold) !important;
+}
+
+[data-theme="light"] .countries-search .search-input::placeholder {
+  color: var(--color-text-muted) !important;
+}
+
+[data-theme="light"] .country-name {
+  color: var(--color-text) !important;
+}
+
+[data-theme="light"] .country-region,
+[data-theme="light"] .country-capital {
+  color: var(--color-text-muted) !important;
+}
+
+/* =====================================================
+   BLOG (pages/Blog.css)
+   ===================================================== */
+[data-theme="light"] .blog h1 {
+  color: var(--color-text) !important;
+}
+
+[data-theme="light"] .blog-subtitle,
+[data-theme="light"] .blog-loading,
+[data-theme="light"] .blog-empty {
+  color: var(--color-text-muted) !important;
+}
+
+[data-theme="light"] .blog-views {
+  color: var(--color-text-muted) !important;
+}
+
+[data-theme="light"] .blog-card h3 {
+  color: var(--color-text) !important;
+}
+
+[data-theme="light"] .blog-excerpt {
+  color: var(--color-text-light) !important;
+}
+
+[data-theme="light"] .blog-meta {
+  color: var(--color-text-muted) !important;
+  border-top-color: var(--color-border-light) !important;
+}
+
+[data-theme="light"] .blog-image {
+  background: var(--color-bg-secondary) !important;
+}
+
+[data-theme="light"] .blog-tag {
+  background: var(--color-bg-light) !important;
+  color: var(--color-text-muted) !important;
+}
+
+[data-theme="light"] .blog-link {
+  color: var(--color-gold-dark) !important;
+}
+
+[data-theme="light"] .blog-link:hover {
+  color: var(--color-gold) !important;
+}
+
+/* =====================================================
+   BLOG (pages/blog/Blog.css)
+   ===================================================== */
+[data-theme="light"] .page-subtitle {
+  color: var(--color-text-muted) !important;
+}
+
+[data-theme="light"] .post-excerpt {
+  color: var(--color-text-light) !important;
+}
+
+[data-theme="light"] .post-meta {
+  color: var(--color-text-muted) !important;
+}
+
+[data-theme="light"] .post-paragraph {
+  color: var(--color-text-light) !important;
+}
+
+[data-theme="light"] .loading {
+  color: var(--color-text-muted) !important;
+}
+
+/* =====================================================
+   BLOG POST (pages/BlogPost.css)
+   ===================================================== */
+[data-theme="light"] .blog-post {
+  background: var(--color-bg-elevated) !important;
+  border-color: var(--color-border-light) !important;
+}
+
+[data-theme="light"] .blog-post-header h1 {
+  color: var(--color-text) !important;
+}
+
+[data-theme="light"] .blog-post-meta {
+  color: var(--color-text-muted) !important;
+}
+
+[data-theme="light"] .blog-post-content {
+  color: var(--color-text-light) !important;
+}
+
+[data-theme="light"] .blog-post-media-section {
+  border-top-color: var(--color-border-light) !important;
+}
+
+[data-theme="light"] .blog-post-image-card {
+  background: var(--color-bg-secondary) !important;
+}
+
+[data-theme="light"] .blog-post-image-caption {
+  color: var(--color-text-muted) !important;
+}
+
+[data-theme="light"] .blog-post-pdf-card p {
+  color: var(--color-text-muted) !important;
+}
+
+[data-theme="light"] .blog-post-pdf-card h4 {
+  color: var(--color-text) !important;
+}
+
+[data-theme="light"] .error,
+[data-theme="light"] .error h2 {
+  color: var(--color-text) !important;
+}
+
+/* =====================================================
+   COUNTRY DETAIL (pages/CountryDetail.css)
+   ===================================================== */
+[data-theme="light"] .back-button {
+  color: var(--color-text-light) !important;
+}
+
+[data-theme="light"] .country-subtitle {
+  color: var(--color-text-light) !important;
+}
+
+[data-theme="light"] .info-badge {
+  background: var(--color-bg-elevated) !important;
+  color: var(--color-text) !important;
+}
+
+[data-theme="light"] .culture-card-detailed {
+  background: var(--color-bg-elevated) !important;
+}
+
+[data-theme="light"] .culture-card-detailed p {
+  color: var(--color-text-light) !important;
+}
+
+[data-theme="light"] .item-card {
+  background: var(--color-bg-elevated) !important;
+}
+
+[data-theme="light"] .item-card p {
+  color: var(--color-text-muted) !important;
+}
+
+[data-theme="light"] .section-header-detailed h2 {
+  color: var(--color-text) !important;
+}
+
+[data-theme="light"] .info-label {
+  color: var(--color-text-muted) !important;
+}
+
+[data-theme="light"] .info-value {
+  color: var(--color-text) !important;
+}
+
+[data-theme="light"] .gallery-image-caption {
+  color: var(--color-text-muted) !important;
+}
+
+[data-theme="light"] .pdf-info h3 {
+  color: var(--color-text) !important;
+}
+
+[data-theme="light"] .pdf-info p {
+  color: var(--color-text-muted) !important;
+}
+
+/* =====================================================
+   SHOP (pages/Shop.css)
+   ===================================================== */
+[data-theme="light"] .shop h1 {
+  color: var(--color-text) !important;
+}
+
+[data-theme="light"] .shop-subtitle,
+[data-theme="light"] .shop-loading {
+  color: var(--color-text-muted) !important;
+}
+
+[data-theme="light"] .product-image {
+  background: var(--color-bg-secondary) !important;
+}
+
+/* =====================================================
+   CART (pages/Cart.css)
+   ===================================================== */
+[data-theme="light"] .cart h1 {
+  color: var(--color-text) !important;
+}
+
+[data-theme="light"] .cart-empty h2 {
+  color: var(--color-text) !important;
+}
+
+[data-theme="light"] .cart-empty p {
+  color: var(--color-text-muted) !important;
+}
+
+[data-theme="light"] .cart-item-info h3 {
+  color: var(--color-text) !important;
+}
+
+[data-theme="light"] .cart-item-price {
+  color: var(--color-text-muted) !important;
+}
+
+[data-theme="light"] .cart-total-price {
+  color: var(--color-text) !important;
+}
+
+[data-theme="light"] .cart-item-subtotal {
+  color: var(--color-text-muted) !important;
+}
+
+/* =====================================================
+   ORDER DETAIL (pages/OrderDetail.css)
+   ===================================================== */
+[data-theme="light"] .order-detail .back-link {
+  color: var(--color-text-light) !important;
+}
+
+[data-theme="light"] .order-date {
+  color: var(--color-text-muted) !important;
+}
+
+[data-theme="light"] .order-items-card h2,
+[data-theme="light"] .order-addresses-card h2,
+[data-theme="light"] .order-notes-card h2 {
+  color: var(--color-text) !important;
+}
+
+[data-theme="light"] .order-item-details h3 {
+  color: var(--color-text) !important;
+}
+
+[data-theme="light"] .order-item-meta {
+  color: var(--color-text-muted) !important;
+}
+
+[data-theme="light"] .order-item-total {
+  color: var(--color-text) !important;
+}
+
+[data-theme="light"] .address-section h3 {
+  color: var(--color-text) !important;
+}
+
+[data-theme="light"] .address-content p {
+  color: var(--color-text-light) !important;
+}
+
+[data-theme="light"] .order-notes-card p {
+  color: var(--color-text-light) !important;
+}
+
+/* =====================================================
+   HOME COUNTRY CARD text elements
+   ===================================================== */
+[data-theme="light"] .country-card-info h3 {
+  color: var(--color-text) !important;
+}
+
+[data-theme="light"] .country-card-info p,
+[data-theme="light"] .country-stats {
+  color: var(--color-text-muted) !important;
+}
+
+/* =====================================================
+   COMMUNITIES / COMMUNITY
+   ===================================================== */
+[data-theme="light"] .communities-title,
+[data-theme="light"] .community-title {
+  color: var(--color-text) !important;
+}
+
+[data-theme="light"] .communities-subtitle,
+[data-theme="light"] .community-subtitle {
+  color: var(--color-text-muted) !important;
+}
+
+/* =====================================================
+   TIMELINE / HISTORICAL FIGURES
+   ===================================================== */
+[data-theme="light"] .timeline-subtitle,
+[data-theme="light"] .figures-subtitle {
+  color: var(--color-text-muted) !important;
+}
+
+/* =====================================================
+   SEARCH RESULTS
+   ===================================================== */
+[data-theme="light"] .search-results-subtitle {
+  color: var(--color-text-muted) !important;
+}
+
+/* =====================================================
+   ADMIN PAGES — remaining elements
+   ===================================================== */
+[data-theme="light"] .admin-subtitle {
+  color: var(--color-text-muted) !important;
+}
+
+/* =====================================================
+   GENERIC: Loading / Error states used across pages
+   ===================================================== */
+[data-theme="light"] .quiz-loading,
+[data-theme="light"] .quizzes-loading,
+[data-theme="light"] .stories-loading,
+[data-theme="light"] .figures-loading,
+[data-theme="light"] .collections-loading,
+[data-theme="light"] .timeline-loading {
+  color: var(--color-text-muted) !important;
+}
+
+/* =====================================================
+   BLOG POST page (back-link variant without .back-button)
+   ===================================================== */
+[data-theme="light"] .blog-post-page .back-link {
+  color: var(--color-gold-dark) !important;
+}
+
+[data-theme="light"] .blog-post-page .back-link:hover {
+  color: var(--color-gold) !important;
+}
+
+/* =====================================================
+   GLOBAL: semi-transparent white backgrounds on cards/sections
+   These were glass effects for dark mode - need solid in light mode
+   ===================================================== */
+[data-theme="light"] .culture-card-detailed,
+[data-theme="light"] .item-card,
+[data-theme="light"] .info-card-detailed {
+  background: var(--color-bg-elevated) !important;
+  border-color: var(--color-border-light) !important;
+}
+
+
+/* =====================================================
+   HOME PAGE — Custom card sections (culture/stat/value/feature)
+   These use dark glass backgrounds not visible in light mode
+   ===================================================== */
+[data-theme="light"] .culture-card,
+[data-theme="light"] .value-card,
+[data-theme="light"] .feature-card {
+  background: var(--color-bg-elevated) !important;
+  border-color: var(--color-border-light) !important;
+  box-shadow: 0 8px 32px var(--color-shadow), inset 0 1px 0 rgba(255,255,255,0.9) !important;
+}
+
+[data-theme="light"] .culture-card:hover,
+[data-theme="light"] .value-card:hover,
+[data-theme="light"] .feature-card:hover {
+  background: var(--color-bg-elevated) !important;
+  border-color: var(--color-border) !important;
+}
+
+[data-theme="light"] .culture-section .section-subtitle {
+  color: var(--color-text-muted) !important;
+}
+
+[data-theme="light"] .culture-card p,
+[data-theme="light"] .value-card p,
+[data-theme="light"] .feature-card p {
+  color: var(--color-text-light) !important;
+}
+
+[data-theme="light"] .stat-card {
+  background: var(--color-bg-elevated) !important;
+  border-color: var(--color-border-light) !important;
+  box-shadow: 0 8px 32px var(--color-shadow) !important;
+}
+
+[data-theme="light"] .stat-label {
+  color: var(--color-text-muted) !important;
+}
+
+[data-theme="light"] .stat-card:hover .stat-label {
+  color: var(--color-text) !important;
+}
+
+/* =====================================================
+   HISTORICAL FIGURES — badges with colored backgrounds
+   ===================================================== */
+[data-theme="light"] .role-badge {
+  background: var(--color-bg-tertiary) !important;
+  color: var(--color-text) !important;
+  border: 1px solid var(--color-border-light);
+}
+
+[data-theme="light"] .figure-native-name,
+[data-theme="light"] .meta-item span:first-child {
+  color: var(--color-gold-dark) !important;
+}
+
+/* =====================================================
+   TIMELINE — event period badge
+   ===================================================== */
+[data-theme="light"] .event-period {
+  background: var(--color-bg-tertiary) !important;
+  color: var(--color-text) !important;
+}
+
+/* =====================================================
+   CHECKOUT
+   ===================================================== */
+[data-theme="light"] .summary-item,
+[data-theme="light"] .summary-line {
+  color: var(--color-text-light) !important;
+}
+
+[data-theme="light"] .checkout h1,
+[data-theme="light"] .checkout h2 {
+  color: var(--color-text) !important;
+}
+
+/* =====================================================
+   COMMUNITIES
+   ===================================================== */
+[data-theme="light"] .community-header h1,
+[data-theme="light"] .community-name {
+  color: var(--color-text) !important;
+}
+
+[data-theme="light"] .community-description,
+[data-theme="light"] .community-stats {
+  color: var(--color-text-muted) !important;
+}
+
+/* =====================================================
+   STORIES / COLLECTIONS
+   ===================================================== */
+[data-theme="light"] .story-subtitle,
+[data-theme="light"] .collection-subtitle {
+  color: var(--color-text-muted) !important;
+}
+
+/* =====================================================
+   QUIZ page — option letter uses --color-primary as border/text
+   In light mode --color-primary is too light
+   ===================================================== */
+[data-theme="light"] .option-letter {
+  border-color: var(--color-gold-dark) !important;
+  color: var(--color-gold-dark) !important;
+}
+
+/* =====================================================
+   GLOBAL: elements using var(--color-primary) as text
+   that need to be visible in light mode
+   ===================================================== */
+[data-theme="light"] .figure-native-name {
+  color: var(--color-gold-dark) !important;
+}
+
+[data-theme="light"] .advanced-search-container .search-suggestion-type {
+  color: var(--color-text-muted) !important;
+}
+
+/* =====================================================
+   BOOKMARKBUTTON — primary background visible in both themes
+   ===================================================== */
+[data-theme="light"] .bookmark-btn.bookmarked {
+  background: var(--color-gold-dark) !important;
+  border-color: var(--color-gold-dark) !important;
+}
+
+/* =====================================================
+   HOME page — misc text elements
+   ===================================================== */
+[data-theme="light"] .country-detail-info .detail-value {
+  color: var(--color-text-muted) !important;
+}
+
+[data-theme="light"] .country-culture-full p {
+  color: var(--color-text-light) !important;
+}
+
+/* =====================================================
+   GLOBAL — back-link hover uses --color-primary (cream in light)
+   ===================================================== */
+[data-theme="light"] .back-link:hover {
+  color: var(--color-gold-dark) !important;
+}
+
+/* =====================================================
+   STORY DETAIL — elements using --color-primary as background/text
+   ===================================================== */
+[data-theme="light"] .story-category-badge {
+  background: var(--color-gold-dark) !important;
+  color: white !important;
+}
+
+[data-theme="light"] .chapter-item:hover {
+  border-color: var(--color-gold) !important;
+}
+
+[data-theme="light"] .chapter-item.active {
+  background: var(--color-gold-dark) !important;
+  border-color: var(--color-gold-dark) !important;
+  color: white !important;
+}
+
+[data-theme="light"] .audio-control {
+  background: var(--color-gold-dark) !important;
+  color: white !important;
+}
+
+/* =====================================================
+   TIMELINE DETAIL — event header gradient & badge backgrounds
+   ===================================================== */
+[data-theme="light"] .event-header {
+  background: linear-gradient(135deg, var(--color-gold-dark) 0%, rgba(212, 175, 55, 0.9) 100%) !important;
+}
+
+[data-theme="light"] .category-badge {
+  background: var(--color-gold-dark) !important;
+  color: white !important;
+}
+
+[data-theme="light"] .source-item {
+  border-left-color: var(--color-gold) !important;
+}
+
+[data-theme="light"] .source-item span:first-child,
+[data-theme="light"] .source-item a {
+  color: var(--color-gold-dark) !important;
+}
+
+[data-theme="light"] .related-event-link:hover {
+  border-color: var(--color-gold) !important;
+}
+
+/* =====================================================
+   COLLECTION DETAIL — gradient backgrounds using --color-primary
+   ===================================================== */
+[data-theme="light"] .theme-badge {
+  background: linear-gradient(135deg, var(--color-gold-dark), var(--color-gold-light)) !important;
+  color: white !important;
+}
+
+[data-theme="light"] .item-number {
+  background: linear-gradient(135deg, var(--color-gold-dark), var(--color-gold-light)) !important;
+  color: white !important;
+}
+
+[data-theme="light"] .meta-item svg {
+  color: var(--color-gold-dark) !important;
+}
+
+/* =====================================================
+   BLOG ADMIN — glass backgrounds, white text colors
+   ===================================================== */
+[data-theme="light"] .blog-search-bar {
+  background: var(--color-bg-card) !important;
+  border-color: var(--color-border-light) !important;
+}
+
+[data-theme="light"] .blog-search-bar svg {
+  color: var(--color-text-muted) !important;
+}
+
+[data-theme="light"] .blog-form-card h2,
+[data-theme="light"] .blog-admin-list h2 {
+  color: var(--color-text) !important;
+}
+
+[data-theme="light"] .admin-post-card {
+  border-color: var(--color-border-light) !important;
+}
+
+[data-theme="light"] .admin-post-card h3 {
+  color: var(--color-text) !important;
+}
+
+[data-theme="light"] .admin-post-excerpt {
+  color: var(--color-text-muted) !important;
+}
+
+[data-theme="light"] .views-count,
+[data-theme="light"] .date {
+  color: var(--color-text-muted) !important;
+}
+
+[data-theme="light"] .admin-post-header {
+  border-bottom-color: var(--color-border-light) !important;
+}
+
+[data-theme="light"] .admin-post-tags {
+  border-top-color: var(--color-border-light) !important;
+}
+
+[data-theme="light"] .form-tab {
+  color: var(--color-text-muted) !important;
+}
+
+[data-theme="light"] .form-tab:hover,
+[data-theme="light"] .form-tab.active {
+  color: var(--color-gold-dark) !important;
+}
+
+[data-theme="light"] .form-tab.active {
+  border-bottom-color: var(--color-gold-dark) !important;
+}
+
+[data-theme="light"] .media-item {
+  background: var(--color-bg-tertiary) !important;
+}
+
+[data-theme="light"] .media-upload-mode {
+  background: var(--color-bg-card) !important;
+  border-color: var(--color-border-light) !important;
+}
+
+[data-theme="light"] .form-checkbox {
+  color: var(--color-text) !important;
+}
+
+/* =====================================================
+   ADMIN COUNTRIES — form tabs, headings, borders
+   ===================================================== */
+[data-theme="light"] .country-form-card h3,
+[data-theme="light"] .section-header-tab h4,
+[data-theme="light"] .image-item-header h5,
+[data-theme="light"] .pdf-item-header h5 {
+  color: var(--color-text) !important;
+}
+
+[data-theme="light"] .empty-state svg {
+  color: var(--color-gold) !important;
+}
+
+[data-theme="light"] .move-btn:hover:not(:disabled),
+[data-theme="light"] .mode-btn.active {
+  border-color: var(--color-gold) !important;
+  color: var(--color-text) !important;
+}
+
+[data-theme="light"] .form-select:hover,
+[data-theme="light"] .form-select:focus {
+  border-color: var(--color-gold) !important;
+}
+
+/* =====================================================
+   STORIES PAGE — featured badge uses --color-primary bg
+   ===================================================== */
+[data-theme="light"] .story-featured-badge {
+  background: var(--color-gold-dark) !important;
+  color: white !important;
+}
+
+/* =====================================================
+   COLLECTIONS PAGE — hover borders, featured badge, theme tag
+   ===================================================== */
+[data-theme="light"] .collection-card:hover {
+  border-color: var(--color-gold) !important;
+}
+
+[data-theme="light"] .collection-card:hover .collection-content h3 {
+  color: var(--color-gold-dark) !important;
+}
+
+[data-theme="light"] .collection-featured-badge {
+  background: linear-gradient(135deg, var(--color-gold-dark), var(--color-gold-light)) !important;
+  color: white !important;
+}
+
+[data-theme="light"] .theme-tag:hover {
+  background: var(--color-gold-dark) !important;
+  border-color: var(--color-gold-dark) !important;
+  color: white !important;
+}
+
+/* =====================================================
+   COMMUNITY COMPONENTS — filter active btn, member avatar
+   ===================================================== */
+[data-theme="light"] .filter-btn.active {
+  background: var(--color-gold-dark) !important;
+  border-color: var(--color-gold-dark) !important;
+  color: white !important;
+}
+
+[data-theme="light"] .member-avatar-placeholder {
+  background: var(--color-gold-dark) !important;
+  color: white !important;
+}
+
+/* =====================================================
+   ADVANCED SEARCH — input focus border, result icon
+   ===================================================== */
+[data-theme="light"] .advanced-search-container .search-input:focus {
+  border-color: var(--color-gold) !important;
+}
+
+[data-theme="light"] .result-icon {
+  color: var(--color-gold-dark) !important;
+}
+
+/* =====================================================
+   HISTORICAL FIGURE DETAIL — achievements checkmark
+   ===================================================== */
+[data-theme="light"] .achievements-list li::before {
+  color: var(--color-gold-dark) !important;
+}
+
+/* =====================================================
+   MAP LEGEND (RealAfricaMap) — glass panel in light mode
+   ===================================================== */
+[data-theme="light"] .map-legend {
+  background: var(--color-bg-card) !important;
+  border-color: var(--color-border-light) !important;
+}
+
+[data-theme="light"] .legend-subtitle {
+  color: var(--color-text-muted) !important;
+}
+
+[data-theme="light"] .map-legend .search-input {
+  background: var(--color-bg-elevated) !important;
+  color: var(--color-text) !important;
+  border-color: var(--color-border-light) !important;
+}
+
+[data-theme="light"] .map-legend .search-input::placeholder {
+  color: var(--color-text-muted) !important;
+}
+
+[data-theme="light"] .close-button {
+  background: var(--color-bg-tertiary) !important;
+  color: var(--color-text) !important;
+}
+
+/* =====================================================
+   HISTORICAL MAP — popup button uses --color-primary bg
+   ===================================================== */
+[data-theme="light"] .popup-button {
+  background: var(--color-gold-dark) !important;
+  color: white !important;
+}
+
+/* =====================================================
+   MEDIA VIEWER — glass container and header in light mode
+   ===================================================== */
+[data-theme="light"] .media-viewer-container {
+  background: var(--color-bg-card) !important;
+  border-color: var(--color-border-light) !important;
+}
+
+[data-theme="light"] .media-viewer-header {
+  background: var(--color-bg-card) !important;
+  border-bottom-color: var(--color-border-light) !important;
+}
+
+[data-theme="light"] .media-viewer-title h3 {
+  color: var(--color-text) !important;
+}
+
+[data-theme="light"] .media-viewer-title p {
+  color: var(--color-text-muted) !important;
+}
+
+/* =====================================================
+   ADMIN — shared patterns across admin pages
+   ===================================================== */
+
+/* Stat values (large numbers) */
+[data-theme="light"] .stat-value {
+  color: var(--color-gold-dark) !important;
+}
+
+/* Admin settings header */
+[data-theme="light"] .settings-header svg {
+  color: var(--color-gold) !important;
+}
+
+[data-theme="light"] .settings-header h3 {
+  color: var(--color-text) !important;
+}
+
+/* Admin products */
+[data-theme="light"] .product-form-card h3 {
+  color: var(--color-text) !important;
+}
+
+[data-theme="light"] .product-category {
+  color: var(--color-gold-dark) !important;
+}
+
+[data-theme="light"] .product-price {
+  color: var(--color-gold-dark) !important;
+}
+
+[data-theme="light"] .media-section-header h4 {
+  color: var(--color-gold) !important;
+}
+
+[data-theme="light"] .media-item-number {
+  color: var(--color-gold-dark) !important;
+}
+
+/* Admin quiz */
+[data-theme="light"] .tf-option.selected {
+  background: linear-gradient(135deg, var(--color-gold-dark) 0%, #b8941f 100%) !important;
+}
+
+[data-theme="light"] .option-number {
+  background: var(--color-gold-dark) !important;
+  color: white !important;
+}
+
+/* Admin users */
+[data-theme="light"] .user-stats .stat-value {
+  color: var(--color-gold-dark) !important;
+}
+
+/* Admin countries/quiz/timeline/figures — hover borders */
+[data-theme="light"] .country-card-admin:hover,
+[data-theme="light"] .user-card-admin:hover,
+[data-theme="light"] .product-card-admin:hover {
+  border-color: var(--color-gold) !important;
+}
+
+/* =====================================================
+   MAP PAGE — filter group SVG icons
+   ===================================================== */
+[data-theme="light"] .filter-group svg {
+  color: var(--color-gold) !important;
+}
+
+/* =====================================================
+   SHARE BUTTON — hover border
+   ===================================================== */
+[data-theme="light"] .share-btn:hover,
+[data-theme="light"] .share-option:hover {
+  border-color: var(--color-gold) !important;
+}
+
+/* =====================================================
+   ADMIN USERS — icons, role label
+   ===================================================== */
+[data-theme="light"] .user-detail-item svg {
+  color: var(--color-gold) !important;
+}
+
+[data-theme="light"] .role-admin {
+  color: var(--color-gold-dark) !important;
+}

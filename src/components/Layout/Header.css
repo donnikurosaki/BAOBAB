@@ -315,7 +315,7 @@
 
 .nav-dropdown-item:hover {
   background: var(--color-bg-hover);
-  color: var(--color-primary);
+  color: var(--color-gold);
   transform: translateX(4px);
 }
 
@@ -637,7 +637,7 @@
 .user-dropdown-menu a:hover,
 .user-dropdown-menu button:hover {
   background: var(--color-bg-hover);
-  color: var(--color-primary);
+  color: var(--color-gold);
 }
 
 .user-dropdown-menu a:hover span[class^="icon-"],
@@ -752,7 +752,7 @@
 .menu-toggle span {
   width: 22px;
   height: 2px;
-  background: var(--color-primary);
+  background: var(--color-text);
   border-radius: 2px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: block;

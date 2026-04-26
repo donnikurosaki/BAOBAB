@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react'
 import { usePlatformName } from '../hooks/usePlatformName'
 import { Link } from 'react-router-dom'
-import { Search, MapPin, Users, Globe, BookOpen, ShoppingBag, BarChart3, Music, Palette, History, UtensilsCrossed, Languages, Leaf, Shield, GraduationCap, Users2, Award, TrendingUp, Clock, Star } from 'lucide-react'
+import { Search, MapPin, Users, Globe, BookOpen, ShoppingBag, BarChart3, Music, Palette, History, UtensilsCrossed, Languages, Leaf, Shield, GraduationCap, Users2, Award, TrendingUp, Clock, Star, ArrowRight } from 'lucide-react'
 import { Layout } from '../components/Layout/Layout'
 import { Card } from '../components/Card/Card'
 import { Button } from '../components/Button/Button'
 import { allAfricanCountries, type AfricanCountry } from '../data/allAfricanCountries'
 import { homeService } from '../services/api'
+import { AfricaStats } from '../components/AfricaStats/AfricaStats'
 import './Home.css'
 
 // Fonction pour obtenir l'URL du drapeau d'un pays
@@ -63,7 +64,7 @@ export const Home = () => {
           homeService.getRecent({ limit: 6 }).catch(() => ({ data: null })),
         ])
 
-        if (statsRes.data) setStats(statsRes.data)
+        if (statsRes.data && typeof statsRes.data.countries === 'number') setStats(statsRes.data)
         if (featuredRes.data) setFeaturedContent(featuredRes.data)
         if (trendingRes.data) setTrendingContent(trendingRes.data)
         if (recentRes.data) setRecentContent(recentRes.data)
@@ -233,163 +234,114 @@ export const Home = () => {
           )}
         </section>
 
-        {/* Informations culturelles sur l'Afrique */}
+        {/* Culture & Traditions */}
         <section className="culture-section">
-          <div className="section-header">
-            <h2 className="section-title">Culture & Traditions Africaines</h2>
-            <p className="section-subtitle">
-              Explorez la richesse culturelle du continent africain
-            </p>
+
+          {/* ── Header ── */}
+          <div className="culture-header">
+            <span className="culture-overtitle">HÉRITAGE</span>
+            <h2 className="culture-title">Culture &amp; Traditions</h2>
+            <div className="culture-titleline" />
           </div>
-          <div className="culture-grid">
-            <Card className="culture-card">
-              <div className="culture-card-icon">
-                <Music size={32} />
+
+          {/* ── Bento grid ── */}
+          <div className="culture-bento">
+
+            {/* HERO — Histoire & Civilisations */}
+            <div className="culture-card culture-card--hero culture-accent--terra">
+              <div className="culture-card-bg" />
+              <span className="culture-card-tag">HISTOIRE</span>
+              <div className="culture-hero-watermark">3000<sup>+</sup></div>
+              <div className="culture-card-body">
+                <History size={22} className="culture-card-ico" />
+                <h3>Histoire &amp; Civilisations</h3>
+                <p>L'Égypte antique, l'Empire du Mali, le Royaume du Ghana, l'Empire Songhaï — un héritage architectural et culturel exceptionnel.</p>
+                <Link to="/timeline" className="culture-card-cta">
+                  Explorer <ArrowRight size={13} />
+                </Link>
               </div>
-              <h3>Musique Africaine</h3>
-              <p>
-                L'Afrique est le berceau de la musique. Du jazz au reggae, en passant par 
-                l'afrobeat et le mbalax, la musique africaine a influencé le monde entier. 
-                Chaque région apporte ses rythmes uniques et ses instruments traditionnels.
-              </p>
-            </Card>
-            
-            <Card className="culture-card">
-              <div className="culture-card-icon">
-                <Palette size={32} />
+            </div>
+
+            {/* Musique */}
+            <div className="culture-card culture-card--tall culture-accent--gold">
+              <div className="culture-card-bg" />
+              <span className="culture-card-tag">MUSIQUE</span>
+              <div className="culture-card-body">
+                <Music size={22} className="culture-card-ico" />
+                <h3>Musique Africaine</h3>
+                <p>Du jazz à l'afrobeat, en passant par le mbalax et l'amapiano — les rythmes africains façonnent la culture mondiale depuis des siècles.</p>
+                <Link to="/blog" className="culture-card-cta">
+                  Découvrir <ArrowRight size={13} />
+                </Link>
               </div>
-              <h3>Arts & Artisanat</h3>
-              <p>
-                L'art africain est d'une richesse inégalée : masques traditionnels, sculptures 
-                en bois, tissus kente et wax, poteries, bijoux en perles. Chaque œuvre raconte 
-                une histoire et préserve les traditions ancestrales.
-              </p>
-            </Card>
-            
-            <Card className="culture-card">
-              <div className="culture-card-icon">
-                <History size={32} />
+            </div>
+
+            {/* Arts */}
+            <div className="culture-card culture-card--base culture-accent--terra">
+              <div className="culture-card-bg" />
+              <span className="culture-card-tag">ARTS</span>
+              <div className="culture-card-body">
+                <Palette size={20} className="culture-card-ico" />
+                <h3>Arts &amp; Artisanat</h3>
+                <p>Masques, tissus kente, sculptures en bois — chaque œuvre préserve les traditions ancestrales.</p>
+                <Link to="/collections" className="culture-card-cta">
+                  Explorer <ArrowRight size={13} />
+                </Link>
               </div>
-              <h3>Histoire & Civilisations</h3>
-              <p>
-                L'Afrique a vu naître certaines des plus grandes civilisations : l'Égypte 
-                antique, l'Empire du Mali, le Royaume du Ghana, l'Empire Songhaï. Ces 
-                civilisations ont laissé un héritage architectural et culturel exceptionnel.
-              </p>
-            </Card>
-            
-            <Card className="culture-card">
-              <div className="culture-card-icon">
-                <UtensilsCrossed size={32} />
+            </div>
+
+            {/* Cuisine */}
+            <div className="culture-card culture-card--base culture-accent--gold">
+              <div className="culture-card-bg" />
+              <span className="culture-card-tag">CUISINE</span>
+              <div className="culture-card-body">
+                <UtensilsCrossed size={20} className="culture-card-ico" />
+                <h3>Cuisine Africaine</h3>
+                <p>Couscous, jollof rice, thiéboudiène, injera — une mosaïque de saveurs portées par chaque terroir.</p>
+                <Link to="/blog" className="culture-card-cta">
+                  Découvrir <ArrowRight size={13} />
+                </Link>
               </div>
-              <h3>Cuisine Africaine</h3>
-              <p>
-                La cuisine africaine est variée et savoureuse : couscous, jollof rice, 
-                thieboudienne, injera, fufu, et bien d'autres. Chaque pays apporte ses 
-                spécialités culinaires uniques, riches en épices et en saveurs.
-              </p>
-            </Card>
-            
-            <Card className="culture-card">
-              <div className="culture-card-icon">
-                <Languages size={32} />
+            </div>
+
+            {/* Médecine */}
+            <div className="culture-card culture-card--base culture-accent--green">
+              <div className="culture-card-bg" />
+              <span className="culture-card-tag">NATURE</span>
+              <div className="culture-card-body">
+                <Leaf size={20} className="culture-card-ico" />
+                <h3>Médecine Traditionnelle</h3>
+                <p>Baobab, moringa, karité — des savoirs ancestraux préservés depuis des millénaires.</p>
+                <Link to="/blog" className="culture-card-cta">
+                  Explorer <ArrowRight size={13} />
+                </Link>
               </div>
-              <h3>Langues & Littérature</h3>
-              <p>
-                L'Afrique compte plus de 2000 langues. Des écrivains africains comme 
-                Chinua Achebe, Wole Soyinka, et Léopold Sédar Senghor ont enrichi la 
-                littérature mondiale avec leurs œuvres puissantes.
-              </p>
-            </Card>
-            
-            <Card className="culture-card">
-              <div className="culture-card-icon">
-                <Leaf size={32} />
+            </div>
+
+            {/* Langues — large bande */}
+            <div className="culture-card culture-card--wide culture-accent--slate">
+              <div className="culture-card-bg" />
+              <div className="culture-wide-stat">
+                <span className="culture-wide-number">2 000</span>
+                <span className="culture-wide-unit">langues parlées</span>
               </div>
-              <h3>Médecine Traditionnelle</h3>
-              <p>
-                La médecine traditionnelle africaine utilise les plantes et les connaissances 
-                ancestrales. Le baobab, le moringa, le karité sont des trésors naturels 
-                utilisés depuis des millénaires pour leurs vertus.
-              </p>
-            </Card>
+              <div className="culture-card-divider" />
+              <div className="culture-card-body">
+                <span className="culture-card-tag">LANGUES</span>
+                <Languages size={20} className="culture-card-ico" />
+                <h3>Langues &amp; Littérature</h3>
+                <p>Le continent le plus linguistiquement diversifié au monde. Achebe, Soyinka, Senghor — des voix qui ont redéfini la littérature mondiale.</p>
+                <Link to="/proverbs" className="culture-card-cta">
+                  Découvrir <ArrowRight size={13} />
+                </Link>
+              </div>
+            </div>
+
           </div>
         </section>
 
         {/* Statistiques sur l'Afrique */}
-        <section className="stats-section">
-          <div className="section-header">
-            <h2 className="section-title">L'Afrique en Chiffres</h2>
-          </div>
-          <div className="stats-grid">
-            {loading ? (
-              <>
-                <div className="stat-card">
-                  <div className="stat-number">-</div>
-                  <div className="stat-label">Chargement...</div>
-                </div>
-                <div className="stat-card">
-                  <div className="stat-number">-</div>
-                  <div className="stat-label">Chargement...</div>
-                </div>
-                <div className="stat-card">
-                  <div className="stat-number">-</div>
-                  <div className="stat-label">Chargement...</div>
-                </div>
-                <div className="stat-card">
-                  <div className="stat-number">-</div>
-                  <div className="stat-label">Chargement...</div>
-                </div>
-              </>
-            ) : stats ? (
-              <>
-                <div className="stat-card">
-                  <div className="stat-number">{stats.countries}</div>
-                  <div className="stat-label">Pays</div>
-                </div>
-                <div className="stat-card">
-                  <div className="stat-number">{stats.blogPosts}</div>
-                  <div className="stat-label">Articles de blog</div>
-                </div>
-                <div className="stat-card">
-                  <div className="stat-number">{stats.products}</div>
-                  <div className="stat-label">Produits</div>
-                </div>
-                <div className="stat-card">
-                  <div className="stat-number">{stats.events}</div>
-                  <div className="stat-label">Événements historiques</div>
-                </div>
-                <div className="stat-card">
-                  <div className="stat-number">{stats.figures}</div>
-                  <div className="stat-label">Figures historiques</div>
-                </div>
-                <div className="stat-card">
-                  <div className="stat-number">{stats.totalViews.toLocaleString()}</div>
-                  <div className="stat-label">Vues totales</div>
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="stat-card">
-                  <div className="stat-number">54</div>
-                  <div className="stat-label">Pays</div>
-                </div>
-                <div className="stat-card">
-                  <div className="stat-number">1,4</div>
-                  <div className="stat-label">Milliards d'habitants</div>
-                </div>
-                <div className="stat-card">
-                  <div className="stat-number">30,3</div>
-                  <div className="stat-label">Millions de km²</div>
-                </div>
-                <div className="stat-card">
-                  <div className="stat-number">2000+</div>
-                  <div className="stat-label">Langues</div>
-                </div>
-              </>
-            )}
-          </div>
-        </section>
+        <AfricaStats stats={stats} loading={loading} />
 
         {/* Contenu en vedette */}
         {featuredContent && (
