@@ -6,6 +6,7 @@ import { Input } from '../components/Input/Input'
 import { figureService } from '../services/api'
 import { usePlatformName } from '../hooks/usePlatformName'
 import { Link } from 'react-router-dom'
+import { Search, Check, Calendar, MapPin, Crown, Shield, BookOpen, Star, User, type LucideIcon } from 'lucide-react'
 import './HistoricalFigures.css'
 
 interface HistoricalFigure {
@@ -27,18 +28,13 @@ interface HistoricalFigure {
   verified: boolean
 }
 
-const getRoleIconClass = (role: string) => {
+const getRoleIcon = (role: string): LucideIcon => {
   switch (role) {
-    case 'Roi/Reine':
-      return 'icon-crown'
-    case 'Guerrier':
-      return 'icon-shield'
-    case 'Savant':
-      return 'icon-book'
-    case 'Artiste':
-      return 'icon-star'
-    default:
-      return 'icon-user'
+    case 'Roi/Reine': return Crown
+    case 'Guerrier': return Shield
+    case 'Savant': return BookOpen
+    case 'Artiste': return Star
+    default: return User
   }
 }
 
@@ -93,7 +89,7 @@ export const HistoricalFigures = () => {
 
         <div className="figures-filters">
           <div className="filter-group">
-            <span className="icon-search" />
+            <Search size={18} />
             <Input
               placeholder="Rechercher une figure historique..."
               value={filters.search}
@@ -130,7 +126,7 @@ export const HistoricalFigures = () => {
         ) : (
           <div className="figures-grid">
             {figures.map((figure) => {
-              const iconClass = figure.role[0] ? getRoleIconClass(figure.role[0]) : 'icon-user'
+              const RoleIcon = figure.role[0] ? getRoleIcon(figure.role[0]) : User
               return (
                 <Card key={figure._id} className="figure-card">
                   <div className="figure-image-container">
@@ -138,12 +134,12 @@ export const HistoricalFigures = () => {
                       <img src={figure.image} alt={figure.name} className="figure-image" />
                     ) : (
                       <div className="figure-image-placeholder">
-                        <span className={iconClass} style={{ fontSize: '48px', width: '48px', height: '48px' }} />
+                        <RoleIcon size={48} />
                       </div>
                     )}
                     {figure.verified && (
                       <div className="figure-verified-badge">
-                        <span className="icon-check" />
+                        <Check size={18} />
                       </div>
                     )}
                   </div>
@@ -155,7 +151,7 @@ export const HistoricalFigures = () => {
                     <div className="figure-meta">
                       {(figure.birthDate || figure.deathDate) && (
                         <div className="figure-dates">
-                          <span className="icon-calendar" />
+                          <Calendar size={18} />
                           <span>
                             {formatDate(figure.birthDate)}
                             {figure.birthDate && figure.deathDate && ' - '}
@@ -165,7 +161,7 @@ export const HistoricalFigures = () => {
                       )}
                       {figure.birthPlace.country && (
                         <div className="figure-location">
-                          <span className="icon-location" />
+                          <MapPin size={18} />
                           <span>{figure.birthPlace.country.nameFr}</span>
                         </div>
                       )}

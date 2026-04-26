@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNotifications } from '../../hooks/useNotifications'
+import { Share2, X, Facebook, Twitter, MessageCircle, Mail, Copy, QrCode } from 'lucide-react'
 import './ShareButton.css'
 
 interface ShareButtonProps {
@@ -89,7 +90,7 @@ export const ShareButton = ({ url, title, description = '', className = '' }: Sh
         title="Partager"
         aria-label="Partager"
       >
-        <span className="icon-share" />
+        <Share2 size={18} />
         <span>Partager</span>
       </button>
 
@@ -104,38 +105,38 @@ export const ShareButton = ({ url, title, description = '', className = '' }: Sh
                 onClick={() => setShowMenu(false)}
                 aria-label="Fermer"
               >
-                <span className="icon-close" />
+                <X size={18} />
               </button>
             </div>
             <div className="share-menu-options">
               {navigator.share && (
                 <button className="share-option" onClick={handleNativeShare}>
-                  <span className="icon-share" />
+                  <Share2 size={18} />
                   <span>Partager via...</span>
                 </button>
               )}
               <button className="share-option" onClick={handleFacebook}>
-                <span className="icon-facebook" />
+                <Facebook size={18} />
                 <span>Facebook</span>
               </button>
               <button className="share-option" onClick={handleTwitter}>
-                <span className="icon-twitter" />
+                <Twitter size={18} />
                 <span>Twitter</span>
               </button>
               <button className="share-option" onClick={handleWhatsApp}>
-                <span className="icon-whatsapp" />
+                <MessageCircle size={18} />
                 <span>WhatsApp</span>
               </button>
               <button className="share-option" onClick={handleEmail}>
-                <span className="icon-mail" />
+                <Mail size={18} />
                 <span>Email</span>
               </button>
               <button className="share-option" onClick={handleCopyLink}>
-                <span className="icon-copy" />
+                <Copy size={18} />
                 <span>Copier le lien</span>
               </button>
               <button className="share-option" onClick={handleQRCode}>
-                <span className="icon-qr" />
+                <QrCode size={18} />
                 <span>Code QR</span>
               </button>
             </div>

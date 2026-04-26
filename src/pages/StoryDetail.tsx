@@ -6,6 +6,7 @@ import { Button } from '../components/Button/Button'
 import { storyService } from '../services/api'
 import { useAuthStore } from '../stores/authStore'
 import { useNotifications } from '../hooks/useNotifications'
+import { ChevronLeft, ChevronRight, BookOpen, Check, Play, Pause } from 'lucide-react'
 import './StoryDetail.css'
 
 interface Chapter {
@@ -102,7 +103,7 @@ export const StoryDetail = () => {
     <Layout>
       <div className="story-detail-page">
         <Link to="/stories" className="back-link">
-          <span className="icon-arrow-left" style={{ fontSize: '20px', width: '20px', height: '20px', display: 'inline-block' }} />
+          <ChevronLeft size={20} />
           Retour aux récits
         </Link>
 
@@ -112,7 +113,7 @@ export const StoryDetail = () => {
               <img src={story.coverImage} alt={story.title} />
             ) : (
               <div className="story-hero-placeholder">
-                <span className="icon-book" style={{ fontSize: '64px', width: '64px', height: '64px' }} />
+                <BookOpen size={64} />
               </div>
             )}
           </div>
@@ -127,7 +128,7 @@ export const StoryDetail = () => {
             </div>
             {isAuthenticated && (
               <Button onClick={handleComplete} style={{ marginTop: '1rem' }}>
-                <span className="icon-check" style={{ fontSize: '18px', width: '18px', height: '18px', display: 'inline-block' }} />
+                <Check size={18} />
                 Marquer comme complété
               </Button>
             )}
@@ -165,9 +166,9 @@ export const StoryDetail = () => {
                         onClick={() => setIsPlaying(!isPlaying)}
                       >
                         {isPlaying ? (
-                          <span className="icon-pause" style={{ fontSize: '20px', width: '20px', height: '20px', display: 'inline-block' }} />
+                          <Pause size={20} />
                         ) : (
-                          <span className="icon-play" style={{ fontSize: '20px', width: '20px', height: '20px', display: 'inline-block' }} />
+                          <Play size={20} />
                         )}
                       </button>
                       <audio
@@ -204,7 +205,7 @@ export const StoryDetail = () => {
                       variant="outline"
                       onClick={() => setCurrentChapter(currentChapter - 1)}
                     >
-                      <span className="icon-arrow-left" style={{ fontSize: '18px', width: '18px', height: '18px', display: 'inline-block' }} />
+                      <ChevronLeft size={18} />
                       Chapitre précédent
                     </Button>
                   )}
@@ -213,12 +214,12 @@ export const StoryDetail = () => {
                       onClick={() => setCurrentChapter(currentChapter + 1)}
                     >
                       Chapitre suivant
-                      <span className="icon-arrow-right" style={{ fontSize: '18px', width: '18px', height: '18px', display: 'inline-block' }} />
+                      <ChevronRight size={18} />
                     </Button>
                   )}
                   {currentChapter === sortedChapters.length - 1 && isAuthenticated && (
                     <Button onClick={handleComplete}>
-                      <span className="icon-check" style={{ fontSize: '18px', width: '18px', height: '18px', display: 'inline-block' }} />
+                      <Check size={18} />
                       Compléter le récit
                     </Button>
                   )}

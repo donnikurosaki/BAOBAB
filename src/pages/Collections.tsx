@@ -5,6 +5,7 @@ import { Button } from '../components/Button/Button'
 import { Input } from '../components/Input/Input'
 import { collectionService } from '../services/api'
 import { Link } from 'react-router-dom'
+import { Search, BookOpen, Star, Clock } from 'lucide-react'
 import './Collections.css'
 
 interface Collection {
@@ -98,7 +99,7 @@ export const Collections = () => {
 
         <div className="collections-filters">
           <div className="filter-group">
-            <span className="icon-search" />
+            <Search size={18} />
             <Input
               placeholder="Rechercher une collection..."
               value={filters.search}
@@ -155,12 +156,12 @@ export const Collections = () => {
                     <img src={collection.coverImage} alt={collection.title} />
                   ) : (
                     <div className="collection-cover-placeholder">
-                      <span className="icon-book" style={{ fontSize: '48px', width: '48px', height: '48px' }} />
+                      <BookOpen size={48} />
                     </div>
                   )}
                   {collection.isFeatured && (
                     <div className="collection-featured-badge">
-                      <span className="icon-star" />
+                      <Star size={18} />
                       <span>À la une</span>
                     </div>
                   )}
@@ -179,7 +180,7 @@ export const Collections = () => {
                   </p>
                   <div className="collection-meta">
                     <div className="meta-item">
-                      <span className="icon-clock" />
+                      <Clock size={18} />
                       <span>{collection.estimatedTime} min</span>
                     </div>
                     <div className="meta-item">
@@ -187,7 +188,7 @@ export const Collections = () => {
                     </div>
                     {collection.rating.count > 0 && (
                       <div className="meta-item">
-                        <span className="icon-star" />
+                        <Star size={18} />
                         <span>{collection.rating.average.toFixed(1)}</span>
                       </div>
                     )}

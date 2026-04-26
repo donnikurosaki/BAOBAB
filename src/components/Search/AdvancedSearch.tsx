@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { timelineService, figureService, collectionService, blogService, countryService } from '../../services/api'
+import { Search, Clock, User, BookOpen, FileText, Globe, X } from 'lucide-react'
 import './AdvancedSearch.css'
 
 interface SearchResult {
@@ -136,20 +137,14 @@ export const AdvancedSearch = () => {
     }
   }
 
-  const getResultIconClass = (type: string) => {
+  const getResultIcon = (type: string) => {
     switch (type) {
-      case 'event':
-        return 'icon-clock'
-      case 'figure':
-        return 'icon-user'
-      case 'collection':
-        return 'icon-book'
-      case 'blog':
-        return 'icon-file'
-      case 'country':
-        return 'icon-globe'
-      default:
-        return 'icon-search'
+      case 'event': return <Clock size={18} />
+      case 'figure': return <User size={18} />
+      case 'collection': return <BookOpen size={18} />
+      case 'blog': return <FileText size={18} />
+      case 'country': return <Globe size={18} />
+      default: return <Search size={18} />
     }
   }
 
@@ -179,7 +174,7 @@ export const AdvancedSearch = () => {
   return (
     <div className="advanced-search-container">
       <div className="search-input-wrapper">
-        <span className="icon-search search-icon" />
+        <Search size={18} className="search-icon" />
         <input
           id="advanced-search-input"
           name="advanced-search-input"
@@ -192,14 +187,16 @@ export const AdvancedSearch = () => {
         />
         {query && (
           <button
-            className="search-clear icon-close"
+            className="search-clear"
             onClick={() => {
               setQuery('')
               setResults([])
               setShowResults(false)
             }}
             aria-label="Effacer la recherche"
-          />
+          >
+            <X size={18} />
+          </button>
         )}
       </div>
 
@@ -216,35 +213,35 @@ export const AdvancedSearch = () => {
               className={`filter-btn ${filters.type === 'event' ? 'active' : ''}`}
               onClick={() => setFilters({ type: 'event' })}
             >
-              <span className="icon-clock" />
+              <Clock size={16} />
               Événements
             </button>
             <button
               className={`filter-btn ${filters.type === 'figure' ? 'active' : ''}`}
               onClick={() => setFilters({ type: 'figure' })}
             >
-              <span className="icon-user" />
+              <User size={16} />
               Personnages
             </button>
             <button
               className={`filter-btn ${filters.type === 'collection' ? 'active' : ''}`}
               onClick={() => setFilters({ type: 'collection' })}
             >
-              <span className="icon-book" />
+              <BookOpen size={16} />
               Collections
             </button>
             <button
               className={`filter-btn ${filters.type === 'blog' ? 'active' : ''}`}
               onClick={() => setFilters({ type: 'blog' })}
             >
-              <span className="icon-file" />
+              <FileText size={16} />
               Articles
             </button>
             <button
               className={`filter-btn ${filters.type === 'country' ? 'active' : ''}`}
               onClick={() => setFilters({ type: 'country' })}
             >
-              <span className="icon-globe" />
+              <Globe size={16} />
               Pays
             </button>
           </div>
@@ -260,7 +257,6 @@ export const AdvancedSearch = () => {
           ) : (
             <div className="results-list">
               {results.map((result, index) => {
-                const iconClass = getResultIconClass(result.type)
                 return (
                   <div
                     key={`${result.type}-${result.id}-${index}`}
@@ -268,7 +264,7 @@ export const AdvancedSearch = () => {
                     onClick={() => handleResultClick(result)}
                   >
                     <div className="result-icon">
-                      <span className={iconClass} />
+                      {getResultIcon(result.type)}
                     </div>
                     <div className="result-content">
                       <h4>{result.title}</h4>

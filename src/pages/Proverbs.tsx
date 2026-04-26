@@ -6,6 +6,7 @@ import { Input } from '../components/Input/Input'
 import { Layout } from '../components/Layout/Layout'
 import { proverbService, countryService } from '../services/api'
 import { usePlatformName } from '../hooks/usePlatformName'
+import { Search, Check, MapPin, RefreshCw, Globe, BookOpen, FileText, Heart, Eye } from 'lucide-react'
 import './Proverbs.css'
 
 interface Proverb {
@@ -154,7 +155,7 @@ export const Proverbs = () => {
                 onClick={fetchRandomProverb}
                 className="refresh-random-btn"
               >
-                <span className="icon-refresh" />
+                <RefreshCw size={18} />
                 Nouveau proverbe
               </Button>
             </div>
@@ -167,7 +168,7 @@ export const Proverbs = () => {
               )}
               <div className="proverb-meta">
                 <div className="proverb-country">
-                  <span className="icon-location" />
+                  <MapPin size={18} />
                   <span>{randomProverb.countryName}</span>
                   {randomProverb.country && (
                     <Link to={`/country/${randomProverb.country.id}`} className="country-link">
@@ -177,12 +178,12 @@ export const Proverbs = () => {
                 </div>
                 {randomProverb.language && (
                   <div className="proverb-language">
-                    <span className="icon-globe" />
+                    <Globe size={18} />
                     <span>{randomProverb.language}</span>
                   </div>
                 )}
                 <div className="proverb-category">
-                  <span className="icon-book" />
+                  <BookOpen size={18} />
                   <span>{randomProverb.category}</span>
                 </div>
               </div>
@@ -192,7 +193,7 @@ export const Proverbs = () => {
               </div>
               {randomProverb.source && (
                 <div className="proverb-source">
-                  <span className="icon-file" />
+                  <FileText size={18} />
                   <span>Source: {randomProverb.source}</span>
                 </div>
               )}
@@ -202,11 +203,11 @@ export const Proverbs = () => {
                   onClick={() => handleLike(randomProverb._id)}
                   title="J'aime ce proverbe"
                 >
-                  <span className="icon-heart" />
+                  <Heart size={18} />
                   <span>{randomProverb.likes}</span>
                 </button>
                 <div className="proverb-stats">
-                  <span className="icon-eye" />
+                  <Eye size={18} />
                   <span>{randomProverb.views} vues</span>
                 </div>
               </div>
@@ -217,7 +218,7 @@ export const Proverbs = () => {
         {/* Filtres et recherche */}
         <div className="proverbs-filters">
           <div className="search-bar">
-            <span className="icon-search" />
+            <Search size={18} />
             <Input
               id="proverb-search"
               name="proverb-search"
@@ -262,7 +263,7 @@ export const Proverbs = () => {
         <div className="proverbs-grid">
           {proverbs.length === 0 ? (
             <Card className="empty-state">
-              <span className="icon-book" style={{ fontSize: '48px', width: '48px', height: '48px' }} />
+              <BookOpen size={48} />
               <p>Aucun proverbe trouvé.</p>
               {searchTerm && (
                 <Button onClick={() => setSearchTerm('')} variant="outline" size="small">
@@ -279,7 +280,7 @@ export const Proverbs = () => {
                   )}
                   {proverb.isVerified && (
                     <span className="verified-badge">
-                      <span className="icon-check" />
+                      <Check size={18} />
                       Vérifié
                     </span>
                   )}
@@ -292,7 +293,7 @@ export const Proverbs = () => {
                 )}
                 <div className="proverb-meta-small">
                   <div className="proverb-country-small">
-                    <span className="icon-location" />
+                    <MapPin size={18} />
                     <span>{proverb.countryName}</span>
                     {proverb.country && (
                       <Link to={`/country/${proverb.country.id}`} className="country-link-small">
@@ -301,7 +302,7 @@ export const Proverbs = () => {
                     )}
                   </div>
                   <div className="proverb-category-small">
-                    <span className="icon-book" />
+                    <BookOpen size={18} />
                     <span>{proverb.category}</span>
                   </div>
                 </div>
@@ -310,7 +311,7 @@ export const Proverbs = () => {
                 </div>
                 {proverb.source && (
                   <div className="proverb-source-small">
-                    <span className="icon-file" />
+                    <FileText size={18} />
                     <span>Source: {proverb.source}</span>
                   </div>
                 )}
@@ -327,11 +328,11 @@ export const Proverbs = () => {
                     onClick={() => handleLike(proverb._id)}
                     title="J'aime ce proverbe"
                   >
-                    <span className="icon-heart" />
+                    <Heart size={18} />
                     <span>{proverb.likes}</span>
                   </button>
                   <div className="proverb-stats-small">
-                    <span className="icon-eye" />
+                    <Eye size={18} />
                     <span>{proverb.views}</span>
                   </div>
                 </div>

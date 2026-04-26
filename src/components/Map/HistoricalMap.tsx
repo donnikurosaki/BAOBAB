@@ -3,6 +3,7 @@ import { MapContainer, TileLayer, Marker, Popup, Circle, useMap } from 'react-le
 import { LatLngExpression, Icon } from 'leaflet'
 import * as L from 'leaflet'
 import { countryService, timelineService } from '../../services/api'
+import { MapPin, Clock, ExternalLink } from 'lucide-react'
 import 'leaflet/dist/leaflet.css'
 import './HistoricalMap.css'
 
@@ -168,11 +169,11 @@ export const HistoricalMap = ({
         <h3>Légende</h3>
         <div className="legend-items">
           <div className="legend-item">
-            <span className="icon-location legend-icon site" style={{ fontSize: '20px', width: '20px', height: '20px', display: 'inline-block' }} />
+            <MapPin size={20} className="legend-icon site" />
             <span>Sites historiques</span>
           </div>
           <div className="legend-item">
-            <span className="icon-clock legend-icon event" style={{ fontSize: '20px', width: '20px', height: '20px', display: 'inline-block' }} />
+            <Clock size={20} className="legend-icon event" />
             <span>Événements historiques</span>
           </div>
         </div>
@@ -215,7 +216,7 @@ export const HistoricalMap = ({
                       onSiteClick(site)
                     }}
                   >
-                    <span className="icon-external-link" style={{ fontSize: '16px', width: '16px', height: '16px', display: 'inline-block' }} />
+                    <ExternalLink size={16} />
                     En savoir plus
                   </button>
                 )}
@@ -246,7 +247,7 @@ export const HistoricalMap = ({
                     className="popup-button"
                     onClick={() => onEventClick(event)}
                   >
-                    <span className="icon-external-link" style={{ fontSize: '16px', width: '16px', height: '16px', display: 'inline-block' }} />
+                    <ExternalLink size={16} />
                     Voir l'événement
                   </button>
                 )}

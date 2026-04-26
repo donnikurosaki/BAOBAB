@@ -6,6 +6,7 @@ import { Button } from '../components/Button/Button'
 import { collectionService } from '../services/api'
 import { useAuthStore } from '../stores/authStore'
 import { useNotifications } from '../hooks/useNotifications'
+import { ChevronLeft, ChevronRight, BookOpen, Clock, Check } from 'lucide-react'
 import './CollectionDetail.css'
 
 interface CollectionItem {
@@ -136,7 +137,7 @@ export const CollectionDetail = () => {
     <Layout>
       <div className="collection-detail-page">
         <Link to="/collections" className="back-link">
-          <span className="icon-arrow-left" style={{ fontSize: '20px', width: '20px', height: '20px', display: 'inline-block' }} />
+          <ChevronLeft size={20} />
           Retour aux collections
         </Link>
 
@@ -146,7 +147,7 @@ export const CollectionDetail = () => {
               <img src={collection.coverImage} alt={collection.title} />
             ) : (
               <div className="collection-hero-placeholder">
-                <span className="icon-book" style={{ fontSize: '64px', width: '64px', height: '64px', display: 'inline-block' }} />
+                <BookOpen size={64} />
               </div>
             )}
           </div>
@@ -162,7 +163,7 @@ export const CollectionDetail = () => {
             <p className="collection-description">{collection.description}</p>
             <div className="collection-hero-meta">
               <div className="meta-item">
-                <span className="icon-clock" style={{ fontSize: '18px', width: '18px', height: '18px', display: 'inline-block' }} />
+                <Clock size={18} />
                 <span>{collection.estimatedTime} minutes de lecture</span>
               </div>
               <div className="meta-item">
@@ -176,7 +177,7 @@ export const CollectionDetail = () => {
             </div>
             {isAuthenticated && (
               <Button onClick={handleComplete} style={{ marginTop: '1rem' }}>
-                <span className="icon-check" style={{ fontSize: '18px', width: '18px', height: '18px', display: 'inline-block' }} />
+                <Check size={18} />
                 Marquer comme complété
               </Button>
             )}
@@ -199,7 +200,7 @@ export const CollectionDetail = () => {
                 </div>
                 <Link to={getItemLink(item)} onClick={(e) => e.stopPropagation()}>
                   <Button variant="outline" size="small">
-                    Voir <span className="icon-arrow-right" style={{ fontSize: '16px', width: '16px', height: '16px', display: 'inline-block' }} />
+                    Voir <ChevronRight size={16} />
                   </Button>
                 </Link>
               </Card>
@@ -219,13 +220,13 @@ export const CollectionDetail = () => {
                     variant="outline"
                     onClick={() => setCurrentItemIndex(currentItemIndex - 1)}
                   >
-                    <span className="icon-arrow-left" style={{ fontSize: '18px', width: '18px', height: '18px', display: 'inline-block' }} />
+                    <ChevronLeft size={18} />
                     Précédent
                   </Button>
                 )}
                 <Link to={getItemLink(currentItem)}>
                   <Button>
-                    Voir le contenu <span className="icon-arrow-right" style={{ fontSize: '18px', width: '18px', height: '18px', display: 'inline-block' }} />
+                    Voir le contenu <ChevronRight size={18} />
                   </Button>
                 </Link>
                 {currentItemIndex < sortedItems.length - 1 && (
@@ -234,7 +235,7 @@ export const CollectionDetail = () => {
                     onClick={() => setCurrentItemIndex(currentItemIndex + 1)}
                   >
                     Suivant
-                    <span className="icon-arrow-right" style={{ fontSize: '18px', width: '18px', height: '18px', display: 'inline-block' }} />
+                    <ChevronRight size={18} />
                   </Button>
                 )}
               </div>

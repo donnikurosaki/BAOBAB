@@ -7,6 +7,7 @@ import { BookmarkButton } from '../components/BookmarkButton/BookmarkButton'
 import { ShareButton } from '../components/ShareButton/ShareButton'
 import { timelineService, progressService } from '../services/api'
 import { useAuthStore } from '../stores/authStore'
+import { ChevronLeft, ChevronRight, Calendar, MapPin, Check, ExternalLink } from 'lucide-react'
 import './TimelineDetail.css'
 
 interface TimelineEvent {
@@ -135,7 +136,7 @@ export const TimelineDetail = () => {
     <Layout>
       <div className="timeline-detail-page">
         <Link to="/timeline" className="back-link">
-          <span className="icon-arrow-left" style={{ fontSize: '20px', width: '20px', height: '20px', display: 'inline-block' }} />
+          <ChevronLeft size={20} />
           Retour à la chronologie
         </Link>
 
@@ -144,7 +145,7 @@ export const TimelineDetail = () => {
             <div className="event-period-badge">{event.period}</div>
             <h1>{event.title}</h1>
             <div className="event-date-info">
-              <span className="icon-calendar" />
+              <Calendar size={18} />
               <div>
                 <strong>{formatDate(event.date)}</strong>
                 {event.endDate && (
@@ -157,7 +158,7 @@ export const TimelineDetail = () => {
             </div>
             {event.location.country && (
               <div className="event-location-info">
-                <span className="icon-location" />
+                <MapPin size={18} />
                 <span>
                   {event.location.region && `${event.location.region}, `}
                   {event.location.country.nameFr}
@@ -166,7 +167,7 @@ export const TimelineDetail = () => {
             )}
             {event.verified && (
               <div className="event-verified-badge">
-                <span className="icon-check" />
+                <Check size={18} />
                 <span>Vérifié par des experts</span>
               </div>
             )}
@@ -221,7 +222,7 @@ export const TimelineDetail = () => {
               <ul className="sources-list">
                 {event.sources.map((source, index) => (
                   <li key={index} className="source-item">
-                    <span className="icon-external-link" style={{ fontSize: '16px', width: '16px', height: '16px', display: 'inline-block' }} />
+                    <ExternalLink size={16} />
                     <div>
                       <strong>{source.title}</strong>
                       {source.author && <p>Par {source.author}</p>}
@@ -252,7 +253,7 @@ export const TimelineDetail = () => {
                       <strong>{relatedEvent.title}</strong>
                       <p>{formatDate(relatedEvent.date)}</p>
                     </div>
-                    <span className="icon-arrow-right" style={{ fontSize: '20px', width: '20px', height: '20px', display: 'inline-block' }} />
+                    <ChevronRight size={20} />
                   </Link>
                 ))}
               </div>

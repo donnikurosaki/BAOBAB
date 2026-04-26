@@ -4,6 +4,7 @@ import { Button } from '../../components/Button/Button'
 import { Input } from '../../components/Input/Input'
 import { quizService } from '../../services/api'
 import { useNotifications } from '../../hooks/useNotifications'
+import { Plus, BookOpen, Award, Clock, Pencil, Trash2, X, Save } from 'lucide-react'
 import './AdminQuiz.css'
 
 interface Question {
@@ -228,7 +229,7 @@ export const AdminQuiz = () => {
         <>
           <div className="admin-quiz-actions">
             <Button onClick={() => setShowForm(true)}>
-              <span className="icon-plus" />
+              <Plus size={18} />
               Créer un nouveau quiz
             </Button>
           </div>
@@ -253,27 +254,27 @@ export const AdminQuiz = () => {
                   <p className="quiz-admin-description">{quiz.description}</p>
                   <div className="quiz-admin-stats">
                     <span>
-                      <span className="icon-book" />
+                      <BookOpen size={18} />
                       {quiz.questions.length} questions
                     </span>
                     <span>
-                      <span className="icon-award" />
+                      <Award size={18} />
                       {quiz.totalPoints} points
                     </span>
                     {quiz.timeLimit && (
                       <span>
-                        <span className="icon-clock" />
+                        <Clock size={18} />
                         {Math.floor(quiz.timeLimit / 60)} min
                       </span>
                     )}
                   </div>
                   <div className="quiz-admin-actions">
                     <Button variant="outline" size="small" onClick={() => handleEditQuiz(quiz)}>
-                      <span className="icon-edit" />
+                      <Pencil size={18} />
                       Modifier
                     </Button>
                     <Button variant="outline" size="small" onClick={() => handleDeleteQuiz(quiz._id)}>
-                      <span className="icon-trash" />
+                      <Trash2 size={18} />
                       Supprimer
                     </Button>
                   </div>
@@ -299,7 +300,7 @@ export const AdminQuiz = () => {
               })
               setQuestions([])
             }}>
-              <span className="icon-close" />
+              <X size={18} />
               Annuler
             </Button>
           </div>
@@ -481,7 +482,7 @@ export const AdminQuiz = () => {
                     onClick={handleAddQuestion}
                     variant={currentQuestionIndex !== null ? 'primary' : 'secondary'}
                   >
-                    <span className="icon-save" />
+                    <Save size={18} />
                     {currentQuestionIndex !== null ? 'Modifier la question' : 'Ajouter la question'}
                   </Button>
                   {currentQuestionIndex !== null && (
@@ -520,14 +521,14 @@ export const AdminQuiz = () => {
                             size="small"
                             onClick={() => handleEditQuestion(index)}
                           >
-                            <span className="icon-edit" />
+                            <Pencil size={18} />
                           </Button>
                           <Button
                             variant="outline"
                             size="small"
                             onClick={() => handleDeleteQuestion(index)}
                           >
-                            <span className="icon-trash" />
+                            <Trash2 size={18} />
                           </Button>
                         </div>
                       </div>
@@ -544,7 +545,7 @@ export const AdminQuiz = () => {
 
             <div className="quiz-form-footer">
               <Button onClick={handleSaveQuiz} disabled={questions.length === 0}>
-                <span className="icon-save" />
+                <Save size={18} />
                 {editingQuiz ? 'Mettre à jour le quiz' : 'Créer le quiz'}
               </Button>
             </div>

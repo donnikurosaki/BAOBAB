@@ -8,7 +8,7 @@ import { FileUpload } from '../components/FileUpload/FileUpload'
 import { useAuthStore } from '../stores/authStore'
 import { userService, orderService, blogService, productService, authService, proverbService, countryService, bookmarkService, progressService } from '../services/api'
 import { useNotifications } from '../hooks/useNotifications'
-// Toutes les icônes sont remplacées par des effets CSS élégants
+import { Settings, Search, Star, Package, Heart, BookOpen, ShoppingBag, User, Award, Calendar, ChevronRight, X, Plus, ImageIcon, Link as LinkIcon, FileText, Video, Pencil, Mail, Phone, MapPin, Save, Check, FolderOpen, Eye, TrendingUp, Filter, Shield, Clock } from 'lucide-react'
 import './Dashboard.css'
 
 interface UserProfile {
@@ -626,7 +626,7 @@ export const Dashboard = () => {
           {authUser?.role === 'admin' && (
             <Link to="/admin">
               <Button variant="outline">
-                <span className="icon-settings" />
+                <Settings size={18} />
                 Administration
               </Button>
             </Link>
@@ -635,7 +635,7 @@ export const Dashboard = () => {
 
         <div className="dashboard-global-search">
           <div className="global-search-bar">
-            <span className="icon-search" />
+            <Search size={18} />
             <Input
               id="dashboard-search"
               name="dashboard-search"
@@ -646,11 +646,13 @@ export const Dashboard = () => {
             />
             {searchTerm && (
               <button
-                className="clear-search-btn icon-close"
+                className="clear-search-btn"
                 onClick={() => setSearchTerm('')}
                 title="Effacer la recherche"
                 aria-label="Effacer la recherche"
-              />
+              >
+                <X size={18} />
+              </button>
             )}
           </div>
         </div>
@@ -662,14 +664,14 @@ export const Dashboard = () => {
                 className={`dashboard-nav-item ${activeSection === 'overview' ? 'active' : ''}`}
                 onClick={() => setActiveSection('overview')}
               >
-                <span className="icon-star" />
+                <Star size={18} />
                 Vue d'ensemble
               </button>
               <button
                 className={`dashboard-nav-item ${activeSection === 'orders' ? 'active' : ''}`}
                 onClick={() => setActiveSection('orders')}
               >
-                <span className="icon-package" />
+                <Package size={18} />
                 Mes commandes
                 {stats.totalOrders > 0 && <span className="nav-badge">{stats.totalOrders}</span>}
               </button>
@@ -677,7 +679,7 @@ export const Dashboard = () => {
                 className={`dashboard-nav-item ${activeSection === 'favorites' ? 'active' : ''}`}
                 onClick={() => setActiveSection('favorites')}
               >
-                <span className="icon-heart" />
+                <Heart size={18} />
                 Favoris
                 {stats.favoritesCount > 0 && <span className="nav-badge">{stats.favoritesCount}</span>}
               </button>
@@ -685,7 +687,7 @@ export const Dashboard = () => {
                 className={`dashboard-nav-item ${activeSection === 'wishlist' ? 'active' : ''}`}
                 onClick={() => setActiveSection('wishlist')}
               >
-                <span className="icon-star" />
+                <Star size={18} />
                 Wishlist
                 {stats.wishlistCount > 0 && <span className="nav-badge">{stats.wishlistCount}</span>}
               </button>
@@ -693,7 +695,7 @@ export const Dashboard = () => {
                 className={`dashboard-nav-item ${activeSection === 'myBlogs' ? 'active' : ''}`}
                 onClick={() => setActiveSection('myBlogs')}
               >
-                <span className="icon-book" />
+                <BookOpen size={18} />
                 Mes articles
                 {myBlogs.length > 0 && <span className="nav-badge">{myBlogs.length}</span>}
               </button>
@@ -701,7 +703,7 @@ export const Dashboard = () => {
                 className={`dashboard-nav-item ${activeSection === 'myProducts' ? 'active' : ''}`}
                 onClick={() => setActiveSection('myProducts')}
               >
-                <span className="icon-shopping" />
+                <ShoppingBag size={18} />
                 Mes produits
                 {myProducts.length > 0 && <span className="nav-badge">{myProducts.length}</span>}
               </button>
@@ -709,35 +711,35 @@ export const Dashboard = () => {
                 className={`dashboard-nav-item ${activeSection === 'profile' ? 'active' : ''}`}
                 onClick={() => setActiveSection('profile')}
               >
-                <span className="icon-user" />
+                <User size={18} />
                 Mon profil
               </button>
               <button
                 className={`dashboard-nav-item ${activeSection === 'proverbs' ? 'active' : ''}`}
                 onClick={() => setActiveSection('proverbs')}
               >
-                <span className="icon-book" />
+                <BookOpen size={18} />
                 Proverbes
               </button>
               <button
                 className={`dashboard-nav-item ${activeSection === 'bookmarks' ? 'active' : ''}`}
                 onClick={() => setActiveSection('bookmarks')}
               >
-                <span className="icon-heart" />
+                <Heart size={18} />
                 Mes Favoris
               </button>
               <button
                 className={`dashboard-nav-item ${activeSection === 'progress' ? 'active' : ''}`}
                 onClick={() => setActiveSection('progress')}
               >
-                <span className="icon-award" />
+                <Award size={18} />
                 Progression
               </button>
               <button
                 className={`dashboard-nav-item ${activeSection === 'settings' ? 'active' : ''}`}
                 onClick={() => setActiveSection('settings')}
               >
-                <span className="icon-settings" />
+                <Settings size={18} />
                 Paramètres
               </button>
             </nav>
@@ -769,7 +771,7 @@ export const Dashboard = () => {
                 <div className="stats-grid">
                   <Card className="stat-card">
                     <div className="stat-icon" style={{ backgroundColor: '#3498db20', color: '#3498db' }}>
-                      <span className="icon-package" />
+                      <Package size={18} />
                     </div>
                     <div className="stat-content">
                       <h3>{stats.totalOrders}</h3>
@@ -778,7 +780,7 @@ export const Dashboard = () => {
                   </Card>
                   <Card className="stat-card">
                     <div className="stat-icon" style={{ backgroundColor: '#27ae6020', color: '#27ae60' }}>
-                      <span className="icon-star" />
+                      <Star size={18} />
                     </div>
                     <div className="stat-content">
                       <h3>{stats.totalSpent.toFixed(2)} €</h3>
@@ -787,7 +789,7 @@ export const Dashboard = () => {
                   </Card>
                   <Card className="stat-card">
                     <div className="stat-icon" style={{ backgroundColor: '#e74c3c20', color: '#e74c3c' }}>
-                      <span className="icon-heart" />
+                      <Heart size={18} />
                     </div>
                     <div className="stat-content">
                       <h3>{stats.favoritesCount}</h3>
@@ -796,7 +798,7 @@ export const Dashboard = () => {
                   </Card>
                   <Card className="stat-card">
                     <div className="stat-icon" style={{ backgroundColor: '#f39c1220', color: '#f39c12' }}>
-                      <span className="icon-star" />
+                      <Star size={18} />
                     </div>
                     <div className="stat-content">
                       <h3>{stats.wishlistCount}</h3>
@@ -915,7 +917,7 @@ export const Dashboard = () => {
                   {orders.length > 0 && (
                     <div className="orders-controls">
                       <div className="orders-search">
-                        <span className="icon-search" />
+                        <Search size={18} />
                         <Input
                           id="order-search"
                           name="order-search"
@@ -926,7 +928,7 @@ export const Dashboard = () => {
                         />
                       </div>
                       <div className="orders-filters">
-                        <span className="icon-filter" />
+                        <Filter size={18} />
                         <label htmlFor="order-filter" className="sr-only">Filtrer par statut</label>
                         <select
                           id="order-filter"
@@ -962,7 +964,7 @@ export const Dashboard = () => {
                 </div>
                 {orders.length === 0 ? (
                   <Card className="empty-state">
-                    <span className="icon-package" style={{ fontSize: '48px', width: '48px', height: '48px' }} />
+                    <Package size={48} />
                     <p>Aucune commande pour le moment</p>
                     <Link to="/shop">
                       <Button>Découvrir la boutique</Button>
@@ -1008,7 +1010,7 @@ export const Dashboard = () => {
                               <h3>Commande {order.orderNumber}</h3>
                             </Link>
                             <p className="order-date">
-                              <span className="icon-calendar" />
+                              <Calendar size={18} />
                               {new Date(order.createdAt).toLocaleDateString('fr-FR', {
                                 day: 'numeric',
                                 month: 'long',
@@ -1037,7 +1039,7 @@ export const Dashboard = () => {
                             <span>Total: <strong>{order.total.toFixed(2)} €</strong></span>
                             {order.trackingNumber && (
                               <span className="tracking-number">
-                                <span className="icon-arrow icon-arrow-right" />
+                                <ChevronRight size={18} />
                                 Suivi: {order.trackingNumber}
                               </span>
                             )}
@@ -1054,7 +1056,7 @@ export const Dashboard = () => {
                       })
                       return filtered.length === 0 && orders.length > 0 ? (
                         <Card className="empty-state">
-                          <span className="icon-package" style={{ fontSize: '48px', width: '48px', height: '48px' }} />
+                          <Package size={48} />
                           <p>Aucune commande ne correspond à vos critères</p>
                         </Card>
                       ) : null
@@ -1069,7 +1071,7 @@ export const Dashboard = () => {
                 <h2>Mes favoris</h2>
                 {!profile?.favorites || profile.favorites.length === 0 ? (
                   <Card className="empty-state">
-                    <span className="icon-heart" style={{ fontSize: '48px', width: '48px', height: '48px' }} />
+                    <Heart size={48} />
                     <p>Aucun produit favori pour le moment</p>
                     <Link to="/shop">
                       <Button>Découvrir la boutique</Button>
@@ -1101,7 +1103,7 @@ export const Dashboard = () => {
                               variant="outline"
                               onClick={() => handleRemoveFavorite(product._id)}
                             >
-                              <span className="icon-close" />
+                              <X size={18} />
                               Retirer
                             </Button>
                           </div>
@@ -1118,7 +1120,7 @@ export const Dashboard = () => {
                 <h2>Ma wishlist</h2>
                 {!profile?.wishlist || profile.wishlist.length === 0 ? (
                   <Card className="empty-state">
-                    <span className="icon-star" style={{ fontSize: '48px', width: '48px', height: '48px' }} />
+                    <Star size={48} />
                     <p>Aucun produit dans votre wishlist</p>
                     <Link to="/shop">
                       <Button>Découvrir la boutique</Button>
@@ -1150,7 +1152,7 @@ export const Dashboard = () => {
                               variant="outline"
                               onClick={() => handleRemoveWishlist(product._id)}
                             >
-                              <span className="icon-close" />
+                              <X size={18} />
                               Retirer
                             </Button>
                           </div>
@@ -1167,7 +1169,7 @@ export const Dashboard = () => {
                 <div className="section-header">
                   <h2>Mes articles</h2>
                   <Button onClick={() => setShowBlogForm(!showBlogForm)}>
-                    <span className="icon-plus" />
+                    <Plus size={18} />
                     {showBlogForm ? 'Annuler' : 'Nouvel article'}
                   </Button>
                 </div>
@@ -1290,7 +1292,7 @@ export const Dashboard = () => {
                           <div className="media-section-header">
                             <h4>Images additionnelles</h4>
                             <Button type="button" onClick={addBlogImage} size="small">
-                              <span className="icon-plus" />
+                              <Plus size={18} />
                               Ajouter une image
                             </Button>
                           </div>
@@ -1299,7 +1301,7 @@ export const Dashboard = () => {
                               <div className="media-item-header">
                                 <span className="media-item-number">Image {idx + 1}</span>
                                 <Button type="button" size="small" variant="outline" onClick={() => removeBlogImage(idx)}>
-                                  <span className="icon-close" />
+                                  <X size={18} />
                                 </Button>
                               </div>
                               <div className="media-upload-mode">
@@ -1309,7 +1311,7 @@ export const Dashboard = () => {
                                   variant={blogUploadMode[`image-${idx}`] === 'upload' ? 'primary' : 'outline'}
                                   onClick={() => setBlogUploadMode({ ...blogUploadMode, [`image-${idx}`]: 'upload' })}
                                 >
-                                  <span className="icon-image" />
+                                  <ImageIcon size={18} />
                                   Upload depuis PC
                                 </Button>
                                 <Button
@@ -1318,7 +1320,7 @@ export const Dashboard = () => {
                                   variant={blogUploadMode[`image-${idx}`] === 'url' || !blogUploadMode[`image-${idx}`] ? 'primary' : 'outline'}
                                   onClick={() => setBlogUploadMode({ ...blogUploadMode, [`image-${idx}`]: 'url' })}
                                 >
-                                  <span className="icon-link" />
+                                  <LinkIcon size={18} />
                                   Lien URL
                                 </Button>
                               </div>
@@ -1353,7 +1355,7 @@ export const Dashboard = () => {
                           <div className="media-section-header">
                             <h4>Documents PDF</h4>
                             <Button type="button" onClick={addBlogPDF} size="small">
-                              <span className="icon-plus" />
+                              <Plus size={18} />
                               Ajouter un PDF
                             </Button>
                           </div>
@@ -1362,7 +1364,7 @@ export const Dashboard = () => {
                               <div className="media-item-header">
                                 <span className="media-item-number">PDF {idx + 1}</span>
                                 <Button type="button" size="small" variant="outline" onClick={() => removeBlogPDF(idx)}>
-                                  <span className="icon-close" />
+                                  <X size={18} />
                                 </Button>
                               </div>
                               <div className="media-upload-mode">
@@ -1372,7 +1374,7 @@ export const Dashboard = () => {
                                   variant={blogUploadMode[`pdf-${idx}`] === 'upload' ? 'primary' : 'outline'}
                                   onClick={() => setBlogUploadMode({ ...blogUploadMode, [`pdf-${idx}`]: 'upload' })}
                                 >
-                                  <span className="icon-file" />
+                                  <FileText size={18} />
                                   Upload depuis PC
                                 </Button>
                                 <Button
@@ -1381,7 +1383,7 @@ export const Dashboard = () => {
                                   variant={blogUploadMode[`pdf-${idx}`] === 'url' || !blogUploadMode[`pdf-${idx}`] ? 'primary' : 'outline'}
                                   onClick={() => setBlogUploadMode({ ...blogUploadMode, [`pdf-${idx}`]: 'url' })}
                                 >
-                                  <span className="icon-link" />
+                                  <LinkIcon size={18} />
                                   Lien URL
                                 </Button>
                               </div>
@@ -1429,7 +1431,7 @@ export const Dashboard = () => {
                           <div className="media-section-header">
                             <h4>Vidéos</h4>
                             <Button type="button" onClick={addBlogVideo} size="small">
-                              <span className="icon-plus" />
+                              <Plus size={18} />
                               Ajouter une vidéo
                             </Button>
                           </div>
@@ -1438,7 +1440,7 @@ export const Dashboard = () => {
                               <div className="media-item-header">
                                 <span className="media-item-number">Vidéo {idx + 1}</span>
                                 <Button type="button" size="small" variant="outline" onClick={() => removeBlogVideo(idx)}>
-                                  <span className="icon-close" />
+                                  <X size={18} />
                                 </Button>
                               </div>
                               <div className="media-upload-mode">
@@ -1448,7 +1450,7 @@ export const Dashboard = () => {
                                   variant={blogUploadMode[`video-${idx}`] === 'upload' ? 'primary' : 'outline'}
                                   onClick={() => setBlogUploadMode({ ...blogUploadMode, [`video-${idx}`]: 'upload' })}
                                 >
-                                  <span className="icon-video" />
+                                  <Video size={18} />
                                   Upload depuis PC
                                 </Button>
                                 <Button
@@ -1457,7 +1459,7 @@ export const Dashboard = () => {
                                   variant={blogUploadMode[`video-${idx}`] === 'url' || !blogUploadMode[`video-${idx}`] ? 'primary' : 'outline'}
                                   onClick={() => setBlogUploadMode({ ...blogUploadMode, [`video-${idx}`]: 'url' })}
                                 >
-                                  <span className="icon-link" />
+                                  <LinkIcon size={18} />
                                   Lien URL
                                 </Button>
                               </div>
@@ -1526,7 +1528,7 @@ export const Dashboard = () => {
                           <div className="media-section-header">
                             <h4>Autres documents</h4>
                             <Button type="button" onClick={addBlogDocument} size="small">
-                              <span className="icon-plus" />
+                              <Plus size={18} />
                               Ajouter un document
                             </Button>
                           </div>
@@ -1535,7 +1537,7 @@ export const Dashboard = () => {
                               <div className="media-item-header">
                                 <span className="media-item-number">Document {idx + 1}</span>
                                 <Button type="button" size="small" variant="outline" onClick={() => removeBlogDocument(idx)}>
-                                  <span className="icon-close" />
+                                  <X size={18} />
                                 </Button>
                               </div>
                               <div className="media-upload-mode">
@@ -1545,7 +1547,7 @@ export const Dashboard = () => {
                                   variant={blogUploadMode[`document-${idx}`] === 'upload' ? 'primary' : 'outline'}
                                   onClick={() => setBlogUploadMode({ ...blogUploadMode, [`document-${idx}`]: 'upload' })}
                                 >
-                                  <span className="icon-file" />
+                                  <FileText size={18} />
                                   Upload depuis PC
                                 </Button>
                                 <Button
@@ -1554,7 +1556,7 @@ export const Dashboard = () => {
                                   variant={blogUploadMode[`document-${idx}`] === 'url' || !blogUploadMode[`document-${idx}`] ? 'primary' : 'outline'}
                                   onClick={() => setBlogUploadMode({ ...blogUploadMode, [`document-${idx}`]: 'url' })}
                                 >
-                                  <span className="icon-link" />
+                                  <LinkIcon size={18} />
                                   Lien URL
                                 </Button>
                               </div>
@@ -1633,7 +1635,7 @@ export const Dashboard = () => {
 
                 {myBlogs.length === 0 ? (
                   <Card className="empty-state">
-                    <span className="icon-book" style={{ fontSize: '48px', width: '48px', height: '48px' }} />
+                    <BookOpen size={48} />
                     <p>Vous n'avez pas encore créé d'articles</p>
                     <p className="empty-state-hint">Vos articles seront publiés après validation par un administrateur</p>
                   </Card>
@@ -1677,7 +1679,7 @@ export const Dashboard = () => {
                 <div className="section-header">
                   <h2>Mes produits</h2>
                   <Button onClick={() => setShowProductForm(!showProductForm)}>
-                    <span className="icon-plus" />
+                    <Plus size={18} />
                     {showProductForm ? 'Annuler' : 'Nouveau produit'}
                   </Button>
                 </div>
@@ -1832,7 +1834,7 @@ export const Dashboard = () => {
                           <div className="media-section-header">
                             <h4>Images additionnelles</h4>
                             <Button type="button" onClick={addProductImage} size="small">
-                              <span className="icon-plus" />
+                              <Plus size={18} />
                               Ajouter une image
                             </Button>
                           </div>
@@ -1841,7 +1843,7 @@ export const Dashboard = () => {
                               <div className="media-item-header">
                                 <span className="media-item-number">Image {idx + 1}</span>
                                 <Button type="button" size="small" variant="outline" onClick={() => removeProductImage(idx)}>
-                                  <span className="icon-close" />
+                                  <X size={18} />
                                 </Button>
                               </div>
                               <div className="media-upload-mode">
@@ -1851,7 +1853,7 @@ export const Dashboard = () => {
                                   variant={productUploadMode[`image-${idx}`] === 'upload' ? 'primary' : 'outline'}
                                   onClick={() => setProductUploadMode({ ...productUploadMode, [`image-${idx}`]: 'upload' })}
                                 >
-                                  <span className="icon-image" />
+                                  <ImageIcon size={18} />
                                   Upload depuis PC
                                 </Button>
                                 <Button
@@ -1860,7 +1862,7 @@ export const Dashboard = () => {
                                   variant={productUploadMode[`image-${idx}`] === 'url' || !productUploadMode[`image-${idx}`] ? 'primary' : 'outline'}
                                   onClick={() => setProductUploadMode({ ...productUploadMode, [`image-${idx}`]: 'url' })}
                                 >
-                                  <span className="icon-link" />
+                                  <LinkIcon size={18} />
                                   Lien URL
                                 </Button>
                               </div>
@@ -1895,7 +1897,7 @@ export const Dashboard = () => {
                           <div className="media-section-header">
                             <h4>Documents PDF</h4>
                             <Button type="button" onClick={addProductPDF} size="small">
-                              <span className="icon-plus" />
+                              <Plus size={18} />
                               Ajouter un PDF
                             </Button>
                           </div>
@@ -1904,7 +1906,7 @@ export const Dashboard = () => {
                               <div className="media-item-header">
                                 <span className="media-item-number">PDF {idx + 1}</span>
                                 <Button type="button" size="small" variant="outline" onClick={() => removeProductPDF(idx)}>
-                                  <span className="icon-close" />
+                                  <X size={18} />
                                 </Button>
                               </div>
                               <div className="media-upload-mode">
@@ -1914,7 +1916,7 @@ export const Dashboard = () => {
                                   variant={productUploadMode[`pdf-${idx}`] === 'upload' ? 'primary' : 'outline'}
                                   onClick={() => setProductUploadMode({ ...productUploadMode, [`pdf-${idx}`]: 'upload' })}
                                 >
-                                  <span className="icon-file" />
+                                  <FileText size={18} />
                                   Upload depuis PC
                                 </Button>
                                 <Button
@@ -1923,7 +1925,7 @@ export const Dashboard = () => {
                                   variant={productUploadMode[`pdf-${idx}`] === 'url' || !productUploadMode[`pdf-${idx}`] ? 'primary' : 'outline'}
                                   onClick={() => setProductUploadMode({ ...productUploadMode, [`pdf-${idx}`]: 'url' })}
                                 >
-                                  <span className="icon-link" />
+                                  <LinkIcon size={18} />
                                   Lien URL
                                 </Button>
                               </div>
@@ -1971,7 +1973,7 @@ export const Dashboard = () => {
                           <div className="media-section-header">
                             <h4>Vidéos</h4>
                             <Button type="button" onClick={addProductVideo} size="small">
-                              <span className="icon-plus" />
+                              <Plus size={18} />
                               Ajouter une vidéo
                             </Button>
                           </div>
@@ -1980,7 +1982,7 @@ export const Dashboard = () => {
                               <div className="media-item-header">
                                 <span className="media-item-number">Vidéo {idx + 1}</span>
                                 <Button type="button" size="small" variant="outline" onClick={() => removeProductVideo(idx)}>
-                                  <span className="icon-close" />
+                                  <X size={18} />
                                 </Button>
                               </div>
                               <div className="media-upload-mode">
@@ -1990,7 +1992,7 @@ export const Dashboard = () => {
                                   variant={productUploadMode[`video-${idx}`] === 'upload' ? 'primary' : 'outline'}
                                   onClick={() => setProductUploadMode({ ...productUploadMode, [`video-${idx}`]: 'upload' })}
                                 >
-                                  <span className="icon-video" />
+                                  <Video size={18} />
                                   Upload depuis PC
                                 </Button>
                                 <Button
@@ -1999,7 +2001,7 @@ export const Dashboard = () => {
                                   variant={productUploadMode[`video-${idx}`] === 'url' || !productUploadMode[`video-${idx}`] ? 'primary' : 'outline'}
                                   onClick={() => setProductUploadMode({ ...productUploadMode, [`video-${idx}`]: 'url' })}
                                 >
-                                  <span className="icon-link" />
+                                  <LinkIcon size={18} />
                                   Lien URL
                                 </Button>
                               </div>
@@ -2068,7 +2070,7 @@ export const Dashboard = () => {
                           <div className="media-section-header">
                             <h4>Autres documents</h4>
                             <Button type="button" onClick={addProductDocument} size="small">
-                              <span className="icon-plus" />
+                              <Plus size={18} />
                               Ajouter un document
                             </Button>
                           </div>
@@ -2077,7 +2079,7 @@ export const Dashboard = () => {
                               <div className="media-item-header">
                                 <span className="media-item-number">Document {idx + 1}</span>
                                 <Button type="button" size="small" variant="outline" onClick={() => removeProductDocument(idx)}>
-                                  <span className="icon-close" />
+                                  <X size={18} />
                                 </Button>
                               </div>
                               <div className="media-upload-mode">
@@ -2087,7 +2089,7 @@ export const Dashboard = () => {
                                   variant={productUploadMode[`document-${idx}`] === 'upload' ? 'primary' : 'outline'}
                                   onClick={() => setProductUploadMode({ ...productUploadMode, [`document-${idx}`]: 'upload' })}
                                 >
-                                  <span className="icon-file" />
+                                  <FileText size={18} />
                                   Upload depuis PC
                                 </Button>
                                 <Button
@@ -2096,7 +2098,7 @@ export const Dashboard = () => {
                                   variant={productUploadMode[`document-${idx}`] === 'url' || !productUploadMode[`document-${idx}`] ? 'primary' : 'outline'}
                                   onClick={() => setProductUploadMode({ ...productUploadMode, [`document-${idx}`]: 'url' })}
                                 >
-                                  <span className="icon-link" />
+                                  <LinkIcon size={18} />
                                   Lien URL
                                 </Button>
                               </div>
@@ -2175,7 +2177,7 @@ export const Dashboard = () => {
 
                 {myProducts.length === 0 ? (
                   <Card className="empty-state">
-                    <span className="icon-shopping" style={{ fontSize: '48px', width: '48px', height: '48px' }} />
+                    <ShoppingBag size={48} />
                     <p>Vous n'avez pas encore créé de produits</p>
                     <p className="empty-state-hint">Vos produits seront activés après validation par un administrateur</p>
                   </Card>
@@ -2216,7 +2218,7 @@ export const Dashboard = () => {
                   <h2>Mon profil</h2>
                   {!editingProfile && (
                     <Button onClick={() => setEditingProfile(true)}>
-                      <span className="icon-edit" />
+                      <Pencil size={18} />
                       Modifier
                     </Button>
                   )}
@@ -2302,14 +2304,14 @@ export const Dashboard = () => {
                     </div>
                     <div className="profile-info">
                       <div className="profile-info-item">
-                        <span className="icon-user" />
+                        <User size={18} />
                         <div>
                           <span className="info-label">Nom</span>
                           <span className="info-value">{profile?.name}</span>
                         </div>
                       </div>
                       <div className="profile-info-item">
-                        <span className="icon-mail" />
+                        <Mail size={18} />
                         <div>
                           <span className="info-label">Email</span>
                           <span className="info-value">{profile?.email}</span>
@@ -2317,7 +2319,7 @@ export const Dashboard = () => {
                       </div>
                       {profile?.phone && (
                         <div className="profile-info-item">
-                          <span className="icon-phone" />
+                          <Phone size={18} />
                           <div>
                             <span className="info-label">Téléphone</span>
                             <span className="info-value">{profile.phone}</span>
@@ -2326,7 +2328,7 @@ export const Dashboard = () => {
                       )}
                       {profile?.address && (
                         <div className="profile-info-item">
-                          <span className="icon-location" />
+                          <MapPin size={18} />
                           <div>
                             <span className="info-label">Adresse</span>
                             <span className="info-value">
@@ -2343,7 +2345,7 @@ export const Dashboard = () => {
                         </div>
                       )}
                       <div className="profile-info-item">
-                        <span className="icon-calendar" />
+                        <Calendar size={18} />
                         <div>
                           <span className="info-label">Membre depuis</span>
                           <span className="info-value">
@@ -2369,7 +2371,7 @@ export const Dashboard = () => {
 
                 <Card className="proverb-form-card">
                   <div className="form-section-title">
-                    <span className="icon-plus" />
+                    <Plus size={18} />
                     <h3>Ajouter un proverbe</h3>
                   </div>
                   <form
@@ -2546,7 +2548,7 @@ export const Dashboard = () => {
                     </div>
 
                     <Button type="submit" disabled={submittingProverb}>
-                      <span className="icon-save" />
+                      <Save size={18} />
                       {submittingProverb ? 'Envoi en cours...' : 'Partager le proverbe'}
                     </Button>
                   </form>
@@ -2564,7 +2566,7 @@ export const Dashboard = () => {
                             <blockquote className="proverb-item-text">"{proverb.text}"</blockquote>
                             {proverb.isVerified && (
                               <span className="badge verified-badge">
-                                <span className="icon-check" />
+                                <Check size={18} />
                                 Vérifié
                               </span>
                             )}
@@ -2575,16 +2577,16 @@ export const Dashboard = () => {
                           <p className="proverb-item-explanation">{proverb.explanation}</p>
                           <div className="proverb-item-meta">
                             <span>
-                              <span className="icon-map-pin" />
+                              <MapPin size={18} />
                               {proverb.country?.nameFr || proverb.countryName}
                             </span>
                             <span>
-                              <span className="icon-folder-open" />
+                              <FolderOpen size={18} />
                               {proverb.category}
                             </span>
                             {proverb.views > 0 && (
                               <span>
-                                <span className="icon-eye" />
+                                <Eye size={18} />
                                 {proverb.views} vues
                               </span>
                             )}
@@ -2623,7 +2625,7 @@ export const Dashboard = () => {
                   </Card>
                 ) : bookmarks.length === 0 ? (
                   <Card className="empty-state">
-                    <span className="icon-heart" style={{ fontSize: '48px', width: '48px', height: '48px' }} />
+                    <Heart size={48} />
                     <p>Aucun favori pour le moment</p>
                     <p className="empty-state-subtitle">Explorez le contenu et ajoutez vos favoris pour les retrouver facilement</p>
                   </Card>
@@ -2647,7 +2649,7 @@ export const Dashboard = () => {
                                 }
                               }}
                             >
-                              <span className="icon-close" />
+                              <X size={18} />
                             </button>
                           </div>
                           <div className="bookmark-content">
@@ -2687,7 +2689,7 @@ export const Dashboard = () => {
                     <div className="progress-stats-grid">
                       <Card className="progress-stat-card">
                         <div className="progress-stat-icon" style={{ backgroundColor: '#3498db20', color: '#3498db' }}>
-                          <span className="icon-star" />
+                          <Star size={18} />
                         </div>
                         <div className="progress-stat-content">
                           <h3>{userProgress.totalPoints}</h3>
@@ -2696,7 +2698,7 @@ export const Dashboard = () => {
                       </Card>
                       <Card className="progress-stat-card">
                         <div className="progress-stat-icon" style={{ backgroundColor: '#27ae6020', color: '#27ae60' }}>
-                          <span className="icon-award" />
+                          <Award size={18} />
                         </div>
                         <div className="progress-stat-content">
                           <h3>Niveau {userProgress.level}</h3>
@@ -2705,7 +2707,7 @@ export const Dashboard = () => {
                       </Card>
                       <Card className="progress-stat-card">
                         <div className="progress-stat-icon" style={{ backgroundColor: '#e74c3c20', color: '#e74c3c' }}>
-                          <span className="icon-trending-up" />
+                          <TrendingUp size={18} />
                         </div>
                         <div className="progress-stat-content">
                           <h3>{userProgress.streaks.daily}</h3>
@@ -2720,7 +2722,7 @@ export const Dashboard = () => {
                         <div className="badges-grid">
                           {userProgress.badges.map((badge: any, index: number) => (
                             <div key={index} className="badge-item">
-                              <span className="icon-award" />
+                              <Award size={18} />
                               <span className="badge-name">{badge.type}</span>
                               <span className="badge-date">
                                 {new Date(badge.earnedAt).toLocaleDateString('fr-FR')}
@@ -2765,7 +2767,7 @@ export const Dashboard = () => {
                   </>
                 ) : (
                   <Card className="empty-state">
-                    <span className="icon-award" style={{ fontSize: '48px', width: '48px', height: '48px' }} />
+                    <Award size={48} />
                     <p>Aucune progression enregistrée</p>
                     <p className="empty-state-subtitle">Commencez à explorer le contenu pour gagner des points et des badges</p>
                   </Card>
@@ -2780,7 +2782,7 @@ export const Dashboard = () => {
                 {/* Section Sécurité - Changement de mot de passe */}
                 <Card className="settings-card">
                   <div className="settings-header">
-                    <span className="icon-shield" />
+                    <Shield size={18} />
                     <h3>Sécurité</h3>
                   </div>
                   <form 
@@ -2863,7 +2865,7 @@ export const Dashboard = () => {
                       </div>
                     )}
                     <Button type="submit" disabled={savingPassword}>
-                      <span className="icon-save" />
+                      <Save size={18} />
                       {savingPassword ? 'Changement en cours...' : 'Changer le mot de passe'}
                     </Button>
                   </form>
@@ -2872,7 +2874,7 @@ export const Dashboard = () => {
                 {/* Section Préférences */}
                 <Card className="settings-card">
                   <div className="settings-header">
-                    <span className="icon-settings" />
+                    <Settings size={18} />
                     <h3>Préférences</h3>
                   </div>
                   <div className="settings-options">

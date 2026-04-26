@@ -6,6 +6,7 @@ import { Input } from '../components/Input/Input'
 import { timelineService } from '../services/api'
 import { usePlatformName } from '../hooks/usePlatformName'
 import { Link } from 'react-router-dom'
+import { Search, Calendar, Filter, Clock, Check, MapPin } from 'lucide-react'
 import './Timeline.css'
 
 interface TimelineEvent {
@@ -111,7 +112,7 @@ export const Timeline = () => {
 
         <div className="timeline-filters">
           <div className="filter-group">
-            <span className="icon-search" />
+            <Search size={18} />
             <Input
               placeholder="Rechercher un événement..."
               value={filters.search}
@@ -119,7 +120,7 @@ export const Timeline = () => {
             />
           </div>
           <div className="filter-group">
-            <span className="icon-calendar" />
+            <Calendar size={18} />
             <select
               id="timeline-period-filter"
               name="timeline-period-filter"
@@ -136,7 +137,7 @@ export const Timeline = () => {
             </select>
           </div>
           <div className="filter-group">
-            <span className="icon-filter" />
+            <Filter size={18} />
             <select
               id="timeline-category-filter"
               name="timeline-category-filter"
@@ -168,12 +169,12 @@ export const Timeline = () => {
               <Card key={event._id} className="timeline-event-card">
                 <div className="event-header">
                   <div className="event-date">
-                    <span className="icon-clock" />
+                    <Clock size={18} />
                     <span>{formatDate(event.date)}</span>
                   </div>
                   {event.verified && (
                     <div className="event-verified">
-                      <span className="icon-check" />
+                      <Check size={18} />
                       <span>Vérifié</span>
                     </div>
                   )}
@@ -186,7 +187,7 @@ export const Timeline = () => {
                   <div className="event-period">{event.period}</div>
                   {event.location.country && (
                     <div className="event-location">
-                      <span className="icon-location" />
+                      <MapPin size={18} />
                       <span>{event.location.country.nameFr}</span>
                     </div>
                   )}

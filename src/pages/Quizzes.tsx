@@ -6,6 +6,7 @@ import { Button } from '../components/Button/Button'
 import { Input } from '../components/Input/Input'
 import { quizService } from '../services/api'
 import { usePlatformName } from '../hooks/usePlatformName'
+import { Search, BookOpen, Clock, Award, Eye, TrendingUp, Check, Play } from 'lucide-react'
 import './Quizzes.css'
 
 interface Quiz {
@@ -125,7 +126,7 @@ export const Quizzes = () => {
         {/* Filtres et recherche */}
         <div className="quizzes-filters">
           <div className="search-bar">
-            <span className="icon-search" />
+            <Search size={18} />
             <Input
               id="quiz-search"
               name="quiz-search"
@@ -152,7 +153,7 @@ export const Quizzes = () => {
         <div className="quizzes-grid">
           {quizzes.length === 0 ? (
             <Card className="empty-state">
-              <span className="icon-book" style={{ fontSize: '48px', width: '48px', height: '48px' }} />
+              <BookOpen size={48} />
               <p>Aucun quiz trouvé.</p>
               {searchTerm && (
                 <Button onClick={() => setSearchTerm('')} variant="outline" size="small">
@@ -169,7 +170,7 @@ export const Quizzes = () => {
                   </div>
                   {quiz.timeLimit && (
                     <div className="quiz-time-badge">
-                      <span className="icon-clock" />
+                      <Clock size={18} />
                       <span>{formatTime(quiz.timeLimit)}</span>
                     </div>
                   )}
@@ -181,29 +182,29 @@ export const Quizzes = () => {
                   )}
                   <div className="quiz-stats">
                     <div className="quiz-stat-item">
-                      <span className="icon-book" />
+                      <BookOpen size={18} />
                       <span>{quiz.questions?.length || 0} questions</span>
                     </div>
                     <div className="quiz-stat-item">
-                      <span className="icon-award" />
+                      <Award size={18} />
                       <span>{quiz.totalPoints} points</span>
                     </div>
                     {quiz.attempts > 0 && (
                       <div className="quiz-stat-item">
-                        <span className="icon-eye" />
+                        <Eye size={18} />
                         <span>{quiz.attempts} tentatives</span>
                       </div>
                     )}
                     {quiz.averageScore > 0 && (
                       <div className="quiz-stat-item">
-                        <span className="icon-trending-up" />
+                        <TrendingUp size={18} />
                         <span>Moyenne: {Math.round(quiz.averageScore)}%</span>
                       </div>
                     )}
                   </div>
                   <div className="quiz-requirements">
                     <div className="requirement-item">
-                      <span className="icon-check" />
+                      <Check size={18} />
                       <span>Score minimum: {quiz.passingScore}%</span>
                     </div>
                   </div>
@@ -218,7 +219,7 @@ export const Quizzes = () => {
                 <div className="quiz-card-footer">
                   <Link to={`/quizzes/${quiz._id}`}>
                     <Button variant="primary" size="small" className="start-quiz-btn">
-                      <span className="icon-play" />
+                      <Play size={18} />
                       Commencer le quiz
                     </Button>
                   </Link>

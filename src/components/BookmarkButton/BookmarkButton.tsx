@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { bookmarkService } from '../../services/api'
 import { useAuthStore } from '../../stores/authStore'
 import { useNotifications } from '../../hooks/useNotifications'
+import { Heart } from 'lucide-react'
 import './BookmarkButton.css'
 
 interface BookmarkButtonProps {
@@ -78,7 +79,7 @@ export const BookmarkButton = ({ itemType, itemId, className = '' }: BookmarkBut
       title={isBookmarked ? 'Retirer des favoris' : 'Ajouter aux favoris'}
       aria-label={isBookmarked ? 'Retirer des favoris' : 'Ajouter aux favoris'}
     >
-      <span className={`icon-heart ${isBookmarked ? 'filled' : ''}`} />
+      <Heart size={18} fill={isBookmarked ? 'currentColor' : 'none'} />
       <span className="bookmark-text">
         {isBookmarked ? 'Favori' : 'Ajouter'}
       </span>

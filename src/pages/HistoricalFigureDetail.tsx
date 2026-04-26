@@ -4,6 +4,7 @@ import { Layout } from '../components/Layout/Layout'
 import { Card } from '../components/Card/Card'
 import { Button } from '../components/Button/Button'
 import { figureService } from '../services/api'
+import { ChevronLeft, Check, Calendar, MapPin, Award, Quote } from 'lucide-react'
 import './HistoricalFigureDetail.css'
 
 interface HistoricalFigure {
@@ -90,7 +91,7 @@ export const HistoricalFigureDetail = () => {
     <Layout>
       <div className="figure-detail-page">
         <Link to="/figures" className="back-link">
-          <span className="icon-arrow-left" style={{ fontSize: '20px', width: '20px', height: '20px', display: 'inline-block' }} />
+          <ChevronLeft size={20} />
           Retour aux figures historiques
         </Link>
 
@@ -105,7 +106,7 @@ export const HistoricalFigureDetail = () => {
             )}
             {figure.verified && (
               <div className="figure-verified-label">
-                <span className="icon-check" style={{ fontSize: '20px', width: '20px', height: '20px', display: 'inline-block' }} />
+                <Check size={20} />
                 <span>Vérifié par des experts</span>
               </div>
             )}
@@ -118,7 +119,7 @@ export const HistoricalFigureDetail = () => {
             <div className="figure-hero-meta">
               {figure.birthDate && (
                 <div className="meta-item">
-                  <span className="icon-calendar" />
+                  <Calendar size={18} />
                   <div>
                     <strong>Naissance:</strong> {formatDate(figure.birthDate)}
                     {figure.deathDate && (
@@ -132,7 +133,7 @@ export const HistoricalFigureDetail = () => {
               )}
               {figure.birthPlace.country && (
                 <div className="meta-item">
-                  <span className="icon-location" />
+                  <MapPin size={18} />
                   <div>
                     <strong>Lieu de naissance:</strong> {figure.birthPlace.location}
                     {figure.birthPlace.country && (
@@ -168,7 +169,7 @@ export const HistoricalFigureDetail = () => {
           {figure.achievements.length > 0 && (
             <Card className="achievements-card">
               <h2>
-                <span className="icon-award" style={{ fontSize: '24px', width: '24px', height: '24px', display: 'inline-block' }} />
+                <Award size={24} />
                 Réalisations
               </h2>
               <ul className="achievements-list">
@@ -182,7 +183,7 @@ export const HistoricalFigureDetail = () => {
           {figure.quotes.length > 0 && (
             <Card className="quotes-card">
               <h2>
-                <span className="icon-quote" style={{ fontSize: '24px', width: '24px', height: '24px', display: 'inline-block' }} />
+                <Quote size={24} />
                 Citations
               </h2>
               <div className="quotes-list">
@@ -193,7 +194,7 @@ export const HistoricalFigureDetail = () => {
                     {quote.source && <p className="quote-source">— {quote.source}</p>}
                     {quote.verified && (
                       <span className="quote-verified">
-                        <span className="icon-check" style={{ fontSize: '14px', width: '14px', height: '14px', display: 'inline-block' }} />
+                        <Check size={14} />
                         Vérifié
                       </span>
                     )}

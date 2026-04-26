@@ -1,49 +1,71 @@
-import { useEffect, useState, useRef } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { useAuthStore } from '../../stores/authStore'
-import { useCartStore } from '../../stores/cartStore'
-import { useSettingsStore } from '../../stores/settingsStore'
-import { ThemeToggle } from '../ThemeToggle/ThemeToggle'
-import { AdvancedSearch } from '../Search/AdvancedSearch'
-import './Header.css'
+import { useEffect, useState, useRef } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useAuthStore } from "../../stores/authStore";
+import { useCartStore } from "../../stores/cartStore";
+import { useSettingsStore } from "../../stores/settingsStore";
+import { ThemeToggle } from "../ThemeToggle/ThemeToggle";
+import { AdvancedSearch } from "../Search/AdvancedSearch";
+import {
+  Home,
+  BookOpen,
+  ShoppingBag,
+  ShoppingCart,
+  Folder,
+  HelpCircle,
+  Globe,
+  Quote,
+  Ellipsis,
+  FileText,
+  LayoutDashboard,
+  Search,
+  User,
+  Clock,
+  Users,
+  Settings,
+  LogOut,
+  X,
+  ChevronDown,
+  type LucideIcon,
+} from "lucide-react";
+import "./Header.css";
 
 export const Header = () => {
-  const { isAuthenticated, user, logout } = useAuthStore()
-  const itemCount = useCartStore((state) => state.getItemCount())
-  const { settings, fetchSettings } = useSettingsStore()
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [isMoreMenuOpen, setIsMoreMenuOpen] = useState(false)
-  const [isSearchOpen, setIsSearchOpen] = useState(false)
-  const [isScrolled, setIsScrolled] = useState(false)
-  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
-  const location = useLocation()
-  const navigate = useNavigate()
-  const moreMenuRef = useRef<HTMLDivElement>(null)
-  const moreButtonRef = useRef<HTMLButtonElement>(null)
-  const userMenuRef = useRef<HTMLDivElement>(null)
-  const userButtonRef = useRef<HTMLButtonElement>(null)
-  const headerRef = useRef<HTMLElement>(null)
+  const { isAuthenticated, user, logout } = useAuthStore();
+  const itemCount = useCartStore((state) => state.getItemCount());
+  const { settings, fetchSettings } = useSettingsStore();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMoreMenuOpen, setIsMoreMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const moreMenuRef = useRef<HTMLDivElement>(null);
+  const moreButtonRef = useRef<HTMLButtonElement>(null);
+  const userMenuRef = useRef<HTMLDivElement>(null);
+  const userButtonRef = useRef<HTMLButtonElement>(null);
+  const headerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    fetchSettings()
-  }, [fetchSettings])
+    fetchSettings();
+  }, [fetchSettings]);
 
   // Détecter le scroll pour réduire la navbar
   useEffect(() => {
     const handleScroll = () => {
-      const scrollY = window.scrollY
-      setIsScrolled(scrollY > 50)
-    }
+      const scrollY = window.scrollY;
+      setIsScrolled(scrollY > 50);
+    };
 
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // Fermer le menu mobile lors du changement de route
   useEffect(() => {
-    setIsMenuOpen(false)
-    setIsSearchOpen(false)
-  }, [location.pathname])
+    setIsMenuOpen(false);
+    setIsSearchOpen(false);
+  }, [location.pathname]);
 
   // Fermer le menu "Plus" quand on clique en dehors
   useEffect(() => {
@@ -54,7 +76,7 @@ export const Header = () => {
         !moreMenuRef.current.contains(event.target as Node) &&
         !moreButtonRef.current.contains(event.target as Node)
       ) {
-        setIsMoreMenuOpen(false)
+        setIsMoreMenuOpen(false);
       }
       if (
         userMenuRef.current &&
@@ -62,83 +84,85 @@ export const Header = () => {
         !userMenuRef.current.contains(event.target as Node) &&
         !userButtonRef.current.contains(event.target as Node)
       ) {
-        setIsUserMenuOpen(false)
+        setIsUserMenuOpen(false);
       }
-    }
+    };
 
     if (isMoreMenuOpen || isUserMenuOpen) {
-      document.addEventListener('mousedown', handleClickOutside)
+      document.addEventListener("mousedown", handleClickOutside);
     }
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
-  }, [isMoreMenuOpen, isUserMenuOpen])
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isMoreMenuOpen, isUserMenuOpen]);
 
-  const platformName = settings?.platformName || 'BAOBAB'
+  const platformName = settings?.platformName || "BAOBAB";
 
   // Navigation principale (toujours visible sur desktop)
   const mainNavItems = [
-    { to: '/', label: 'Accueil', icon: 'icon-home' },
-    { to: '/blog', label: 'Blog', icon: 'icon-file' },
-    { to: '/shop', label: 'Boutique', icon: 'icon-shopping' },
-  ]
+    { to: "/", label: "Accueil", icon: Home },
+    { to: "/blog", label: "Blog", icon: BookOpen },
+    { to: "/shop", label: "Boutique", icon: ShoppingBag },
+  ];
 
   // Navigation secondaire (menu déroulant "Plus")
   const secondaryNavItems = [
-    { to: '/timeline', label: 'Chronologie', icon: 'icon-clock' },
-    { to: '/figures', label: 'Personnages', icon: 'icon-user' },
-    { to: '/collections', label: 'Collections', icon: 'icon-folder' },
-    { to: '/stories', label: 'Récits', icon: 'icon-book' },
-    { to: '/quizzes', label: 'Quiz', icon: 'icon-help-circle' },
-    { to: '/proverbs', label: 'Proverbes', icon: 'icon-quote' },
-    { to: '/map', label: 'Carte', icon: 'icon-globe' },
-  ]
+    { to: "/timeline", label: "Chronologie", icon: Clock },
+    { to: "/figures", label: "Personnages", icon: User },
+    { to: "/collections", label: "Collections", icon: Folder },
+    { to: "/stories", label: "Récits", icon: BookOpen },
+    { to: "/quizzes", label: "Quiz", icon: HelpCircle },
+    { to: "/proverbs", label: "Proverbes", icon: Quote },
+    { to: "/map", label: "Carte", icon: Globe },
+  ];
 
   const handleLogout = () => {
-    logout()
-    navigate('/')
-    setIsUserMenuOpen(false)
-  }
+    logout();
+    navigate("/");
+    setIsUserMenuOpen(false);
+  };
 
   return (
-    <header ref={headerRef} className={`header ${isScrolled ? 'scrolled' : ''}`}>
+    <header
+      ref={headerRef}
+      className={`header ${isScrolled ? "scrolled" : ""}`}
+    >
       <div className="header-container">
         {/* Logo */}
         <Link to="/" className="header-logo">
           <span className="logo-icon">🌳</span>
           <span className="logo-text">{platformName}</span>
         </Link>
-        
+
         {/* Navigation principale - Desktop uniquement */}
         <nav className="header-nav-desktop">
           {mainNavItems.map((item) => {
-            const isActive = location.pathname === item.to
+            const isActive = location.pathname === item.to;
             return (
               <Link
                 key={item.to}
                 to={item.to}
-                className={`nav-link ${isActive ? 'active' : ''}`}
+                className={`nav-link ${isActive ? "active" : ""}`}
               >
-                <span className={item.icon} />
+                <item.icon size={18} />
                 <span className="nav-link-text">{item.label}</span>
               </Link>
-            )
+            );
           })}
-          
+
           {/* Menu "Plus" pour navigation secondaire */}
           <div className="nav-secondary" ref={moreMenuRef}>
             <button
               ref={moreButtonRef}
-              className={`nav-more-btn ${isMoreMenuOpen ? 'active' : ''}`}
+              className={`nav-more-btn ${isMoreMenuOpen ? "active" : ""}`}
               onClick={() => setIsMoreMenuOpen(!isMoreMenuOpen)}
               aria-label="Plus d'options"
             >
-              <span className="icon-more-horizontal" />
+              <Ellipsis />
               <span className="nav-link-text">Plus</span>
-              <span className={`icon-arrow-down ${isMoreMenuOpen ? 'rotated' : ''}`} />
             </button>
-            <div className={`nav-dropdown ${isMoreMenuOpen ? 'active' : ''}`}>
+            <div className={`nav-dropdown ${isMoreMenuOpen ? "active" : ""}`}>
               {secondaryNavItems.map((item) => (
                 <Link
                   key={item.to}
@@ -146,14 +170,14 @@ export const Header = () => {
                   className="nav-dropdown-item"
                   onClick={() => setIsMoreMenuOpen(false)}
                 >
-                  <span className={item.icon} />
+                  <item.icon size={18} />
                   <span>{item.label}</span>
                 </Link>
               ))}
             </div>
           </div>
         </nav>
-        
+
         {/* Actions utilisateur */}
         <div className="header-actions">
           {/* Bouton recherche compact */}
@@ -162,13 +186,13 @@ export const Header = () => {
             onClick={() => setIsSearchOpen(!isSearchOpen)}
             aria-label="Rechercher"
           >
-            <span className="icon-search" />
+            <Search />
           </button>
 
           {/* Panier */}
           {isAuthenticated && (
             <Link to="/cart" className="cart-link" aria-label="Panier">
-              <span className="icon-shopping" />
+              <ShoppingCart size={18} />
               {itemCount > 0 && <span className="cart-badge">{itemCount}</span>}
             </Link>
           )}
@@ -186,11 +210,13 @@ export const Header = () => {
                 aria-label="Menu utilisateur"
               >
                 <span className="user-avatar">
-                  {user?.name?.charAt(0).toUpperCase() || 'U'}
+                  {user?.name?.charAt(0).toUpperCase() || "U"}
                 </span>
-                <span className="icon-arrow-down" />
+                <ChevronDown size={16} style={{ transform: isUserMenuOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }} />
               </button>
-              <div className={`user-dropdown ${isUserMenuOpen ? 'active' : ''}`}>
+              <div
+                className={`user-dropdown ${isUserMenuOpen ? "active" : ""}`}
+              >
                 <div className="user-dropdown-header">
                   <div className="user-info">
                     <div className="user-name">{user?.name}</div>
@@ -198,23 +224,29 @@ export const Header = () => {
                   </div>
                 </div>
                 <div className="user-dropdown-menu">
-                  <Link to="/dashboard" onClick={() => setIsUserMenuOpen(false)}>
-                    <span className="icon-layout" />
+                  <Link
+                    to="/dashboard"
+                    onClick={() => setIsUserMenuOpen(false)}
+                  >
+                    <LayoutDashboard size={18} />
                     Dashboard
                   </Link>
-                  <Link to="/communities" onClick={() => setIsUserMenuOpen(false)}>
-                    <span className="icon-users" />
+                  <Link
+                    to="/communities"
+                    onClick={() => setIsUserMenuOpen(false)}
+                  >
+                    <Users size={18} />
                     Communautés
                   </Link>
-                  {user?.role === 'admin' && (
+                  {user?.role === "admin" && (
                     <Link to="/admin" onClick={() => setIsUserMenuOpen(false)}>
-                      <span className="icon-settings" />
+                      <Settings size={18} />
                       Administration
                     </Link>
                   )}
                   <div className="user-dropdown-divider" />
                   <button onClick={handleLogout} className="logout-btn">
-                    <span className="icon-log-out" />
+                    <LogOut size={18} />
                     Déconnexion
                   </button>
                 </div>
@@ -233,7 +265,7 @@ export const Header = () => {
 
           {/* Menu hamburger pour mobile */}
           <button
-            className={`menu-toggle ${isMenuOpen ? 'active' : ''}`}
+            className={`menu-toggle ${isMenuOpen ? "active" : ""}`}
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Toggle menu"
           >
@@ -253,46 +285,46 @@ export const Header = () => {
             onClick={() => setIsSearchOpen(false)}
             aria-label="Fermer la recherche"
           >
-            <span className="icon-close" />
+            <X size={18} />
           </button>
         </div>
       )}
 
       {/* Menu mobile */}
-      <nav className={`header-nav-mobile ${isMenuOpen ? 'active' : ''}`}>
+      <nav className={`header-nav-mobile ${isMenuOpen ? "active" : ""}`}>
         <div className="mobile-nav-content">
           {mainNavItems.map((item) => {
-            const isActive = location.pathname === item.to
+            const isActive = location.pathname === item.to;
             return (
               <Link
                 key={item.to}
                 to={item.to}
-                className={`mobile-nav-link ${isActive ? 'active' : ''}`}
+                className={`mobile-nav-link ${isActive ? "active" : ""}`}
                 onClick={() => setIsMenuOpen(false)}
               >
-                <span className={item.icon} />
+                <item.icon size={18} />
                 <span>{item.label}</span>
               </Link>
-            )
+            );
           })}
-          
+
           <div className="mobile-nav-divider" />
-          
+
           {secondaryNavItems.map((item) => {
-            const isActive = location.pathname === item.to
+            const isActive = location.pathname === item.to;
             return (
               <Link
                 key={item.to}
                 to={item.to}
-                className={`mobile-nav-link ${isActive ? 'active' : ''}`}
+                className={`mobile-nav-link ${isActive ? "active" : ""}`}
                 onClick={() => setIsMenuOpen(false)}
               >
-                <span className={item.icon} />
+                <item.icon size={18} />
                 <span>{item.label}</span>
               </Link>
-            )
+            );
           })}
-          
+
           {isAuthenticated && (
             <>
               <div className="mobile-nav-divider" />
@@ -301,7 +333,7 @@ export const Header = () => {
                 className="mobile-nav-link"
                 onClick={() => setIsMenuOpen(false)}
               >
-                <span className="icon-layout" />
+                <LayoutDashboard size={18} />
                 <span>Dashboard</span>
               </Link>
               <Link
@@ -309,16 +341,16 @@ export const Header = () => {
                 className="mobile-nav-link"
                 onClick={() => setIsMenuOpen(false)}
               >
-                <span className="icon-users" />
+                <Users size={18} />
                 <span>Communautés</span>
               </Link>
-              {user?.role === 'admin' && (
+              {user?.role === "admin" && (
                 <Link
                   to="/admin"
                   className="mobile-nav-link"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  <span className="icon-settings" />
+                  <Settings size={18} />
                   <span>Administration</span>
                 </Link>
               )}
@@ -327,5 +359,5 @@ export const Header = () => {
         </div>
       </nav>
     </header>
-  )
-}
+  );
+};

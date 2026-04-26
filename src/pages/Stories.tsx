@@ -5,6 +5,7 @@ import { Button } from '../components/Button/Button'
 import { storyService } from '../services/api'
 import { usePlatformName } from '../hooks/usePlatformName'
 import { Link } from 'react-router-dom'
+import { BookOpen, Star, Clock, ChevronRight } from 'lucide-react'
 import './Stories.css'
 
 interface Story {
@@ -124,12 +125,12 @@ export const Stories = () => {
                     <img src={story.coverImage} alt={story.title} />
                   ) : (
                     <div className="story-cover-placeholder">
-                      <span className="icon-book" style={{ fontSize: '48px', width: '48px', height: '48px' }} />
+                      <BookOpen size={48} />
                     </div>
                   )}
                   {story.isFeatured && (
                     <div className="story-featured-badge">
-                      <span className="icon-star" />
+                      <Star size={18} />
                       <span>À la une</span>
                     </div>
                   )}
@@ -143,7 +144,7 @@ export const Stories = () => {
                   </p>
                   <div className="story-meta">
                     <div className="meta-item">
-                      <span className="icon-clock" />
+                      <Clock size={18} />
                       <span>{story.readingTime} min</span>
                     </div>
                     <div className="meta-item">
@@ -157,7 +158,7 @@ export const Stories = () => {
                     <span className="difficulty-badge">{getDifficultyLabel(story.difficulty)}</span>
                     <Link to={`/stories/${story._id}`}>
                       <Button variant="outline" size="small">
-                        <span className="icon-arrow icon-arrow-right" />
+                        <ChevronRight size={18} />
                         Lire
                       </Button>
                     </Link>

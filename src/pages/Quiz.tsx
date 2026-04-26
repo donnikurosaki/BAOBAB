@@ -6,6 +6,7 @@ import { Button } from '../components/Button/Button'
 import { quizService } from '../services/api'
 import { useAuthStore } from '../stores/authStore'
 import { useNotifications } from '../hooks/useNotifications'
+import { ChevronLeft, ChevronRight, Clock, Check, X, Award, AlertCircle, BookOpen } from 'lucide-react'
 import './Quiz.css'
 
 interface Question {
@@ -204,7 +205,7 @@ export const Quiz = () => {
     <Layout>
       <div className="quiz-page">
         <Link to="/quizzes" className="back-link">
-          <span className="icon-arrow-left" />
+          <ChevronLeft size={18} />
           Retour à la liste
         </Link>
 
@@ -215,7 +216,7 @@ export const Quiz = () => {
           </div>
           {timeRemaining !== null && !isSubmitted && (
             <div className="quiz-timer">
-              <span className="icon-clock" />
+              <Clock size={18} />
               <span>{formatTime(timeRemaining)}</span>
             </div>
           )}
@@ -254,7 +255,7 @@ export const Quiz = () => {
                         <span className="option-text">{option}</span>
                         {answers[currentQuestion] === index && (
                           <span className="option-check">
-                            <span className="icon-check" />
+                            <Check size={18} />
                           </span>
                         )}
                       </button>
@@ -268,14 +269,14 @@ export const Quiz = () => {
                       className={`option-btn true-btn ${answers[currentQuestion] === true ? 'selected' : ''} ${showFeedback && selectedOption === true ? 'pulse' : ''}`}
                       onClick={() => handleAnswerChange(true)}
                     >
-                      <span className="icon-check" />
+                      <Check size={18} />
                       <span>Vrai</span>
                     </button>
                     <button
                       className={`option-btn false-btn ${answers[currentQuestion] === false ? 'selected' : ''} ${showFeedback && selectedOption === false ? 'pulse' : ''}`}
                       onClick={() => handleAnswerChange(false)}
                     >
-                      <span className="icon-close" />
+                      <X size={18} />
                       <span>Faux</span>
                     </button>
                   </div>
@@ -298,17 +299,17 @@ export const Quiz = () => {
                   onClick={handlePrevious}
                   disabled={currentQuestion === 0}
                 >
-                  <span className="icon-arrow-left" />
+                  <ChevronLeft size={18} />
                   Précédent
                 </Button>
                 {currentQuestion < sortedQuestions.length - 1 ? (
                   <Button onClick={handleNext}>
                     Suivant
-                    <span className="icon-arrow-right" />
+                    <ChevronRight size={18} />
                   </Button>
                 ) : (
                   <Button onClick={handleSubmit}>
-                    <span className="icon-check" />
+                    <Check size={18} />
                     Soumettre
                   </Button>
                 )}
@@ -321,13 +322,13 @@ export const Quiz = () => {
               <div className={`results-header ${results?.passed ? 'passed' : 'failed'}`}>
                 {results?.passed ? (
                   <>
-                    <span className="icon-award" style={{ fontSize: '48px', width: '48px', height: '48px' }} />
+                    <Award size={48} />
                     <h2>Félicitations !</h2>
                     <p>Vous avez réussi le quiz</p>
                   </>
                 ) : (
                   <>
-                    <span className="icon-alert-circle" style={{ fontSize: '48px', width: '48px', height: '48px' }} />
+                    <AlertCircle size={48} />
                     <h2>Quiz échoué</h2>
                     <p>Score minimum requis: {quiz.passingScore}%</p>
                   </>
@@ -383,12 +384,12 @@ export const Quiz = () => {
                       <div className={`result-status ${result.isCorrect ? 'correct' : 'incorrect'}`}>
                         {result.isCorrect ? (
                           <>
-                            <span className="icon-check" />
+                            <Check size={18} />
                             <span>Correct ({result.points} points)</span>
                           </>
                         ) : (
                           <>
-                            <span className="icon-close" />
+                            <X size={18} />
                             <span>Incorrect (0 point)</span>
                           </>
                         )}
@@ -399,12 +400,12 @@ export const Quiz = () => {
                         <strong>
                           {result.isCorrect ? (
                             <>
-                              <span className="icon-check" />
+                              <Check size={18} />
                               Votre réponse (correcte):
                             </>
                           ) : (
                             <>
-                              <span className="icon-close" />
+                              <X size={18} />
                               Votre réponse:
                             </>
                           )}
@@ -414,7 +415,7 @@ export const Quiz = () => {
                       {!result.isCorrect && (
                         <div className="answer-item answer-correct">
                           <strong>
-                            <span className="icon-check" />
+                            <Check size={18} />
                             Réponse correcte:
                           </strong>
                           <span className="answer-text">{correctAnswerText}</span>
@@ -423,7 +424,7 @@ export const Quiz = () => {
                       {result.explanation && (
                         <div className="result-explanation">
                           <strong>
-                            <span className="icon-book" />
+                            <BookOpen size={18} />
                             Explication:
                           </strong>
                           <p>{result.explanation}</p>
