@@ -19,6 +19,8 @@ Un atlas culturel africain : récits, atlas, patrimoine et savoir-faire des 55 p
 | Raconter autrement | Pas de clichés visuels (savane au coucher de soleil, masques génériques, motifs « tribaux » décoratifs). |
 
 **Personnalité** : curieuse, accessible, ouverte, contemporaine, humaine.
+
+**Direction du site : « l'atlas vivant ».** Chaque partie du site emprunte un objet familier de l'exploration et le détourne : la carte devient la page, la navigation devient une boussole, le relief réagit au curseur. On évite la landing classique (titre, image, trois cartes, bouton). L'audace passe par la mise en scène et l'interaction, jamais par une sortie de la charte (couleurs, polices, logo).
 → Interface **claire, aérée, chaleureuse**. Pas de luxe doré, pas de « dark premium », pas d'effets tape-à-l'œil.
 
 **Ton éditorial**
@@ -229,6 +231,7 @@ Interdits : icônes pleines + contour mélangées, emojis comme icônes d'interf
 Trois éléments graphiques, à utiliser avec parcimonie :
 
 1. **Courbes de niveau (topographie)** : rappellent le relief et l'empreinte sur le territoire. Motif signature.
+   - **Version vivante [web]** : composant `src/components/TopoField/TopoField.tsx` (canvas 2D, sans dépendance). Le relief dérive lentement et une colline se forme sous le curseur. Une courbe sur quatre est plus marquée, comme les courbes maîtresses d'une carte. Réservé au haut de la page d'accueil. Statique avec `prefers-reduced-motion`, en pause hors écran, allégé sur écran tactile.
    - `Motifs/Fichier 59.svg` (forêt + sauge), `61` (noir), `62` (blanc).
    - Sur fond forêt : traits blancs ou sauge à **8–15 % d'opacité** (cf. couverture de la charte).
    - Sur fond clair : traits forêt/sauge à faible opacité, ou pleine opacité dans une bande décorative (bas de section, bord d'image).
@@ -275,7 +278,7 @@ Rayons imbriqués concentriques : rayon intérieur = rayon extérieur − paddin
 ### Profondeur
 L'identité est **plate**. Pas d'ombres portées marquées, pas de glassmorphism, pas de lueurs dorées.
 - Séparer par la **couleur de fond** (crème / blanc / vert pâle) et des bordures fines `1px` forêt à 12 %.
-- Ombre autorisée uniquement pour les éléments flottants (menus, modales) : `0 8px 24px rgb(23 65 35 / 0.10)`.
+- Ombre autorisée uniquement pour les éléments flottants (menus, modales) : `0 8px 24px rgb(23 65 35 / 0.10)`. La boussole, qui flotte au-dessus de tout le contenu, porte une ombre plus franche : `0 12px 32px rgb(23 65 35 / 0.28)`.
 
 ---
 
@@ -291,8 +294,12 @@ L'identité est **plate**. Pas d'ombres portées marquées, pas de glassmorphism
 
 **Champ de formulaire** : fond blanc, bordure forêt 20 %, `--radius-sm`, hauteur 44 px, libellé visible au-dessus (pas de placeholder seul). Focus : bordure forêt + anneau forêt. Erreur : bordure terre cuite + message avec icône.
 
-**En-tête** : fond crème **opaque** (pas de `backdrop-filter`, cf. §8), logo principal à gauche (≥ 120 px), navigation ZT Nature 500 forêt, élément actif souligné sauge. Collant en haut de page : pas de bordure dure dessous, mais un léger dégradé crème vers transparent sous la barre, visible seulement quand du contenu défile dessous. Sur héros photo sombre : logo blanc.
+**Barre du haut** : logo principal à gauche (≥ 120 px), recherche, panier et compte à droite. Rien d'autre : la navigation est dans la boussole. Fond crème opaque, non collante. Sur la page d'accueil, elle se pose sur la hero (fond transparent). Sous 640 px, « Se connecter / Rejoindre » devient une icône de compte.
+
+**Boussole (navigation principale)** : pilule forêt flottante, fixée en bas au centre de l'écran (inspirée d'un dock). Éléments : Accueil, Explorer, Comprendre, Mémoires, Contribuer, puis Ressources après un séparateur. Un indicateur crème glisse sous l'élément actif, dont le texte passe en forêt (320 ms, `--ease-out`). Ressources ouvre un panneau crème vers le haut, depuis la boussole, avec une description par destination. Sous 900 px : icônes seules sauf l'élément actif ; sous 380 px : icônes seules. Les libellés masqués restent lus par les lecteurs d'écran. Rendue dans `<body>` (portail React), car l'enveloppe des transitions de page porte un `transform`. Le bas de chaque page réserve `--dock-space` (104 px) pour ne rien masquer.
 **Pied de page** : fond forêt, texte crème, motif courbes de niveau en filigrane, logo blanc.
+
+**Haut de la page d'accueil (« la carte devient la page »)** : hauteur d'écran complète. La carte d'Afrique, plus grande que la fenêtre, déborde en haut, à droite et en bas ; les courbes de niveau vivantes passent par-dessus. Le titre en Solway démesuré (jusqu'à 8.5rem, limité aussi par la hauteur d'écran) chevauche volontairement la carte. Le mot « l'Afrique » est souligné d'un trait sauge épais (accent par le trait, pas par la couleur du texte). Bouton « Explorer la carte » et recherche de pays côte à côte. Sur mobile, la carte passe derrière le texte, en bas, à 55 % d'opacité.
 
 **Tags / filtres** : `--radius-pill`, fond vert pâle, texte forêt ; actif : fond forêt, texte crème.
 **Carte interactive (atlas)** : pays en sauge clair, survol/sélection forêt, frontières crème ; les accents secondaires servent à catégoriser (régions, thèmes), un par catégorie.
@@ -308,6 +315,7 @@ Sobre et utile, au service de la découverte.
 - Animer `transform` et `opacity` uniquement. Transitions CSS plutôt que `@keyframes` pour tout ce qui peut être interrompu (menu ouvert puis refermé aussitôt).
 - Effets de survol réservés aux appareils à souris : `@media (hover: hover) and (pointer: fine)`.
 - Pas de bibliothèque d'animation (ressorts) tant qu'aucune interaction de glisser ne l'exige.
+- Animations continues autorisées seulement pour le décor génératif (topographie vivante), jamais pour le contenu, et toujours coupées par `prefers-reduced-motion`.
 - Respecter `prefers-reduced-motion: reduce` (supprimer translations et parallaxe).
 - Pas de scintillement doré, pas de rebonds, pas d'animations en boucle sur le contenu.
 
@@ -379,6 +387,10 @@ Sobre et utile, au service de la découverte.
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --duration-fast: 150ms;
   --duration-base: 250ms;
+
+  /* Mise en page */
+  --nav-h: 72px;
+  --dock-space: 104px; /* place réservée en bas pour la boussole */
 }
 ```
 

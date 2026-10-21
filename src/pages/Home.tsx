@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect, useId, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowRight, ArrowUpRight, BookOpen, Clock, Library, Quote, ScrollText, UserRound } from 'lucide-react'
+import { ArrowRight, ArrowUpRight, BookOpen, Clock, Library, Quote, ScrollText, Search, UserRound } from 'lucide-react'
+import { TopoField } from '../components/TopoField/TopoField'
 import { Layout } from '../components/Layout/Layout'
 import { allAfricanCountries, type AfricanCountry } from '../data/allAfricanCountries'
 import { homeService } from '../services/api'
@@ -76,11 +77,6 @@ export const Home = () => {
       .catch(() => {})
   }, [])
 
-  const featuredCountries = useMemo(
-    () => featuredCountryIds.map((id) => allAfricanCountries.find((c) => c.id === id)).filter(Boolean) as AfricanCountry[],
-    []
-  )
-
   const trimmedQuery = query.trim().toLowerCase()
   const results = useMemo(
     () =>
@@ -107,60 +103,65 @@ export const Home = () => {
     <Layout fullWidth>
       <div className="mbh">
         <section className="mbh-hero" aria-labelledby="mbh-title">
+          <TopoField className="mbh-topo" />
+
+          <div className="mbh-map" aria-hidden="true">
+            <Suspense fallback={null}>
+              <HeroMap highlighted={featuredCountryIds} />
+            </Suspense>
+          </div>
+
           <div className="mbh-hero-text">
-            <h1 id="mbh-title">Découvrez l’Afrique autrement.</h1>
+            <h1 id="mbh-title">
+              Découvrez <span>l’Afrique</span> autrement.
+            </h1>
             <p className="mbh-lead">
               Un atlas culturel pour explorer les {allAfricanCountries.length} pays du continent : leurs récits, leur
               patrimoine, leurs territoires et leurs savoir-faire.
             </p>
-            <Link to="/map" className="mbh-cta">
-              Explorer la carte
-              <ArrowRight size={20} strokeWidth={2} aria-hidden="true" />
-            </Link>
 
-            <div className="mbh-finder">
-              <label htmlFor={searchId}>Ou allez droit à un pays</label>
-              <input
-                id={searchId}
-                type="search"
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-                placeholder="Sénégal, Nairobi…"
-                autoComplete="off"
-              />
-              {trimmedQuery ? (
-                <ul className="mbh-results" aria-live="polite">
-                  {results.length > 0 ? (
-                    results.map((country) => (
-                      <li key={country.id}>
-                        <Link to={`/country/${country.id.toLowerCase()}`}>
-                          <strong>{country.nameFr}</strong>
-                          <span>{country.capital}</span>
-                        </Link>
-                      </li>
-                    ))
-                  ) : (
-                    <li className="mbh-results-empty">Aucun pays ne correspond à « {query.trim()} ».</li>
-                  )}
-                </ul>
-              ) : (
-                <ul className="mbh-chips" aria-label="Pays suggérés">
-                  {featuredCountries.map((country) => (
-                    <li key={country.id}>
-                      <Link to={`/country/${country.id.toLowerCase()}`}>{country.nameFr}</Link>
-                    </li>
-                  ))}
-                </ul>
-              )}
+            <div className="mbh-actions">
+              <Link to="/map" className="mbh-cta">
+                Explorer la carte
+                <ArrowRight size={20} strokeWidth={2} aria-hidden="true" />
+              </Link>
+
+              <div className="mbh-finder">
+                <label htmlFor={searchId} className="sr-only">
+                  Aller directement à un pays
+                </label>
+                <Search className="mbh-finder-icon" size={18} strokeWidth={2} aria-hidden="true" />
+                <input
+                  id={searchId}
+                  type="search"
+                  value={query}
+                  onChange={(event) => setQuery(event.target.value)}
+                  placeholder="Aller à un pays…"
+                  autoComplete="off"
+                />
+                {trimmedQuery && (
+                  <ul className="mbh-results" aria-live="polite">
+                    {results.length > 0 ? (
+                      results.map((country) => (
+                        <li key={country.id}>
+                          <Link to={`/country/${country.id.toLowerCase()}`}>
+                            <strong>{country.nameFr}</strong>
+                            <span>{country.capital}</span>
+                          </Link>
+                        </li>
+                      ))
+                    ) : (
+                      <li className="mbh-results-empty">Aucun pays ne correspond à « {query.trim()} ».</li>
+                    )}
+                  </ul>
+                )}
+              </div>
             </div>
           </div>
 
-          <figure className="mbh-map">
-            <Suspense fallback={<div className="mbh-map-placeholder" />}>
-              <HeroMap highlighted={featuredCountryIds} />
-            </Suspense>
-            <figcaption>Choisissez un pays sur la carte pour ouvrir sa fiche.</figcaption>
-          </figure>
+          <p className="mbh-map-hint" aria-hidden="true">
+            Survolez un pays, cliquez pour ouvrir sa fiche
+          </p>
         </section>
 
         {metrics.length >= 2 && (

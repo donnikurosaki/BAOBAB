@@ -47,55 +47,75 @@
   list-style: none;
 }
 
-/* --- Haut de page : texte + carte --- */
+/* --- Haut de page : l'atlas vivant --- */
 
 .mbh-hero {
   position: relative;
-  display: grid;
-  --hero-pad: clamp(24px, 5svh, 56px);
-  /* Deux colonnes bornées et centrées : le texte et la carte restent proches */
-  grid-template-columns: minmax(0, 28rem) minmax(0, 36rem);
-  justify-content: center;
-  /* la paire texte + carte est centrée dans la hauteur, mais alignée par le haut :
-     la carte commence toujours sous la navbar et reste entière dans la fenêtre */
-  align-content: center;
-  align-items: start;
-  gap: clamp(24px, 4vw, 56px);
-  min-height: calc(100svh - var(--nav-h));
-  padding: var(--hero-pad) var(--section-x);
+  display: flex;
+  align-items: center;
+  min-height: 100svh;
+  padding: calc(var(--nav-h) + 16px) var(--section-x) calc(var(--dock-space) + 16px);
+  overflow: clip;
   isolation: isolate;
 }
 
-/* Motif courbes de niveau (DESIGN.md §6), fondu vers le bas */
-.mbh-hero::before {
-  content: '';
+/* La carte est plus grande que la fenêtre : on est dedans, pas devant */
+.mbh-map {
+  position: absolute;
+  z-index: -2;
+  top: 52%;
+  left: 42%;
+  width: calc(108svh * 1000 / 940);
+  transform: translateY(-50%);
+}
+
+/* Le relief passe par-dessus la carte : les courbes de niveau dessinent sur le continent */
+.mbh-topo {
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: url('/Motifs/Fichier%2059.svg') center top / cover no-repeat;
-  opacity: 0.08;
-  mask-image: linear-gradient(to bottom, #000 40%, transparent);
+}
+
+.mbh-hero-text {
+  position: relative;
+  max-width: min(40rem, 50vw);
 }
 
 .mbh-hero h1 {
-  max-width: 11ch;
-  margin-bottom: 24px;
-  /* suit aussi la hauteur d'écran, pour que la hero tienne dans la fenêtre */
-  font-size: clamp(2.5rem, min(4.6vw, 8.5svh), 4.5rem);
-  line-height: 1.04 !important;
+  margin-bottom: 28px;
+  font-size: clamp(3.25rem, min(8.2vw, 12.5svh), 8.5rem);
+  line-height: 0.96 !important;
   /* typography-human.css impose letter-spacing: 0 en !important sur les titres ;
-     un léger resserrement est nécessaire à cette taille (DESIGN.md §4) */
-  letter-spacing: -0.015em !important;
+     à cette taille il faut resserrer (DESIGN.md §4) */
+  letter-spacing: -0.025em !important;
   overflow-wrap: anywhere;
+}
+
+/* L'accent porte sur le mot, par un trait sauge plutôt qu'une couleur de texte
+   (le sauge seul n'atteint pas 3:1 sur crème) */
+.mbh-hero h1 span {
+  white-space: nowrap;
+  text-decoration: underline;
+  text-decoration-color: var(--brand-sauge);
+  text-decoration-thickness: 0.09em;
+  text-underline-offset: 0.1em;
+  text-decoration-skip-ink: none;
 }
 
 .mbh-lead {
   --readable-text: var(--brand-texte-doux);
-  max-width: 36ch;
+  max-width: 34ch;
   margin-bottom: 32px;
   color: var(--brand-texte-doux);
-  font-size: clamp(1.125rem, 1.6vw, 1.25rem);
+  font-size: clamp(1.0625rem, 1.4vw, 1.25rem);
   line-height: 1.5;
+}
+
+.mbh-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
 }
 
 .mbh-cta {
@@ -134,27 +154,26 @@
 
 /* Recherche de pays : l'équivalent clavier et lecteur d'écran de la carte */
 .mbh-finder {
-  max-width: 420px;
-  margin-top: 32px;
-  padding-top: 20px;
-  border-top: 1px solid var(--brand-trait);
+  position: relative;
+  flex: 1 1 220px;
+  max-width: 280px;
 }
 
-.mbh-finder label {
-  --readable-text: var(--brand-foret);
-  display: block;
-  margin-bottom: 8px;
-  color: var(--brand-foret);
-  font-size: 0.875rem;
-  font-weight: 600;
+.mbh-finder-icon {
+  position: absolute;
+  top: 50%;
+  left: 18px;
+  color: var(--brand-texte-doux);
+  transform: translateY(-50%);
+  pointer-events: none;
 }
 
 .mbh-finder input {
   width: 100%;
-  min-height: 48px;
-  padding: 0 16px;
+  min-height: 52px;
+  padding: 0 18px 0 46px;
   border: 1px solid var(--brand-trait-champ);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-pill);
   background: var(--brand-blanc);
   color: var(--brand-encre);
   font: inherit;
@@ -174,38 +193,17 @@
   outline-offset: 2px;
 }
 
-.mbh-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 12px;
-}
-
-.mbh-chips a {
-  display: inline-flex;
-  align-items: center;
-  min-height: 40px;
-  padding: 0 16px;
-  border-radius: var(--radius-pill);
-  background: var(--brand-vert-pale);
-  font-size: 0.9375rem;
-  font-weight: 500;
-  text-decoration: none;
-  white-space: nowrap;
-  transition: background-color var(--duration-fast) var(--ease-out);
-}
-
-.mbh .mbh-chips a,
-.mbh .mbh-results a {
-  color: var(--brand-foret);
-}
-
 .mbh-results {
-  margin-top: 8px;
+  position: absolute;
+  z-index: 5;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
   padding: 4px;
   border: 1px solid var(--brand-trait);
   border-radius: var(--radius-md);
   background: var(--brand-blanc);
+  box-shadow: var(--shadow-float);
 }
 
 .mbh-results a {
@@ -220,6 +218,10 @@
   transition: background-color var(--duration-fast) var(--ease-out);
 }
 
+.mbh .mbh-results a {
+  color: var(--brand-foret);
+}
+
 .mbh-results span,
 .mbh-results-empty {
   --readable-text: var(--brand-texte-doux);
@@ -231,25 +233,13 @@
   padding: 12px;
 }
 
-.mbh-map {
-  width: 100%;
-  /* la carte (ratio 1000/940) et sa légende tiennent dans la hauteur de la fenêtre */
-  max-width: min(36rem, calc((100svh - var(--nav-h) - 2 * var(--hero-pad) - 40px) * 1000 / 940));
-  margin: 0;
-  justify-self: start;
-}
-
-.mbh-map-placeholder {
-  width: 100%;
-  aspect-ratio: 1000 / 940;
-}
-
-.mbh-map figcaption {
+.mbh-map-hint {
   --readable-text: var(--brand-texte-doux);
-  margin-top: 16px;
+  position: absolute;
+  right: var(--section-x);
+  bottom: calc(var(--dock-space) + 8px);
   color: var(--brand-texte-doux);
-  font-size: 0.875rem;
-  text-align: center;
+  font-size: 0.8125rem;
 }
 
 /* --- Chiffres --- */
@@ -529,7 +519,6 @@
     transform: translateX(3px);
   }
 
-  .mbh-chips a:hover,
   .mbh-results a:hover {
     background: color-mix(in srgb, var(--brand-sauge) 22%, var(--brand-creme));
   }
@@ -543,15 +532,34 @@
 /* --- Points de rupture --- */
 
 @media (max-width: 899px) {
+  /* La carte passe derrière le texte, en bas, et s'efface un peu pour la lisibilité */
   .mbh-hero {
-    grid-template-columns: minmax(0, 1fr);
-    min-height: 0;
-    padding-block: clamp(32px, 6vw, 56px) clamp(48px, 8vw, 72px);
+    align-items: flex-start;
   }
 
   .mbh-map {
-    max-width: 420px;
-    justify-self: center;
+    top: auto;
+    bottom: calc(var(--dock-space) - 22svh);
+    left: 50%;
+    width: max(120vw, 62svh);
+    opacity: 0.55;
+    transform: translateX(-38%);
+  }
+
+  .mbh-hero-text {
+    max-width: none;
+  }
+
+  .mbh-hero h1 {
+    font-size: clamp(2.75rem, 12vw, 4.5rem);
+  }
+
+  .mbh-finder {
+    max-width: none;
+  }
+
+  .mbh-map-hint {
+    display: none;
   }
 
   .mbh-doors {

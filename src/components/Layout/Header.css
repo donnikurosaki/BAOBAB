@@ -1,63 +1,40 @@
-/* Hallmark · component: nav N11 mega-menu (adapté DESIGN.md : opaque, sans flou) · theme: DESIGN.md MonBaobab
- * states: default · hover · focus · active · open · current
+/* Hallmark · component: nav « boussole » (dock bas, cf. where_folio) + barre haute minimale
+ * theme: DESIGN.md MonBaobab · states: default · hover · focus · active · open · current
  *
- * Les feuilles globales de src/styles/ imposent sur tout <button> une couleur, un arrondi,
- * une ombre et un anneau de focus en !important. Les quelques !important ci-dessous
- * ne servent qu'à les neutraliser dans la navbar ; à retirer quand ces feuilles seront nettoyées.
+ * Les feuilles globales de src/styles/ (chargées après ce fichier) imposent :
+ * - sur tout <button> : couleur, arrondi, ombre, anneau de focus en !important
+ * - sur `nav a` : couleur en !important via --color-text / --color-gold-dark (survol)
+ * - sur `small` : couleur en !important via --readable-text-muted
+ * On redéfinit ces variables localement et on neutralise les styles de <button> ;
+ * les !important restants sont à retirer quand ces feuilles seront nettoyées.
  */
 
-.mbn {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  background: var(--brand-creme);
-  font-family: var(--font-texte);
-}
+/* ============ Barre du haut : logo + compte ============ */
 
-/* Les feuilles globales (chargées après ce fichier) colorent les liens et le texte :
- * - theme-overrides.css : `nav a` en !important via --color-text / --color-gold-dark (survol)
- * - contrast-system.css : `small` en !important via --readable-text-muted
- * On redéfinit ces variables ici plutôt que d'empiler des !important. */
-.mbn,
-.mbn-drawer {
+.mbn {
   --color-text: var(--brand-foret);
   --color-gold-dark: var(--brand-foret);
   --readable-text-muted: var(--brand-texte-doux);
+  position: relative;
+  z-index: 1000;
+  font-family: var(--font-texte);
 }
 
-/* theme-overrides.css colore aussi tout `a` hors nav, avec la même spécificité qu'une classe */
-.mbn a,
-.mbn-drawer a {
-  color: var(--brand-foret);
-}
-
-.mbn .mbn-feature {
-  --color-text: var(--brand-creme);
-  --color-gold-dark: var(--brand-creme);
-  color: var(--brand-creme);
-}
-
-/* Bord de défilement : un fondu plutôt qu'une bordure, seulement quand du contenu passe dessous */
-.mbn::after {
-  content: '';
+/* Sur la page d'accueil, la barre se pose sur la hero */
+.mbn[data-overlay] {
   position: absolute;
-  inset: 100% 0 auto;
-  height: 16px;
-  background: linear-gradient(var(--brand-creme), transparent);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity var(--duration-fast) var(--ease-out);
+  inset: 0 0 auto;
 }
 
-.mbn[data-scrolled]::after {
-  opacity: 1;
+.mbn:not([data-overlay]) {
+  background: var(--brand-creme);
 }
 
 .mbn-bar {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
+  display: flex;
   align-items: center;
-  gap: 24px;
+  justify-content: space-between;
+  gap: 16px;
   max-width: calc(var(--page-max) + 2 * var(--page-gutter));
   height: var(--nav-h);
   margin: 0 auto;
@@ -75,15 +52,23 @@
   height: auto;
 }
 
-/* Boutons de la navbar : neutralise les styles globaux de <button> */
+.mbn a,
+.mbn-dock a {
+  text-decoration: none;
+}
+
+.mbn a {
+  color: var(--brand-foret);
+}
+
+/* Boutons : neutralise les styles globaux de <button> */
 .mbn button,
-.mbn-drawer button {
+.mbn-dock button {
   min-width: 0;
   min-height: 44px;
   padding: 0;
   border: 0;
   background: transparent;
-  color: var(--brand-foret) !important;
   font: inherit;
   letter-spacing: 0 !important;
   border-radius: var(--radius-pill) !important;
@@ -93,197 +78,19 @@
   cursor: pointer;
 }
 
+.mbn button {
+  color: var(--brand-foret) !important;
+}
+
 .mbn a:focus-visible,
-.mbn button:focus-visible,
-.mbn-drawer a:focus-visible,
-.mbn-drawer button:focus-visible {
+.mbn button:focus-visible {
   outline: 2px solid var(--brand-foret) !important;
   outline-offset: 2px;
 }
 
-/* --- Liens principaux --- */
-
-.mbn-primary {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 4px;
-}
-
-.mbn-link,
-.mbn-signin {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  min-height: 44px;
-  padding: 0 14px;
-  border-radius: var(--radius-pill);
-  color: var(--brand-foret);
-  font-size: 0.9375rem;
-  font-weight: 500;
-  text-decoration: none;
-  white-space: nowrap;
-  transition: background-color var(--duration-fast) var(--ease-out);
-}
-
-.mbn button.mbn-link {
-  padding: 0 10px 0 14px;
-  font-weight: 500;
-}
-
-.mbn-link[aria-current='page']::after,
-.mbn-trigger[data-active]::after {
-  content: '';
-  position: absolute;
-  left: 14px;
-  right: 14px;
-  bottom: 6px;
-  height: 2px;
-  border-radius: 2px;
-  background: var(--brand-sauge);
-}
-
-.mbn-caret {
-  transition: transform var(--duration-fast) var(--ease-out);
-}
-
-.mbn-trigger[aria-expanded='true'] .mbn-caret {
-  transform: rotate(180deg);
-}
-
-/* --- Panneau Ressources (méga-menu) --- */
-
-.mbn-panel {
-  position: absolute;
-  inset: 100% 0 auto;
-  border-top: 1px solid var(--brand-trait);
-  border-bottom: 1px solid var(--brand-trait);
-  background: var(--brand-creme);
-  box-shadow: var(--shadow-float);
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-6px);
-  transition:
-    opacity var(--duration-fast) var(--ease-out),
-    transform var(--duration-fast) var(--ease-out),
-    visibility 0s linear var(--duration-fast);
-}
-
-.mbn-panel[data-open] {
-  opacity: 1;
-  visibility: visible;
-  transform: none;
-  transition:
-    opacity 200ms var(--ease-out),
-    transform 200ms var(--ease-out),
-    visibility 0s;
-}
-
-.mbn-panel-inner {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr)) minmax(0, 0.9fr);
-  gap: 32px;
-  max-width: calc(var(--page-max) + 2 * var(--page-gutter));
-  margin: 0 auto;
-  padding: 32px var(--page-gutter) 40px;
-}
-
-.mbn-col {
-  display: grid;
-  align-content: start;
-  gap: 4px;
-}
-
-/* sélecteur doublé : index.css colore tout `p` en thème clair avec une spécificité supérieure à une classe */
-.mbn .mbn-col-title,
-.mbn-drawer .mbn-col-title {
-  margin: 0 0 8px;
-  padding: 0 12px;
-  color: var(--brand-texte-doux);
-  font-size: 0.8125rem;
-  font-weight: 600;
-}
-
-.mbn-item {
-  display: grid;
-  grid-template-columns: 20px minmax(0, 1fr);
-  gap: 12px;
-  padding: 12px;
-  border-radius: var(--radius-sm);
-  color: var(--brand-foret);
-  text-decoration: none;
-  transition: background-color var(--duration-fast) var(--ease-out);
-}
-
-.mbn-item-icon {
-  margin-top: 1px;
-  color: var(--brand-sauge);
-}
-
-.mbn-item strong {
-  display: block;
-  font-size: 0.9375rem;
-  font-weight: 600;
-}
-
-.mbn-item small {
-  display: block;
-  margin-top: 2px;
-  color: var(--brand-texte-doux);
-  font-size: 0.8125rem;
-  line-height: 1.4;
-}
-
-.mbn-item[aria-current='page'] {
-  background: var(--brand-vert-pale);
-}
-
-.mbn-feature {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  gap: 8px;
-  min-height: 200px;
-  padding: 24px;
-  overflow: hidden;
-  border-radius: var(--radius-md);
-  background: var(--brand-foret);
-  text-decoration: none;
-  isolation: isolate;
-  transition: background-color var(--duration-fast) var(--ease-out);
-}
-
-/* Motif courbes de niveau (DESIGN.md §6), en filigrane */
-.mbn-feature::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: url('/Motifs/Fichier%2062.svg') center / cover no-repeat;
-  opacity: 0.12;
-}
-
-.mbn-feature strong {
-  font-family: var(--font-titre);
-  font-size: 1.25rem;
-  font-weight: 700;
-}
-
-.mbn-feature span {
-  color: color-mix(in srgb, var(--brand-creme) 80%, transparent);
-  font-size: 0.875rem;
-  line-height: 1.45;
-}
-
-/* --- Actions --- */
-
 .mbn-actions {
-  grid-column: 3;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
   gap: 4px;
 }
 
@@ -295,14 +102,12 @@
   width: 44px;
   height: 44px;
   border-radius: var(--radius-pill);
-  color: var(--brand-foret);
   transition:
     background-color var(--duration-fast) var(--ease-out),
     transform var(--duration-fast) var(--ease-out);
 }
 
-.mbn .mbn-icon-btn,
-.mbn-drawer .mbn-icon-btn {
+.mbn .mbn-icon-btn {
   width: 44px;
 }
 
@@ -330,6 +135,18 @@
   margin-left: 8px;
 }
 
+.mbn-signin {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 14px;
+  border-radius: var(--radius-pill);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+
 .mbn-join {
   display: inline-flex;
   align-items: center;
@@ -338,10 +155,8 @@
   padding: 0 18px;
   border: 1.5px solid var(--brand-foret);
   border-radius: var(--radius-pill);
-  color: var(--brand-foret);
   font-size: 0.9375rem;
   font-weight: 600;
-  text-decoration: none;
   white-space: nowrap;
   transition:
     background-color var(--duration-fast) var(--ease-out),
@@ -349,7 +164,11 @@
     transform var(--duration-fast) var(--ease-out);
 }
 
-/* --- Menu compte --- */
+.mbn-auth-compact {
+  display: none;
+}
+
+/* Menu compte */
 
 .mbn-user {
   position: relative;
@@ -358,8 +177,8 @@
 
 .mbn .mbn-avatar {
   width: 40px;
-  min-height: 40px;
   height: 40px;
+  min-height: 40px;
   background: var(--brand-foret);
   color: var(--brand-creme) !important;
   font-weight: 700;
@@ -430,15 +249,11 @@
   min-height: 44px;
   padding: 0 12px;
   border-radius: var(--radius-sm) !important;
-  color: var(--brand-foret) !important;
   font-size: 0.9375rem;
   font-weight: 500;
   text-align: left;
-  text-decoration: none;
   transition: background-color var(--duration-fast) var(--ease-out);
 }
-
-/* --- Recherche --- */
 
 .mbn-search {
   max-width: calc(var(--page-max) + 2 * var(--page-gutter));
@@ -446,22 +261,236 @@
   padding: 0 var(--page-gutter) 16px;
 }
 
-/* --- Voile (méga-menu et tiroir) --- */
+/* ============ Boussole : dock flottant en bas ============ */
+
+.mbn-dock {
+  --color-text: var(--brand-creme);
+  --color-gold-dark: var(--brand-creme);
+  --readable-text-muted: var(--brand-texte-doux);
+  position: fixed;
+  z-index: 1010;
+  bottom: max(16px, env(safe-area-inset-bottom));
+  left: 50%;
+  font-family: var(--font-texte);
+  transform: translateX(-50%);
+}
+
+.mbn-dock-track {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 6px;
+  border-radius: var(--radius-pill);
+  background: var(--brand-foret);
+  box-shadow: var(--shadow-dock);
+}
+
+.mbn-dock-indicator {
+  position: absolute;
+  top: 6px;
+  bottom: 6px;
+  left: 0;
+  border-radius: var(--radius-pill);
+  background: var(--brand-creme);
+  opacity: 0;
+  transition:
+    transform 320ms var(--ease-out),
+    width 320ms var(--ease-out),
+    opacity var(--duration-fast) var(--ease-out);
+}
+
+.mbn-dock-indicator[data-visible] {
+  opacity: 1;
+}
+
+.mbn-dock-item,
+.mbn-dock .mbn-dock-item {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 0 16px;
+  border-radius: var(--radius-pill) !important;
+  color: var(--brand-creme) !important;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  white-space: nowrap;
+  transition:
+    color 200ms var(--ease-out),
+    background-color var(--duration-fast) var(--ease-out);
+}
+
+/* L'élément actif passe en forêt sur l'indicateur crème */
+.mbn-dock .mbn-dock-item[data-current] {
+  --color-text: var(--brand-foret);
+  --color-gold-dark: var(--brand-foret);
+  color: var(--brand-foret) !important;
+}
+
+.mbn-dock-item:focus-visible,
+.mbn-dock .mbn-dock-item:focus-visible {
+  outline: 2px solid var(--brand-creme) !important;
+  outline-offset: 2px;
+}
+
+.mbn-dock-sep {
+  width: 1px;
+  height: 24px;
+  margin: 0 4px;
+  background: color-mix(in srgb, var(--brand-creme) 24%, transparent);
+}
+
+/* Panneau Ressources : s'ouvre vers le haut, depuis le dock */
+.mbn-panel {
+  --color-text: var(--brand-foret);
+  --color-gold-dark: var(--brand-foret);
+  position: absolute;
+  bottom: calc(100% + 12px);
+  left: 50%;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) minmax(0, 0.9fr);
+  gap: 24px;
+  width: min(56rem, calc(100vw - 32px));
+  max-height: calc(100svh - var(--dock-space) - 32px);
+  padding: 24px;
+  overflow-y: auto;
+  border: 1px solid var(--brand-trait);
+  border-radius: var(--radius-lg);
+  background: var(--brand-creme);
+  box-shadow: var(--shadow-float);
+  transform-origin: bottom center;
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, 8px) scale(0.98);
+  transition:
+    opacity var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out),
+    visibility 0s linear var(--duration-fast);
+}
+
+.mbn-panel[data-open] {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+  transition:
+    opacity 220ms var(--ease-out),
+    transform 220ms var(--ease-out),
+    visibility 0s;
+}
+
+.mbn-col {
+  display: grid;
+  align-content: start;
+  gap: 2px;
+}
+
+/* sélecteur doublé : index.css colore tout `p` en thème clair avec une spécificité supérieure */
+.mbn-dock .mbn-col-title {
+  margin: 0 0 6px;
+  padding: 0 12px;
+  color: var(--brand-texte-doux);
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.mbn-item {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+
+.mbn-dock .mbn-item {
+  color: var(--brand-foret);
+}
+
+.mbn-item-icon {
+  margin-top: 1px;
+  color: var(--brand-sauge);
+}
+
+.mbn-item strong {
+  display: block;
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.mbn-item small {
+  display: block;
+  margin-top: 2px;
+  color: var(--brand-texte-doux);
+  font-size: 0.8125rem;
+  line-height: 1.4;
+}
+
+.mbn-item[aria-current='page'] {
+  background: var(--brand-vert-pale);
+}
+
+.mbn-item:focus-visible,
+.mbn-feature:focus-visible {
+  outline: 2px solid var(--brand-foret) !important;
+  outline-offset: 2px;
+}
+
+.mbn-feature {
+  --color-text: var(--brand-creme);
+  --color-gold-dark: var(--brand-creme);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 8px;
+  min-height: 200px;
+  padding: 24px;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background: var(--brand-foret);
+  isolation: isolate;
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+
+.mbn-dock .mbn-feature {
+  color: var(--brand-creme);
+}
+
+/* Motif courbes de niveau (DESIGN.md §6), en filigrane */
+.mbn-feature::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: url('/Motifs/Fichier%2062.svg') center / cover no-repeat;
+  opacity: 0.12;
+}
+
+.mbn-feature strong {
+  font-family: var(--font-titre);
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.mbn-feature span {
+  color: color-mix(in srgb, var(--brand-creme) 80%, transparent);
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
 
 .mbn-scrim {
   position: fixed;
   inset: 0;
-  z-index: 990;
+  z-index: 1005;
   background: var(--brand-voile);
   opacity: 0;
   visibility: hidden;
   transition:
     opacity var(--duration-fast) var(--ease-out),
     visibility 0s linear var(--duration-fast);
-}
-
-.mbn-scrim-drawer {
-  z-index: 1005;
 }
 
 .mbn-scrim[data-open] {
@@ -472,141 +501,31 @@
     visibility 0s;
 }
 
-/* --- Tiroir mobile : entre par la droite, ressort par la droite --- */
-
-.mbn-burger {
-  display: none;
-}
-
-.mbn-drawer {
-  position: fixed;
-  inset: 0 0 0 auto;
-  z-index: 1010;
-  display: flex;
-  flex-direction: column;
-  width: min(360px, 88vw);
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  background: var(--brand-creme);
-  font-family: var(--font-texte);
-  visibility: hidden;
-  transform: translateX(100%);
-  transition:
-    transform 200ms var(--ease-out),
-    visibility 0s linear 200ms;
-}
-
-.mbn-drawer[data-open] {
-  visibility: visible;
-  transform: none;
-  transition:
-    transform var(--duration-base) var(--ease-out),
-    visibility 0s;
-}
-
-.mbn-drawer-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  min-height: var(--nav-h);
-  padding: 0 12px 0 20px;
-  border-bottom: 1px solid var(--brand-trait);
-}
-
-.mbn-drawer-head img {
-  width: 120px;
-  height: auto;
-}
-
-.mbn-drawer-body {
-  flex: 1;
-  padding: 12px;
-}
-
-.mbn-drawer-primary {
-  display: grid;
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--brand-trait);
-}
-
-.mbn-drawer-primary a {
-  display: flex;
-  align-items: center;
-  min-height: 48px;
-  padding: 0 12px;
-  border-radius: var(--radius-sm);
-  color: var(--brand-foret);
-  font-family: var(--font-titre);
-  font-size: 1.375rem;
-  font-weight: 700;
-  text-decoration: none;
-}
-
-.mbn-drawer-group {
-  display: grid;
-  padding-top: 16px;
-}
-
-.mbn-drawer-group a {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  min-height: 44px;
-  padding: 0 12px;
-  border-radius: var(--radius-sm);
-  color: var(--brand-foret);
-  font-size: 1rem;
-  font-weight: 500;
-  text-decoration: none;
-}
-
-.mbn-drawer-group svg {
-  flex: none;
-  color: var(--brand-sauge);
-}
-
-.mbn-drawer a[aria-current='page'] {
-  background: var(--brand-vert-pale);
-}
-
-.mbn-drawer-auth {
-  display: grid;
-  gap: 8px;
-  padding: 16px 20px 24px;
-  border-top: 1px solid var(--brand-trait);
-}
-
-.mbn-drawer-auth .mbn-signin,
-.mbn-drawer-auth .mbn-join {
-  justify-content: center;
-  min-height: 48px;
-}
-
-/* --- Interactions --- */
+/* ============ Interactions ============ */
 
 .mbn-icon-btn:active,
 .mbn-join:active,
-.mbn-avatar:active {
+.mbn .mbn-avatar:active,
+.mbn-dock .mbn-dock-item:active {
   transform: scale(0.97);
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .mbn-link:hover,
   .mbn-signin:hover,
   .mbn-icon-btn:hover,
-  .mbn-item:hover,
   .mbn-menu a:hover,
   .mbn .mbn-menu button:hover,
-  .mbn-drawer-primary a:hover,
-  .mbn-drawer-group a:hover {
+  .mbn-item:hover {
     background: var(--brand-vert-pale);
   }
 
-  .mbn .mbn-join:hover,
-  .mbn-drawer .mbn-join:hover {
-    --color-gold-dark: var(--brand-creme);
+  .mbn .mbn-join:hover {
     background: var(--brand-foret);
     color: var(--brand-creme);
+  }
+
+  .mbn-dock .mbn-dock-item:not([data-current]):hover {
+    background: color-mix(in srgb, var(--brand-creme) 12%, transparent);
   }
 
   .mbn-feature:hover {
@@ -614,28 +533,40 @@
   }
 }
 
-/* --- Points de rupture --- */
+/* ============ Points de rupture ============ */
 
-@media (max-width: 1199px) {
-  .mbn-primary,
+/* Dock : icônes seules, l'élément actif garde son libellé */
+@media (max-width: 899px) {
+  .mbn-dock .mbn-dock-item {
+    padding: 0 14px;
+  }
+
+  /* masqué à l'écran mais lu : le libellé reste le nom accessible du lien */
+  .mbn-dock-item:not([data-current]) .mbn-dock-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .mbn-panel {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .mbn-feature {
+    min-height: 0;
+  }
+}
+
+@media (max-width: 639px) {
   .mbn-auth {
     display: none;
   }
 
-  .mbn .mbn-burger {
+  .mbn .mbn-auth-compact {
     display: inline-flex;
-  }
-}
-
-@media (min-width: 1200px) {
-  .mbn-drawer {
-    display: none;
-  }
-}
-
-@media (max-width: 380px) {
-  .mbn-bar {
-    gap: 8px;
   }
 
   .mbn-logo img {
@@ -643,33 +574,45 @@
   }
 }
 
+/* Très petits écrans : icônes seules, l'indicateur crème suffit à marquer l'élément actif */
+@media (max-width: 379px) {
+  .mbn-dock .mbn-dock-item {
+    padding: 0 12px;
+  }
+
+  .mbn-dock-item .mbn-dock-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .mbn-dock-sep {
+    margin: 0 2px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .mbn-panel,
+  .mbn-dock-indicator {
+    transition: opacity var(--duration-fast) var(--ease-out);
+  }
+
   .mbn-menu,
-  .mbn-drawer,
-  .mbn-panel[data-open],
-  .mbn-menu[data-open],
-  .mbn-drawer[data-open] {
+  .mbn-menu[data-open] {
     transform: none;
   }
 
-  .mbn-drawer {
-    opacity: 0;
-    transition:
-      opacity 150ms var(--ease-out),
-      visibility 0s linear 150ms;
-  }
-
-  .mbn-drawer[data-open] {
-    opacity: 1;
-    transition:
-      opacity 150ms var(--ease-out),
-      visibility 0s;
+  .mbn-panel,
+  .mbn-panel[data-open] {
+    transform: translateX(-50%);
   }
 
   .mbn-icon-btn:active,
   .mbn-join:active,
-  .mbn-avatar:active {
+  .mbn .mbn-avatar:active,
+  .mbn-dock .mbn-dock-item:active {
     transform: none;
   }
 }

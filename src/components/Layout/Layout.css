@@ -1,7 +1,10 @@
 .layout {
+  position: relative;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  /* place pour la navbar boussole fixée en bas */
+  padding-bottom: var(--dock-space);
 }
 
 .layout-main {

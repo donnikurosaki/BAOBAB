@@ -43,6 +43,7 @@
   --radius-lg: 28px;
   --radius-pill: 999px;
   --shadow-float: 0 8px 24px rgb(23 65 35 / 0.10);
+  --shadow-dock: 0 12px 32px rgb(23 65 35 / 0.28);
 
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --duration-fast: 150ms;
@@ -51,6 +52,20 @@
   --page-max: 1200px;
   --page-gutter: clamp(16px, 5vw, 48px);
   --nav-h: 72px;
+  --dock-space: 104px; /* place réservée en bas pour la navbar boussole */
+}
+
+/* Masqué à l'écran, lu par les lecteurs d'écran */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
 }
 
 /* Couleurs communes (identiques pour les deux thèmes) */

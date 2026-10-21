@@ -11,7 +11,7 @@ interface LayoutProps {
 export const Layout = ({ children, fullWidth = false }: LayoutProps) => {
   return (
     <div className="layout">
-      <Header />
+      <Header overlay={fullWidth} />
       <main className={`layout-main${fullWidth ? ' layout-main--full' : ''}`}>{children}</main>
       <Footer />
     </div>
