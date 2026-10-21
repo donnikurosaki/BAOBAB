@@ -1,0 +1,52 @@
+.hero-map {
+  position: relative;
+  aspect-ratio: 1000 / 940;
+  width: 100%;
+}
+
+.hero-map svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.hero-map-country {
+  fill: color-mix(in srgb, var(--brand-sauge) 30%, var(--brand-creme));
+  stroke: var(--brand-creme);
+  stroke-width: 1.2;
+  stroke-linejoin: round;
+  cursor: pointer;
+  transition: fill var(--duration-fast) var(--ease-out);
+}
+
+.hero-map-country[data-highlight] {
+  fill: var(--brand-sauge);
+}
+
+.hero-map-country[data-hovered] {
+  fill: var(--brand-foret);
+}
+
+.hero-map-label {
+  position: absolute;
+  z-index: 1;
+  display: grid;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  background: var(--brand-blanc);
+  box-shadow: var(--shadow-float);
+  color: var(--brand-foret);
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.25;
+  white-space: nowrap;
+  pointer-events: none;
+  transform: translate(-50%, calc(-100% - 10px));
+}
+
+.hero-map-label small {
+  color: var(--brand-texte-doux);
+  font-size: 0.75rem;
+  font-weight: 400;
+}

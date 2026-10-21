@@ -14,7 +14,7 @@
 
 /* Pages éditoriales qui composent leurs propres marges et sections pleine largeur. */
 .layout-main--full {
-  width: 100vw;
+  width: 100%;
   max-width: none !important;
   margin: 0 !important;
   padding: 0 !important;

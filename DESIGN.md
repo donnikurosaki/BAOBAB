@@ -154,11 +154,16 @@ La charte déconseille d'ajouter ou combiner d'autres polices. Pas de troisième
 
 > **Licence** : le PDF embarque `GCRegainDemo` (version démo). Acheter une licence web de GC Regain et de ZT Nature avant mise en production. Auto-héberger en `woff2` dans `public/fonts/` avec `font-display: swap`.
 
-Repli en attendant les fichiers :
+**Polices gratuites de remplacement**, en attendant les licences (Google Fonts, chargées dans `index.html`) :
+- **Solway** 500/700 pour GC Regain : slab arrondi et large, le plus proche des affiches de la charte.
+- **Schibsted Grotesk** 400 à 800 pour ZT Nature : grotesque compacte, proche de la signature du logo.
+
 ```css
---font-titre: 'GC Regain', 'Roboto Slab', Georgia, serif;
---font-texte: 'ZT Nature', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+--font-titre: 'Solway', 'Roboto Slab', Georgia, serif;
+--font-texte: 'Schibsted Grotesk', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
 ```
+
+Quand les licences arrivent : ajouter les `@font-face` de GC Regain et ZT Nature, et les placer en tête de ces deux piles.
 
 ### Échelle **[web]**
 
@@ -276,17 +281,17 @@ L'identité est **plate**. Pas d'ombres portées marquées, pas de glassmorphism
 
 ## 9. Composants
 
-**Bouton primaire** : fond forêt, texte crème, `--radius-pill`, hauteur 44 px min, ZT Nature 600. Survol : fond `#0f2e18` (forêt assombri). Focus : anneau 2 px sauge + décalage 2 px.
+**Bouton primaire** : fond forêt, texte crème, `--radius-pill`, hauteur 44 px min, ZT Nature 600. Survol : fond `#0f2e18` (forêt assombri). Appui : `transform: scale(0.97)` dès `:active`. Focus : anneau 2 px forêt + décalage 2 px.
 **Bouton secondaire** : contour 1.5 px forêt, texte forêt, fond transparent. Survol : fond vert pâle.
 **Bouton d'accent** (rare, une fois par écran) : fond ambre, texte forêt.
 **Lien** : bleu abysse ou forêt, souligné (`text-underline-offset: 0.2em`). Plus de liens dorés.
 
-**Carte** : fond blanc sur page crème, `--radius-md`, bordure forêt 12 %, image en haut, titre GC Regain forêt, méta en ZT Nature small. Survol : bordure forêt 30 % + légère translation (`translateY(-2px)`), pas d'ombre lourde.
+**Carte** : fond blanc sur page crème, `--radius-md`, bordure forêt 12 %, image en haut, titre GC Regain forêt, méta en ZT Nature small. Survol (souris uniquement, `@media (hover: hover) and (pointer: fine)`) : bordure forêt 30 % + légère translation (`translateY(-2px)`), pas d'ombre lourde. Les boutons ne se soulèvent pas au survol : seules les cartes le font.
 **Carte pays / territoire** : bande ou tag dans la couleur secondaire attribuée au pays (cf. logotype des territoires).
 
-**Champ de formulaire** : fond blanc, bordure forêt 20 %, `--radius-sm`, hauteur 44 px, libellé visible au-dessus (pas de placeholder seul). Focus : bordure forêt + anneau sauge. Erreur : bordure terre cuite + message avec icône.
+**Champ de formulaire** : fond blanc, bordure forêt 20 %, `--radius-sm`, hauteur 44 px, libellé visible au-dessus (pas de placeholder seul). Focus : bordure forêt + anneau forêt. Erreur : bordure terre cuite + message avec icône.
 
-**En-tête** : fond crème ou blanc, logo principal à gauche (≥ 120 px), navigation ZT Nature 500 forêt, élément actif souligné sauge. Sur héros photo sombre : logo blanc.
+**En-tête** : fond crème **opaque** (pas de `backdrop-filter`, cf. §8), logo principal à gauche (≥ 120 px), navigation ZT Nature 500 forêt, élément actif souligné sauge. Collant en haut de page : pas de bordure dure dessous, mais un léger dégradé crème vers transparent sous la barre, visible seulement quand du contenu défile dessous. Sur héros photo sombre : logo blanc.
 **Pied de page** : fond forêt, texte crème, motif courbes de niveau en filigrane, logo blanc.
 
 **Tags / filtres** : `--radius-pill`, fond vert pâle, texte forêt ; actif : fond forêt, texte crème.
@@ -297,9 +302,12 @@ L'identité est **plate**. Pas d'ombres portées marquées, pas de glassmorphism
 ## 10. Mouvement **[web]**
 
 Sobre et utile, au service de la découverte.
-- Durées : 150 ms (survol, petits états), 250 ms (ouverture menus/panneaux), 400 ms max (transitions de page).
-- Courbe : `cubic-bezier(0.2, 0, 0, 1)` en entrée, `ease-in` court en sortie.
-- Animer `transform` et `opacity` uniquement.
+- Durées : 150 ms (survol, petits états), 250 ms (ouverture menus/panneaux), 400 ms max (transitions de page). Les sorties sont plus courtes que les entrées (environ 75 %).
+- Courbe unique : `--ease-out: cubic-bezier(0.23, 1, 0.32, 1)`, en entrée **et** en sortie. Jamais `ease-in` : il démarre lentement et rend l'interface molle.
+- Retour au clic dès l'appui (`:active`), jamais seulement au relâchement.
+- Animer `transform` et `opacity` uniquement. Transitions CSS plutôt que `@keyframes` pour tout ce qui peut être interrompu (menu ouvert puis refermé aussitôt).
+- Effets de survol réservés aux appareils à souris : `@media (hover: hover) and (pointer: fine)`.
+- Pas de bibliothèque d'animation (ressorts) tant qu'aucune interaction de glisser ne l'exige.
 - Respecter `prefers-reduced-motion: reduce` (supprimer translations et parallaxe).
 - Pas de scintillement doré, pas de rebonds, pas d'animations en boucle sur le contenu.
 
@@ -309,7 +317,7 @@ Sobre et utile, au service de la découverte.
 
 - Contrastes : voir §3. Texte ≥ 4.5:1, grand texte et UI ≥ 3:1.
 - Cibles tactiles ≥ 44 × 44 px.
-- Focus toujours visible (anneau sauge 2 px + offset), jamais `outline: none` sans remplacement.
+- Focus toujours visible (anneau **forêt** 2 px + décalage 2 px), jamais `outline: none` sans remplacement. Pas d'anneau sauge : 2.8:1 sur crème, sous le minimum de 3:1 exigé pour un indicateur de focus.
 - Structure de titres hiérarchique (un seul H1 par page).
 - `lang="fr"` ; noms propres en langue locale avec `lang` approprié si besoin.
 - Thème sombre **[web]** (optionnel, le thème clair est le thème par défaut de la marque) : fond `#0e2616`, surfaces forêt `#174123`, texte crème, accents ambre (6.0:1 sur forêt) ; sauge et orange réservés au grand texte/décor (3.9:1).
@@ -350,15 +358,15 @@ Sobre et utile, au service de la découverte.
   --color-link: var(--brand-abysse);
   --color-border: rgb(23 65 35 / 0.12);
   --color-border-strong: rgb(23 65 35 / 0.30);
-  --color-focus: var(--brand-sauge);
+  --color-focus: var(--brand-foret);
   --color-success: var(--brand-foret);
   --color-info: var(--brand-abysse);
   --color-warning: var(--brand-ambre);
   --color-danger: var(--brand-terre);
 
   /* Typo */
-  --font-titre: 'GC Regain', 'Roboto Slab', Georgia, serif;
-  --font-texte: 'ZT Nature', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-titre: 'Solway', 'Roboto Slab', Georgia, serif; /* GC Regain en tête quand la licence est prête */
+  --font-texte: 'Schibsted Grotesk', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif; /* idem ZT Nature */
 
   /* Formes */
   --radius-sm: 8px;
@@ -368,7 +376,7 @@ Sobre et utile, au service de la découverte.
   --shadow-float: 0 8px 24px rgb(23 65 35 / 0.10);
 
   /* Mouvement */
-  --ease-out: cubic-bezier(0.2, 0, 0, 1);
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --duration-fast: 150ms;
   --duration-base: 250ms;
 }
