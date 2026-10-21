@@ -576,8 +576,12 @@
 
 /* Très petits écrans : icônes seules, l'indicateur crème suffit à marquer l'élément actif */
 @media (max-width: 379px) {
+  /* éléments carrés : l'indicateur forme un cercle parfait autour de l'icône */
   .mbn-dock .mbn-dock-item {
-    padding: 0 12px;
+    justify-content: center;
+    width: 44px;
+    min-height: 44px;
+    padding: 0;
   }
 
   .mbn-dock-item .mbn-dock-label {
