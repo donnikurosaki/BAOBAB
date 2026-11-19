@@ -1,7 +1,6 @@
 import { useEffect, lazy, Suspense, useRef } from 'react'
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { Home } from './pages/Home'
-import { Blog } from './pages/Blog'
 import { BlogPostPage } from './pages/BlogPost'
 import { Login } from './pages/Login'
 import { Register } from './pages/Register'
@@ -37,15 +36,12 @@ const BlogAdmin = lazy(() => import('./pages/BlogAdmin').then(module => ({ defau
 const CountryDetail = lazy(() => import('./pages/CountryDetail').then(module => ({ default: module.CountryDetail })))
 const AdminDashboard = lazy(() => import('./pages/AdminDashboard').then(module => ({ default: module.AdminDashboard })))
 const Dashboard = lazy(() => import('./pages/Dashboard').then(module => ({ default: module.Dashboard })))
-const Timeline = lazy(() => import('./pages/Timeline').then(module => ({ default: module.Timeline })))
-const HistoricalFigures = lazy(() => import('./pages/HistoricalFigures').then(module => ({ default: module.HistoricalFigures })))
 const HistoricalFigureDetail = lazy(() => import('./pages/HistoricalFigureDetail').then(module => ({ default: module.HistoricalFigureDetail })))
-const Collections = lazy(() => import('./pages/Collections').then(module => ({ default: module.Collections })))
 const CollectionDetail = lazy(() => import('./pages/CollectionDetail').then(module => ({ default: module.CollectionDetail })))
 const TimelineDetail = lazy(() => import('./pages/TimelineDetail').then(module => ({ default: module.TimelineDetail })))
-const Stories = lazy(() => import('./pages/Stories').then(module => ({ default: module.Stories })))
 const StoryDetail = lazy(() => import('./pages/StoryDetail').then(module => ({ default: module.StoryDetail })))
-const Proverbs = lazy(() => import('./pages/Proverbs').then(module => ({ default: module.Proverbs })))
+const Recits = lazy(() => import('./pages/Recits').then(module => ({ default: module.Recits })))
+const Reperes = lazy(() => import('./pages/Reperes').then(module => ({ default: module.Reperes })))
 const MapPage = lazy(() => import('./pages/MapPage').then(module => ({ default: module.MapPage })))
 const SearchResults = lazy(() => import('./pages/SearchResults').then(module => ({ default: module.SearchResults })))
 
@@ -157,18 +153,32 @@ function App() {
             </Suspense>
           } 
         />
-        <Route path="/blog" element={<Blog />} />
-        <Route path="/blog/:id" element={<BlogPostPage />} />
-        <Route path="/sources" element={<Sources />} />
-        <Route path="/contribute" element={<Contribute />} />
+        {/* Récits et Repères remplacent six anciennes listes ; leurs adresses redirigent (clean.md) */}
         <Route
-          path="/timeline"
+          path="/recits"
           element={
             <Suspense fallback={<LoadingFallback />}>
-              <Timeline />
+              <Recits />
             </Suspense>
           }
         />
+        <Route
+          path="/reperes"
+          element={
+            <Suspense fallback={<LoadingFallback />}>
+              <Reperes />
+            </Suspense>
+          }
+        />
+        <Route path="/blog" element={<Navigate to="/recits?type=articles" replace />} />
+        <Route path="/stories" element={<Navigate to="/recits?type=histoires" replace />} />
+        <Route path="/collections" element={<Navigate to="/recits?type=dossiers" replace />} />
+        <Route path="/timeline" element={<Navigate to="/reperes?type=dates" replace />} />
+        <Route path="/figures" element={<Navigate to="/reperes?type=personnalites" replace />} />
+        <Route path="/proverbs" element={<Navigate to="/reperes?type=proverbes" replace />} />
+        <Route path="/blog/:id" element={<BlogPostPage />} />
+        <Route path="/sources" element={<Sources />} />
+        <Route path="/contribute" element={<Contribute />} />
         <Route
           path="/timeline/:id"
           element={
@@ -177,31 +187,13 @@ function App() {
             </Suspense>
           }
         />
-        <Route path="/figures" element={<HistoricalFigures />} />
         <Route path="/figures/:id" element={<HistoricalFigureDetail />} />
-        <Route path="/collections" element={<Collections />} />
         <Route path="/collections/:id" element={<CollectionDetail />} />
-        <Route
-          path="/stories"
-          element={
-            <Suspense fallback={<LoadingFallback />}>
-              <Stories />
-            </Suspense>
-          }
-        />
         <Route
           path="/stories/:id"
           element={
             <Suspense fallback={<LoadingFallback />}>
               <StoryDetail />
-            </Suspense>
-          }
-        />
-        <Route
-          path="/proverbs"
-          element={
-            <Suspense fallback={<LoadingFallback />}>
-              <Proverbs />
             </Suspense>
           }
         />
