@@ -6,7 +6,6 @@ import {
   Clock,
   Compass,
   FileSearch,
-  HelpCircle,
   LayoutDashboard,
   LayoutGrid,
   Library,
@@ -17,13 +16,10 @@ import {
   ScrollText,
   Search,
   Settings,
-  ShoppingBag,
   UserRound,
-  UsersRound,
   type LucideIcon,
 } from 'lucide-react'
 import { useAuthStore } from '../../stores/authStore'
-import { useCartStore } from '../../stores/cartStore'
 import { useSettingsStore } from '../../stores/settingsStore'
 import { AdvancedSearch } from '../Search/AdvancedSearch'
 import './Header.css'
@@ -53,9 +49,6 @@ const resourceGroups: Array<{ title: string; items: ResourceItem[] }> = [
     title: 'Communauté',
     items: [
       { to: '/sources', label: 'Sources & provenance', desc: "D'où viennent nos contenus", icon: FileSearch },
-      { to: '/communities', label: 'Cercles de mémoire', desc: "Des groupes d'échange par thème", icon: UsersRound },
-      { to: '/quizzes', label: 'Apprendre', desc: 'Tester ses connaissances en jouant', icon: HelpCircle },
-      { to: '/shop', label: 'Créateurs & objets', desc: "L'artisanat de créateurs du continent", icon: ShoppingBag },
     ],
   },
 ]
@@ -70,7 +63,6 @@ interface HeaderProps {
 
 export const Header = ({ overlay = false }: HeaderProps) => {
   const { isAuthenticated, user, logout } = useAuthStore()
-  const itemCount = useCartStore((state) => state.getItemCount())
   const { settings, fetchSettings } = useSettingsStore()
   const [isResourcesOpen, setIsResourcesOpen] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
@@ -168,15 +160,6 @@ export const Header = ({ overlay = false }: HeaderProps) => {
               <Search size={20} strokeWidth={2} aria-hidden="true" />
             </button>
 
-            <Link
-              to="/cart"
-              className="mbn-icon-btn"
-              aria-label={itemCount ? `Panier, ${itemCount} article${itemCount > 1 ? 's' : ''}` : 'Panier'}
-            >
-              <ShoppingBag size={20} strokeWidth={2} aria-hidden="true" />
-              {itemCount > 0 && <span className="mbn-badge" aria-hidden="true">{itemCount}</span>}
-            </Link>
-
             {isAuthenticated ? (
               <div className="mbn-user" ref={userMenuRef}>
                 <button
@@ -195,7 +178,6 @@ export const Header = ({ overlay = false }: HeaderProps) => {
                     <span>{user?.email}</span>
                   </p>
                   <Link to="/dashboard"><LayoutDashboard size={18} aria-hidden="true" /> Mon espace</Link>
-                  <Link to="/communities"><UsersRound size={18} aria-hidden="true" /> Mes cercles</Link>
                   {user?.role === 'admin' && (
                     <Link to="/admin"><Settings size={18} aria-hidden="true" /> Administration</Link>
                   )}

@@ -3,14 +3,10 @@ import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { Home } from './pages/Home'
 import { Blog } from './pages/Blog'
 import { BlogPostPage } from './pages/BlogPost'
-import { Shop } from './pages/Shop'
-import { Cart } from './pages/Cart'
 import { Login } from './pages/Login'
 import { Register } from './pages/Register'
-import { Community } from './pages/Community'
-import { Communities } from './pages/Communities'
-import { CreateCommunity } from './pages/CreateCommunity'
-import { CommunityDetail } from './pages/CommunityDetail'
+// En pause (voir clean.md) : boutique, panier, paiement, commandes, cercles, fil social et quiz.
+// Les pages restent dans src/pages, mais elles ne sont plus routées.
 import { Sources } from './pages/Sources'
 import { Contribute } from './pages/Contribute'
 import { useAuthStore } from './stores/authStore'
@@ -41,8 +37,6 @@ const BlogAdmin = lazy(() => import('./pages/BlogAdmin').then(module => ({ defau
 const CountryDetail = lazy(() => import('./pages/CountryDetail').then(module => ({ default: module.CountryDetail })))
 const AdminDashboard = lazy(() => import('./pages/AdminDashboard').then(module => ({ default: module.AdminDashboard })))
 const Dashboard = lazy(() => import('./pages/Dashboard').then(module => ({ default: module.Dashboard })))
-const OrderDetail = lazy(() => import('./pages/OrderDetail').then(module => ({ default: module.OrderDetail })))
-const Checkout = lazy(() => import('./pages/Checkout').then(module => ({ default: module.Checkout })))
 const Timeline = lazy(() => import('./pages/Timeline').then(module => ({ default: module.Timeline })))
 const HistoricalFigures = lazy(() => import('./pages/HistoricalFigures').then(module => ({ default: module.HistoricalFigures })))
 const HistoricalFigureDetail = lazy(() => import('./pages/HistoricalFigureDetail').then(module => ({ default: module.HistoricalFigureDetail })))
@@ -51,8 +45,6 @@ const CollectionDetail = lazy(() => import('./pages/CollectionDetail').then(modu
 const TimelineDetail = lazy(() => import('./pages/TimelineDetail').then(module => ({ default: module.TimelineDetail })))
 const Stories = lazy(() => import('./pages/Stories').then(module => ({ default: module.Stories })))
 const StoryDetail = lazy(() => import('./pages/StoryDetail').then(module => ({ default: module.StoryDetail })))
-const Quizzes = lazy(() => import('./pages/Quizzes').then(module => ({ default: module.Quizzes })))
-const Quiz = lazy(() => import('./pages/Quiz').then(module => ({ default: module.Quiz })))
 const Proverbs = lazy(() => import('./pages/Proverbs').then(module => ({ default: module.Proverbs })))
 const MapPage = lazy(() => import('./pages/MapPage').then(module => ({ default: module.MapPage })))
 const SearchResults = lazy(() => import('./pages/SearchResults').then(module => ({ default: module.SearchResults })))
@@ -206,22 +198,6 @@ function App() {
           }
         />
         <Route
-          path="/quizzes"
-          element={
-            <Suspense fallback={<LoadingFallback />}>
-              <Quizzes />
-            </Suspense>
-          }
-        />
-        <Route
-          path="/quizzes/:id"
-          element={
-            <Suspense fallback={<LoadingFallback />}>
-              <Quiz />
-            </Suspense>
-          }
-        />
-        <Route
           path="/proverbs"
           element={
             <Suspense fallback={<LoadingFallback />}>
@@ -247,48 +223,12 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route path="/shop" element={<Shop />} />
-        <Route path="/cart" element={<Cart />} />
         <Route
           path="/search"
           element={
             <Suspense fallback={<LoadingFallback />}>
               <SearchResults />
             </Suspense>
-          }
-        />
-        <Route
-          path="/communities"
-          element={<Communities />}
-        />
-        <Route
-          path="/communities/create"
-          element={
-            <ProtectedRoute>
-              <CreateCommunity />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/communities/:id"
-          element={<CommunityDetail />}
-        />
-        <Route
-          path="/community"
-          element={
-            <ProtectedRoute>
-              <Community />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/checkout"
-          element={
-            <ProtectedRoute>
-              <Suspense fallback={<LoadingFallback />}>
-                <Checkout />
-              </Suspense>
-            </ProtectedRoute>
           }
         />
         <Route path="/login" element={<Login />} />
@@ -301,16 +241,6 @@ function App() {
             <ProtectedRoute>
               <Suspense fallback={<LoadingFallback />}>
                 <Dashboard />
-              </Suspense>
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/orders/:id"
-          element={
-            <ProtectedRoute>
-              <Suspense fallback={<LoadingFallback />}>
-                <OrderDetail />
               </Suspense>
             </ProtectedRoute>
           }
