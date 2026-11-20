@@ -241,7 +241,7 @@ export const CountryDetail = () => {
             <>
               {content.reperes.places.length > 0 && (
                 <RubriqueSection id="mbp-places" title="Lieux à situer">
-                  <ol className="mbp-list">
+                  <ol className="mbr-list">
                     {content.reperes.places.map((place, index) => (
                       <li key={place.name}>
                         <span className="mbp-index">{String(index + 1).padStart(2, '0')}</span>
@@ -292,7 +292,7 @@ export const CountryDetail = () => {
                 isEmpty={sources.length === 0 && content.notes.length === 0}
                 emptyLabel="Aucune source reliée pour l’instant."
               >
-                <ul className="mbp-list">
+                <ul className="mbr-list">
                   {sources.map((source) => (
                     <li key={source._id}>
                       <div>
@@ -311,7 +311,7 @@ export const CountryDetail = () => {
               </RubriqueSection>
               {content.media.length > 0 && (
                 <RubriqueSection id="mbp-media" title="Documents">
-                  <ul className="mbp-list">
+                  <ul className="mbr-list">
                     {content.media.map((item) => (
                       <li key={item.url}>
                         <h3>
@@ -327,7 +327,7 @@ export const CountryDetail = () => {
 
           {counts[tab] === 0 && <p className="mbr-empty">Rien n’est encore relié à cet onglet.</p>}
 
-          <aside className="mbp-contribute">
+          <aside className="mbr-aside">
             <h2>Vous connaissez {country.nameFr} ?</h2>
             <p>Proposez un récit, un proverbe ou une source. Chaque contribution est vérifiée avant publication.</p>
             <Link to="/contribute" className="mbr-button">

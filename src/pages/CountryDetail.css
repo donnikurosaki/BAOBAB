@@ -100,38 +100,6 @@
   gap: 48px;
 }
 
-/* Liste numérotée ou simple : lieux, sources, documents */
-.mbp-list {
-  padding: 8px !important;
-  border-radius: 24px;
-  background: var(--brand-blanc);
-}
-
-.mbp-list li {
-  display: flex;
-  gap: 18px;
-  padding: 18px 16px;
-  border-bottom: 1px solid var(--brand-trait);
-}
-
-.mbp-list li:last-child {
-  border-bottom: 0;
-}
-
-.mbp-list h3 {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10px;
-  font-size: 1.25rem;
-}
-
-.mbp-list p:not(.mbr-meta) {
-  --readable-text: var(--brand-texte-doux);
-  margin-top: 4px;
-  color: var(--brand-texte-doux);
-}
-
 .mbp-index,
 .mbp-type {
   --readable-text: var(--brand-foret);
@@ -162,24 +130,6 @@
   background: var(--brand-blanc);
   color: var(--brand-foret);
   font-size: 0.875rem;
-}
-
-.mbp-contribute {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 28px;
-  border-radius: 24px;
-  background: var(--brand-vert-pale);
-}
-
-.mbp-contribute h2 {
-  font-size: 1.5rem;
-}
-
-.mbp-contribute p {
-  --readable-text: var(--brand-texte-doux);
-  color: var(--brand-texte-doux);
 }
 
 @media (max-width: 860px) {
