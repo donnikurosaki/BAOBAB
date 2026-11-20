@@ -1,8 +1,12 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Link, useSearchParams } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { ArrowRight, Search } from 'lucide-react'
 import { Layout } from '../components/Layout/Layout'
+import { RubriqueSection } from '../components/UX/RubriqueSection'
+import { TypeChips } from '../components/UX/TypeChips'
+import { useTypeFilter } from '../hooks/useTypeFilter'
 import { blogService, collectionService, storyService } from '../services/api'
+import { fetchLists, joinMeta } from '../utils'
 import './Rubriques.css'
 
 // Récits rassemble trois anciennes rubriques (clean.md) :
@@ -19,22 +23,12 @@ interface Recit {
   to: string
 }
 
-const TYPES: Array<{ key: RecitType | 'tous'; label: string }> = [
+const TYPES = [
   { key: 'tous', label: 'Tous' },
   { key: 'articles', label: 'Articles' },
   { key: 'histoires', label: 'Histoires' },
   { key: 'dossiers', label: 'Dossiers' },
-]
-
-// Les services renvoient tantôt un tableau, tantôt { data }, { stories }…
-const toList = (data: unknown, key: string): any[] => {
-  if (Array.isArray(data)) return data
-  const record = data as Record<string, unknown> | null
-  const list = record?.[key] ?? record?.data ?? record?.blogs ?? record?.posts
-  return Array.isArray(list) ? list : []
-}
-
-const joinMeta = (...parts: Array<string | undefined | false>) => parts.filter(Boolean).join(' · ')
+] as const
 
 const minutes = (value?: number) => (value ? `${value} min` : undefined)
 
@@ -69,24 +63,22 @@ const normalize = (blogs: any[], stories: any[], collections: any[]): Recit[] =>
 ]
 
 export const Recits = () => {
-  const [searchParams, setSearchParams] = useSearchParams()
   const [recits, setRecits] = useState<Recit[]>([])
   const [loading, setLoading] = useState(true)
   const [query, setQuery] = useState('')
-  const active = (searchParams.get('type') as RecitType | null) ?? 'tous'
+  const [active, setType] = useTypeFilter<RecitType | 'tous'>('tous')
 
   useEffect(() => {
     let cancelled = false
-    // Une rubrique en panne ne doit pas vider les deux autres
-    Promise.allSettled([blogService.getAll(), storyService.getAll(), collectionService.getAll()]).then(
-      ([blogs, stories, collections]) => {
-        if (cancelled) return
-        const value = (result: PromiseSettledResult<any>, key: string) =>
-          result.status === 'fulfilled' ? toList(result.value.data, key) : []
-        setRecits(normalize(value(blogs, 'blogs'), value(stories, 'stories'), value(collections, 'collections')))
-        setLoading(false)
-      }
-    )
+    fetchLists([
+      [blogService.getAll(), 'blogs'],
+      [storyService.getAll(), 'stories'],
+      [collectionService.getAll(), 'collections'],
+    ]).then(([blogs, stories, collections]) => {
+      if (cancelled) return
+      setRecits(normalize(blogs, stories, collections))
+      setLoading(false)
+    })
     return () => {
       cancelled = true
     }
@@ -111,13 +103,6 @@ export const Recits = () => {
   const dossiers = visible.filter((recit) => recit.type === 'dossiers')
   const [feature, ...rest] = stories
 
-  const setType = (key: RecitType | 'tous') => {
-    const next = new URLSearchParams(searchParams)
-    if (key === 'tous') next.delete('type')
-    else next.set('type', key)
-    setSearchParams(next, { replace: true })
-  }
-
   return (
     <Layout>
       <div className="mbr">
@@ -130,19 +115,7 @@ export const Recits = () => {
         </header>
 
         <div className="mbr-filters">
-          <div className="mbr-chips" role="group" aria-label="Type de récit">
-            {TYPES.map(({ key, label }) => (
-              <button
-                key={key}
-                type="button"
-                className="mbr-chip"
-                aria-pressed={active === key}
-                onClick={() => setType(key)}
-              >
-                {label} <span>{counts[key]}</span>
-              </button>
-            ))}
-          </div>
+          <TypeChips label="Type de récit" options={TYPES} counts={counts} active={active} onChange={setType} />
           <label className="mbr-search">
             <Search size={16} aria-hidden="true" />
             <input
@@ -197,13 +170,7 @@ export const Recits = () => {
             )}
 
             {dossiers.length > 0 && (
-              <section className="mbr-section" aria-labelledby="mbr-dossiers">
-                <div className="mbr-section-head">
-                  <div>
-                    <h2 id="mbr-dossiers">Dossiers</h2>
-                    <p>Des récits rassemblés autour d’un même sujet.</p>
-                  </div>
-                </div>
+              <RubriqueSection id="mbr-dossiers" title="Dossiers" subtitle="Des récits rassemblés autour d’un même sujet.">
                 <ul className="mbr-dossiers">
                   {dossiers.map((dossier) => (
                     <li key={dossier.id}>
@@ -215,7 +182,7 @@ export const Recits = () => {
                     </li>
                   ))}
                 </ul>
-              </section>
+              </RubriqueSection>
             )}
           </>
         )}

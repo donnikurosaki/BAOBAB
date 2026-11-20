@@ -19,9 +19,7 @@
   text-decoration: none;
 }
 
-.mbr a:focus-visible,
-.mbr button:focus-visible,
-.mbr input:focus-visible {
+.mbr a:focus-visible {
   outline: 2px solid var(--brand-foret);
   outline-offset: 3px;
 }
@@ -102,42 +100,6 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-}
-
-.mbr-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.mbr-chip {
-  --readable-text: var(--brand-foret);
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  min-height: 40px;
-  padding: 8px 14px;
-  border: 0;
-  border-radius: 999px;
-  background: var(--brand-blanc);
-  color: var(--brand-foret);
-  font: 500 0.875rem/1.4 var(--font-texte);
-  cursor: pointer;
-}
-
-.mbr-chip span {
-  opacity: 0.55;
-}
-
-/* button-system.css impose une couleur aux boutons : on la reprend ici */
-.mbr .mbr-chip {
-  color: var(--brand-foret) !important;
-}
-
-.mbr .mbr-chip[aria-pressed='true'] {
-  --readable-text: var(--brand-blanc);
-  background: var(--brand-foret);
-  color: var(--brand-blanc) !important;
 }
 
 .mbr-search {
@@ -540,15 +502,6 @@
   .mbr-search,
   .mbr-search input {
     width: 100%;
-  }
-
-  .mbr-chips {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-  }
-
-  .mbr-chip {
-    flex: none;
   }
 
   .mbr-timeline {

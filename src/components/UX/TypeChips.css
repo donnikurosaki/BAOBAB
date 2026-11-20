@@ -1,0 +1,47 @@
+.mbr-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* button-system.css impose une couleur aux boutons : on la reprend ici */
+.mbr-chips .mbr-chip {
+  --readable-text: var(--brand-foret);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 8px 14px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--brand-blanc);
+  color: var(--brand-foret) !important;
+  font: 500 0.875rem/1.4 var(--font-texte);
+  cursor: pointer;
+}
+
+.mbr-chip span {
+  opacity: 0.55;
+}
+
+.mbr-chips .mbr-chip[aria-pressed='true'] {
+  --readable-text: var(--brand-blanc);
+  background: var(--brand-foret);
+  color: var(--brand-blanc) !important;
+}
+
+.mbr-chip:focus-visible {
+  outline: 2px solid var(--brand-foret);
+  outline-offset: 3px;
+}
+
+@media (max-width: 760px) {
+  .mbr-chips {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+  }
+
+  .mbr-chip {
+    flex: none;
+  }
+}
