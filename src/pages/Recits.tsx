@@ -1,7 +1,8 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowRight, ChevronDown, Search } from 'lucide-react'
+import { ArrowRight, Search } from 'lucide-react'
 import { Layout } from '../components/Layout/Layout'
+import { Dropdown } from '../components/UX/Dropdown'
 import { TypeChips } from '../components/UX/TypeChips'
 import { useParamState } from '../hooks/useParamState'
 import { DOSSIERS, RECITS, type RecitCard } from '../data/recitsContent'
@@ -25,8 +26,14 @@ export const Recits = () => {
   const [theme, setTheme] = useState('')
   const [type, setType] = useParamState<(typeof TYPES)[number]['key']>('type', 'tous')
 
-  const paysOptions = useMemo(() => [...new Set([...RECITS, ...DOSSIERS].map((r) => r.pays).filter(Boolean))].sort(), [])
-  const themeOptions = useMemo(() => [...new Set([...RECITS, ...DOSSIERS].map((r) => r.theme).filter(Boolean))].sort(), [])
+  const paysOptions = useMemo(
+    () => [...new Set([...RECITS, ...DOSSIERS].map((r) => r.pays).filter((name): name is string => Boolean(name)))].sort(),
+    [],
+  )
+  const themeOptions = useMemo(
+    () => [...new Set([...RECITS, ...DOSSIERS].map((r) => r.theme).filter((name): name is string => Boolean(name)))].sort(),
+    [],
+  )
 
   const keep = (recit: RecitCard) =>
     (type === 'tous' || recit.type === type) &&
@@ -74,30 +81,8 @@ export const Recits = () => {
         <div className="mrc-filters">
           <TypeChips label="Type de récit" options={TYPES} counts={counts} active={type} onChange={setType} />
           <div className="mrc-refine">
-            <label className="mrc-select">
-              <span className="sr-only">Filtrer par pays</span>
-              <select value={pays} onChange={(event) => setPays(event.target.value)}>
-                <option value="">Pays : tous</option>
-                {paysOptions.map((name) => (
-                  <option key={name} value={name}>
-                    Pays : {name}
-                  </option>
-                ))}
-              </select>
-              <ChevronDown size={16} strokeWidth={1.6} aria-hidden="true" />
-            </label>
-            <label className="mrc-select">
-              <span className="sr-only">Filtrer par thème</span>
-              <select value={theme} onChange={(event) => setTheme(event.target.value)}>
-                <option value="">Thème : tous</option>
-                {themeOptions.map((name) => (
-                  <option key={name} value={name}>
-                    Thème : {name}
-                  </option>
-                ))}
-              </select>
-              <ChevronDown size={16} strokeWidth={1.6} aria-hidden="true" />
-            </label>
+            <Dropdown label="Pays" allLabel="Pays : tous" value={pays} options={paysOptions} onChange={setPays} />
+            <Dropdown label="Thème" allLabel="Thème : tous" value={theme} options={themeOptions} onChange={setTheme} />
             <label className="mrc-search">
               <Search size={16} strokeWidth={1.6} aria-hidden="true" />
               <input

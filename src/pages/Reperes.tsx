@@ -1,17 +1,17 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { UserRound } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import { Layout } from '../components/Layout/Layout'
-import { RubriqueSection } from '../components/UX/RubriqueSection'
+import { Dropdown } from '../components/UX/Dropdown'
 import { TypeChips } from '../components/UX/TypeChips'
 import { useParamState } from '../hooks/useParamState'
-import { figureService, proverbService, timelineService } from '../services/api'
-import { fetchLists, joinMeta } from '../utils'
-import './Rubriques.css'
+import { DATES, PERSONNALITES, PROVERBES } from '../data/reperesContent'
+import './Reperes.css'
 
-// Repères rassemble trois anciennes rubriques (clean.md) :
-// la chronologie (/timeline), les personnalités (/figures) et les proverbes (/proverbs).
-type RepereType = 'dates' | 'personnalites' | 'proverbes'
+// Repères d'après la maquette Figma « Repères / Desktop 1440 » et « Mobile 390 ».
+// Rassemble la chronologie, les personnalités et les proverbes (clean.md).
+
+type RepereType = 'tout' | 'dates' | 'personnalites' | 'proverbes'
 
 const TYPES = [
   { key: 'tout', label: 'Tout' },
@@ -20,168 +20,132 @@ const TYPES = [
   { key: 'proverbes', label: 'Proverbes' },
 ] as const
 
-// Année « signée » lue dans la date ISO, sans passer par Date (qui décale les années anciennes).
-const yearOf = (iso?: string | null) => {
-  const match = iso ? /^([+-]?)(\d{1,6})-/.exec(iso) : null
-  if (!match) return undefined
-  return match[1] === '-' ? -Number(match[2]) : Number(match[2])
-}
-
-const formatYear = (year: number) => (year < 0 ? `${-year} av. J.-C.` : String(year))
-
-// Les dates avant notre ère sont enregistrées en positif dans la base (bug d'import, voir clean.md).
-// En attendant la correction des données : une date « Antiquité » postérieure à l'an 1000 est avant J.-C.
-const eventYear = (event: any) => {
-  const year = yearOf(event.date)
-  if (year === undefined) return undefined
-  return event.period === 'Antiquité' && year > 1000 ? -year : year
-}
-
-// Même bug pour les personnalités : une naissance après la mort signifie des années avant J.-C.
-const lifeSpan = (figure: any) => {
-  const birth = yearOf(figure.birthDate)
-  const death = yearOf(figure.deathDate)
-  if (birth === undefined) return undefined
-  if (death === undefined) return `Né en ${formatYear(birth)}`
-  return birth > death ? `${birth} – ${death} av. J.-C.` : `${birth} – ${death}`
-}
-
 export const Reperes = () => {
-  const [events, setEvents] = useState<any[]>([])
-  const [figures, setFigures] = useState<any[]>([])
-  const [proverbs, setProverbs] = useState<any[]>([])
-  const [loading, setLoading] = useState(true)
-  const [active, setType] = useParamState<RepereType | 'tout'>('type', 'tout')
+  const [type, setType] = useParamState<RepereType>('type', 'tout')
+  const [pays, setPays] = useState('')
+  const [epoque, setEpoque] = useState('')
 
-  useEffect(() => {
-    let cancelled = false
-    fetchLists([
-      [timelineService.getAll({ limit: 100 }), 'events'],
-      [figureService.getAll({ limit: 100 }), 'figures'],
-      [proverbService.getAll({ limit: 100 }), 'proverbs'],
-    ]).then(([eventList, figureList, proverbList]) => {
-      if (cancelled) return
-      setEvents(
-        eventList
-          .map((event) => ({ ...event, year: eventYear(event) }))
-          .filter((event) => event.year !== undefined)
-          .sort((a, b) => a.year - b.year)
-      )
-      setFigures(figureList)
-      setProverbs(proverbList)
-      setLoading(false)
-    })
-    return () => {
-      cancelled = true
-    }
-  }, [])
-
-  const counts = useMemo(
-    () => ({
-      tout: events.length + figures.length + proverbs.length,
-      dates: events.length,
-      personnalites: figures.length,
-      proverbes: proverbs.length,
-    }),
-    [events, figures, proverbs]
+  const paysOptions = useMemo(
+    () => [...new Set([...DATES, ...PERSONNALITES].map((item) => item.pays))].sort(),
+    [],
   )
+  const epoqueOptions = useMemo(() => [...new Set(DATES.map((item) => item.epoque))], [])
 
-  const shows = (type: RepereType) => !loading && (active === 'tout' || active === type)
+  const dates = DATES.filter((d) => (type === 'tout' || type === 'dates') && (!pays || d.pays === pays) && (!epoque || d.epoque === epoque))
+  const personnalites = PERSONNALITES.filter((p) => (type === 'tout' || type === 'personnalites') && (!pays || p.pays === pays))
+  const proverbes = PROVERBES.filter(() => type === 'tout' || type === 'proverbes')
+
+  const counts = {
+    tout: DATES.length + PERSONNALITES.length + PROVERBES.length,
+    dates: DATES.length,
+    personnalites: PERSONNALITES.length,
+    proverbes: PROVERBES.length,
+  }
 
   return (
-    <Layout>
-      <div className="mbr">
-        <header className="mbr-intro">
-          <div>
-            <p className="mbr-eyebrow">Repères</p>
-            <h1>Les dates, les figures et les paroles</h1>
-          </div>
-          <p>
-            Les grands moments du continent, celles et ceux qui les ont portés, et la sagesse transmise de bouche à
-            oreille.
-          </p>
+    <Layout fullWidth>
+      <div className="mrp">
+        <header className="mrp-intro">
+          <h1>Des repères pour s’orienter</h1>
+          <p>Dates charnières, personnalités et proverbes : de quoi poser un contexte, situer une époque, comprendre un mot. Chaque entrée renvoie à sa source.</p>
         </header>
 
-        <div className="mbr-filters">
-          <TypeChips label="Type de repère" options={TYPES} counts={counts} active={active} onChange={setType} />
+        <div className="mrp-filters">
+          <TypeChips label="Type de repère" options={TYPES} counts={counts} active={type} onChange={setType} />
+          <div className="mrp-refine">
+            <Dropdown label="Pays" allLabel="Pays : tous" value={pays} options={paysOptions} onChange={setPays} />
+            <Dropdown label="Époque" allLabel="Époque : toutes" value={epoque} options={epoqueOptions} onChange={setEpoque} />
+          </div>
         </div>
 
-        {loading && <p className="mbr-empty">Chargement des repères…</p>}
+        {dates.length > 0 && (
+          <section className="mrp-dates">
+            <header className="mrp-head mrp-head--clair">
+              <div>
+                <h2>Dates</h2>
+                <p>Cinq dates pour poser le récit du continent.</p>
+              </div>
+              <Link to="/reperes?type=dates" className="mrp-more">
+                Toutes les dates <ArrowRight size={16} aria-hidden="true" />
+              </Link>
+            </header>
 
-        {shows('dates') && (
-          <RubriqueSection
-            id="mbr-dates"
-            className="mbr-dates"
-            title="Grandes dates"
-            subtitle="De l’Égypte des pharaons aux indépendances."
-            isEmpty={events.length === 0}
-            emptyLabel="Aucune date pour l’instant."
-          >
-            <ol className="mbr-timeline">
-              {events.map((event) => (
-                <li key={event._id}>
-                  <Link to={`/timeline/${event._id}`}>
-                    <strong>{formatYear(event.year)}</strong>
-                  </Link>
-                  <span>{event.title}</span>
-                  {event.location?.region && <small>{event.location.region}</small>}
+            {/* Desktop : frise horizontale. Mobile : frise verticale dans la carte. */}
+            <ol className="mrp-frise">
+              {dates.map((date) => (
+                <li key={date.id}>
+                  <span className="mrp-point" style={{ background: date.couleur }} aria-hidden="true" />
+                  <span className="mrp-date-card">
+                    <strong>{date.annee}</strong>
+                    <span className="mrp-date-titre">{date.titre}</span>
+                    <span className="mrp-date-pays">
+                      <i style={{ background: date.couleur }} />
+                      {date.pays}
+                    </span>
+                  </span>
                 </li>
               ))}
             </ol>
-          </RubriqueSection>
+          </section>
         )}
 
-        {shows('personnalites') && (
-          <RubriqueSection
-            id="mbr-people"
-            title="Personnalités"
-            subtitle="Celles et ceux qui ont marqué l’histoire."
-            isEmpty={figures.length === 0}
-            emptyLabel="Aucune personnalité pour l’instant."
-          >
-            <ul className="mbr-people">
-              {figures.map((figure) => {
-                const image = figure.image || figure.images?.[0]
-                return (
-                  <li key={figure._id}>
-                    <Link to={`/figures/${figure._id}`} className="mbr-person">
-                      <div
-                        className="mbr-person-media"
-                        style={image ? { backgroundImage: `url(${image})` } : undefined}
-                        aria-hidden="true"
-                      >
-                        {!image && <UserRound size={40} strokeWidth={1.5} />}
-                      </div>
-                      <div className="mbr-person-body">
-                        <p className="mbr-meta">{joinMeta(figure.birthPlace?.location, lifeSpan(figure))}</p>
-                        <h3>{figure.name}</h3>
-                        {figure.shortBiography && <p>{figure.shortBiography}</p>}
-                      </div>
-                    </Link>
-                  </li>
-                )
-              })}
-            </ul>
-          </RubriqueSection>
-        )}
-
-        {shows('proverbes') && (
-          <RubriqueSection
-            id="mbr-proverbs"
-            title="Proverbes"
-            subtitle="La sagesse transmise de bouche à oreille."
-            isEmpty={proverbs.length === 0}
-            emptyLabel="Aucun proverbe pour l’instant."
-          >
-            <ul className="mbr-proverbs">
-              {proverbs.map((proverb) => (
-                <li key={proverb._id} className="mbr-proverb">
-                  <blockquote>« {proverb.text.replace(/^«\s*|\s*»$/g, '')} »</blockquote>
-                  <p className="mbr-meta">{joinMeta(proverb.countryName || proverb.country?.nameFr, proverb.language)}</p>
+        {personnalites.length > 0 && (
+          <section className="mrp-section">
+            <header className="mrp-head">
+              <div>
+                <h2>Personnalités</h2>
+                <p>Celles et ceux qui font encore récit.</p>
+              </div>
+              <Link to="/reperes?type=personnalites" className="mrp-more">
+                Toutes les personnalités <ArrowRight size={16} aria-hidden="true" />
+              </Link>
+            </header>
+            <ul className="mrp-figures">
+              {personnalites.map((personnalite) => (
+                <li key={personnalite.id}>
+                  <div className="mrp-figure">
+                    <img src={personnalite.portrait} alt={personnalite.nom} width={261} height={240} loading="lazy" />
+                    <div>
+                      <p className="mrp-kicker">{personnalite.dates}</p>
+                      <h3>{personnalite.nom}</h3>
+                      <p className="mrp-figure-role">{personnalite.role}</p>
+                    </div>
+                  </div>
                 </li>
               ))}
             </ul>
-          </RubriqueSection>
+          </section>
+        )}
+
+        {proverbes.length > 0 && (
+          <section className="mrp-section mrp-section--last">
+            <header className="mrp-head">
+              <div>
+                <h2>Proverbes</h2>
+                <p>La sagesse du continent, transmise en une phrase.</p>
+              </div>
+              <Link to="/reperes?type=proverbes" className="mrp-more">
+                Tous les proverbes <ArrowRight size={16} aria-hidden="true" />
+              </Link>
+            </header>
+            <ul className="mrp-proverbes">
+              {proverbes.map((proverbe) => (
+                <li key={proverbe.id} className={proverbe.sombre ? 'mrp-proverbe--sombre' : undefined}>
+                  <blockquote>
+                    <span className="mrp-guillemet" aria-hidden="true">
+                      «
+                    </span>
+                    {proverbe.citation}»
+                  </blockquote>
+                  <p className="mrp-kicker">{proverbe.origine}</p>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {dates.length + personnalites.length + proverbes.length === 0 && (
+          <p className="mrp-empty">Aucun repère ne correspond pour l’instant.</p>
         )}
       </div>
     </Layout>
