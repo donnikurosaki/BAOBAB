@@ -75,7 +75,8 @@ function App() {
   const previousPathRef = useRef(location.pathname)
   const fetchSettings = useSettingsStore((state) => state.fetchSettings)
 
-  const routeKey = `${location.pathname}${location.search}`
+  // Seul le chemin rejoue la transition : un filtre ou un onglet (?type=, ?onglet=) ne remonte pas la page.
+  const routeKey = location.pathname
 
   // Appliquer le thème au document
   useEffect(() => {
@@ -100,10 +101,12 @@ function App() {
     const timers: number[] = []
     previousPathRef.current = location.pathname
 
-    document.documentElement.classList.add('route-transitioning')
-    timers.push(window.setTimeout(() => {
-      document.documentElement.classList.remove('route-transitioning')
-    }, reduceMotion ? 0 : 520))
+    if (pathChanged) {
+      document.documentElement.classList.add('route-transitioning')
+      timers.push(window.setTimeout(() => {
+        document.documentElement.classList.remove('route-transitioning')
+      }, reduceMotion ? 0 : 520))
+    }
 
     const scrollToHash = (attempt = 0) => {
       const target = document.getElementById(decodeURIComponent(location.hash.slice(1)))

@@ -4,7 +4,7 @@ import { UserRound } from 'lucide-react'
 import { Layout } from '../components/Layout/Layout'
 import { RubriqueSection } from '../components/UX/RubriqueSection'
 import { TypeChips } from '../components/UX/TypeChips'
-import { useTypeFilter } from '../hooks/useTypeFilter'
+import { useParamState } from '../hooks/useParamState'
 import { figureService, proverbService, timelineService } from '../services/api'
 import { fetchLists, joinMeta } from '../utils'
 import './Rubriques.css'
@@ -51,7 +51,7 @@ export const Reperes = () => {
   const [figures, setFigures] = useState<any[]>([])
   const [proverbs, setProverbs] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
-  const [active, setType] = useTypeFilter<RepereType | 'tout'>('tout')
+  const [active, setType] = useParamState<RepereType | 'tout'>('type', 'tout')
 
   useEffect(() => {
     let cancelled = false

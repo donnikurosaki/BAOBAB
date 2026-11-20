@@ -4,7 +4,7 @@ import { ArrowRight, Search } from 'lucide-react'
 import { Layout } from '../components/Layout/Layout'
 import { RubriqueSection } from '../components/UX/RubriqueSection'
 import { TypeChips } from '../components/UX/TypeChips'
-import { useTypeFilter } from '../hooks/useTypeFilter'
+import { useParamState } from '../hooks/useParamState'
 import { blogService, collectionService, storyService } from '../services/api'
 import { fetchLists, joinMeta } from '../utils'
 import './Rubriques.css'
@@ -66,7 +66,7 @@ export const Recits = () => {
   const [recits, setRecits] = useState<Recit[]>([])
   const [loading, setLoading] = useState(true)
   const [query, setQuery] = useState('')
-  const [active, setType] = useTypeFilter<RecitType | 'tous'>('tous')
+  const [active, setType] = useParamState<RecitType | 'tous'>('type', 'tous')
 
   useEffect(() => {
     let cancelled = false

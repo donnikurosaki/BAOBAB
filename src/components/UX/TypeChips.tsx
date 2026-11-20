@@ -6,11 +6,13 @@ interface TypeChipsProps<T extends string> {
   counts: Record<T, number>
   active: T
   onChange: (key: T) => void
+  /** « tabs » : barre d'onglets soulignée (fiche pays) au lieu de pastilles */
+  variant?: 'chips' | 'tabs'
 }
 
-/** Pastilles de filtre avec compteur (maquette Figma « Puce/Région »). */
-export const TypeChips = <T extends string>({ label, options, counts, active, onChange }: TypeChipsProps<T>) => (
-  <div className="mbr-chips" role="group" aria-label={label}>
+/** Choix d'une vue avec compteur : pastilles (maquette « Puce/Région ») ou onglets. */
+export const TypeChips = <T extends string>({ label, options, counts, active, onChange, variant = 'chips' }: TypeChipsProps<T>) => (
+  <div className={`mbr-chips mbr-chips--${variant}`} role="group" aria-label={label}>
     {options.map(({ key, label: optionLabel }) => (
       <button key={key} type="button" className="mbr-chip" aria-pressed={active === key} onClick={() => onChange(key)}>
         {optionLabel} <span>{counts[key]}</span>
