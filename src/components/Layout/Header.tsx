@@ -1,51 +1,35 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react'
-import { createPortal } from 'react-dom'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
-import {
-  BookOpen,
-  Compass,
-  LayoutDashboard,
-  Landmark,
-  LogOut,
-  Map,
-  PenLine,
-  Search,
-  Settings,
-  UserRound,
-  type LucideIcon,
-} from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { Link, useLocation } from 'react-router-dom'
+import { ArrowRight, Menu, Search, Settings, X } from 'lucide-react'
 import { useAuthStore } from '../../stores/authStore'
 import { useSettingsStore } from '../../stores/settingsStore'
 import { AdvancedSearch } from '../Search/AdvancedSearch'
 import './Header.css'
 
-type DockItem = { to: string; label: string; icon: LucideIcon; also?: string[] }
+// Navigation de la maquette Figma : composant « Navigation/Claire », sa variante posée sur la hero,
+// et le cadre « Mobile 390 / Menu ouvert ».
+type NavItem = { to: string; label: string; also?: string[] }
 
-// Navigation à 5 entrées (clean.md). `also` : anciennes adresses ou pages de détail rattachées à l'entrée.
-const dockItems: DockItem[] = [
-  { to: '/', label: 'Accueil', icon: Compass },
-  { to: '/map', label: 'Explorer', icon: Map, also: ['/country'] },
-  { to: '/recits', label: 'Récits', icon: BookOpen, also: ['/blog', '/stories', '/collections'] },
-  { to: '/reperes', label: 'Repères', icon: Landmark, also: ['/timeline', '/figures', '/proverbs'] },
-  { to: '/contribute', label: 'Contribuer', icon: PenLine, also: ['/sources'] },
+// Les 5 entrées de clean.md. `also` : anciennes adresses ou pages de détail rattachées à l'entrée.
+const NAV_ITEMS: NavItem[] = [
+  { to: '/', label: 'Accueil' },
+  { to: '/map', label: 'Explorer', also: ['/country'] },
+  { to: '/recits', label: 'Récits', also: ['/blog', '/stories', '/collections'] },
+  { to: '/reperes', label: 'Repères', also: ['/timeline', '/figures', '/proverbs'] },
+  { to: '/contribute', label: 'Contribuer', also: ['/sources'] },
 ]
 
 interface HeaderProps {
-  /** La barre du haut se pose sur le contenu (page d'accueil plein écran) */
+  /** La barre se pose sur la hero verte de l'accueil : logo blanc, pastilles en verre */
   overlay?: boolean
 }
 
 export const Header = ({ overlay = false }: HeaderProps) => {
-  const { isAuthenticated, user, logout } = useAuthStore()
+  const { isAuthenticated, user } = useAuthStore()
   const { settings, fetchSettings } = useSettingsStore()
   const [isSearchOpen, setIsSearchOpen] = useState(false)
-  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
-  const [indicator, setIndicator] = useState<{ x: number; width: number } | null>(null)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
   const location = useLocation()
-  const navigate = useNavigate()
-  const trackRef = useRef<HTMLDivElement>(null)
-  const userMenuRef = useRef<HTMLDivElement>(null)
-
   const platformName = settings?.platformName || 'MonBaobab'
 
   useEffect(() => {
@@ -54,152 +38,99 @@ export const Header = ({ overlay = false }: HeaderProps) => {
 
   useEffect(() => {
     setIsSearchOpen(false)
-    setIsUserMenuOpen(false)
+    setIsMenuOpen(false)
   }, [location.pathname])
 
   useEffect(() => {
-    const onPointerDown = (event: PointerEvent) => {
-      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) setIsUserMenuOpen(false)
-    }
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key !== 'Escape') return
-      setIsUserMenuOpen(false)
       setIsSearchOpen(false)
+      setIsMenuOpen(false)
     }
-    document.addEventListener('pointerdown', onPointerDown)
     document.addEventListener('keydown', onKeyDown)
-    return () => {
-      document.removeEventListener('pointerdown', onPointerDown)
-      document.removeEventListener('keydown', onKeyDown)
-    }
+    return () => document.removeEventListener('keydown', onKeyDown)
   }, [])
 
   const matches = (to: string) =>
     to === '/' ? location.pathname === '/' : location.pathname === to || location.pathname.startsWith(`${to}/`)
-  const isActive = (item: DockItem) => matches(item.to) || (item.also ?? []).some(matches)
-  const activeKey = dockItems.find(isActive)?.to
+  const isActive = (item: NavItem) => matches(item.to) || (item.also ?? []).some(matches)
 
-  // L'indicateur crème glisse sous l'élément actif ; il suit aussi les changements de taille
-  // (sur mobile, l'élément actif s'élargit pour afficher son libellé)
-  useLayoutEffect(() => {
-    const track = trackRef.current
-    if (!track) return
-    const measure = () => {
-      const target = activeKey ? track.querySelector<HTMLElement>(`[data-key="${activeKey}"]`) : null
-      setIndicator(target ? { x: target.offsetLeft, width: target.offsetWidth } : null)
-    }
-    measure()
-    const observer = new ResizeObserver(measure)
-    track.querySelectorAll('[data-key]').forEach((el) => observer.observe(el))
-    return () => observer.disconnect()
-  }, [activeKey])
+  // Bouton de droite : « Mon espace » une fois connecté, sinon « Rejoindre » (ou « Explorer l'atlas » sur la hero)
+  const cta = isAuthenticated
+    ? { to: '/dashboard', label: 'Mon espace' }
+    : overlay
+      ? { to: '/map', label: 'Explorer l’atlas' }
+      : { to: '/register', label: 'Rejoindre' }
 
-  const handleLogout = () => {
-    logout()
-    setIsUserMenuOpen(false)
-    navigate('/')
-  }
+  const links = (className: string) =>
+    NAV_ITEMS.map((item) => (
+      <Link key={item.to} to={item.to} className={className} aria-current={isActive(item) ? 'page' : undefined}>
+        {item.label}
+        {className === 'mbn-menu-link' && <ArrowRight size={20} aria-hidden="true" />}
+      </Link>
+    ))
 
   return (
-    <>
-      <header className="mbn" data-overlay={overlay || undefined}>
-        <div className="mbn-bar">
-          <Link to="/" className="mbn-logo" aria-label={`${platformName}, accueil`}>
-            <img src="/Logo/Fichier%203.svg" alt="" width="132" height="44" />
+    <header className="mbn" data-overlay={overlay || undefined} data-menu-open={isMenuOpen || undefined}>
+      <div className="mbn-bar">
+        <Link to="/" className="mbn-logo" aria-label={`${platformName}, accueil`}>
+          <img src={overlay || isMenuOpen ? '/Logo/Fichier%207.svg' : '/Logo/Fichier%203.svg'} alt="" width="144" height="48" />
+        </Link>
+
+        <nav className="mbn-links" aria-label="Navigation principale">
+          {links('mbn-link')}
+        </nav>
+
+        <div className="mbn-actions">
+          <button
+            type="button"
+            className="mbn-round"
+            aria-label="Rechercher"
+            aria-expanded={isSearchOpen}
+            onClick={() => setIsSearchOpen((open) => !open)}
+          >
+            <Search size={20} strokeWidth={1.8} aria-hidden="true" />
+          </button>
+          {user?.role === 'admin' && (
+            <Link to="/admin" className="mbn-round mbn-desktop" aria-label="Administration">
+              <Settings size={20} strokeWidth={1.8} aria-hidden="true" />
+            </Link>
+          )}
+          <Link to={cta.to} className="mbn-cta mbn-desktop">
+            {cta.label} {!overlay && <ArrowRight size={18} aria-hidden="true" />}
           </Link>
-
-          <div className="mbn-actions">
-            <button
-              type="button"
-              className="mbn-icon-btn"
-              aria-label="Rechercher"
-              aria-expanded={isSearchOpen}
-              onClick={() => setIsSearchOpen((open) => !open)}
-            >
-              <Search size={20} strokeWidth={2} aria-hidden="true" />
-            </button>
-
-            {isAuthenticated ? (
-              <div className="mbn-user" ref={userMenuRef}>
-                <button
-                  type="button"
-                  className="mbn-avatar"
-                  aria-label="Mon compte"
-                  aria-expanded={isUserMenuOpen}
-                  aria-controls="mbn-user-menu"
-                  onClick={() => setIsUserMenuOpen((open) => !open)}
-                >
-                  {user?.name?.charAt(0).toUpperCase() || 'U'}
-                </button>
-                <div id="mbn-user-menu" className="mbn-menu" data-open={isUserMenuOpen || undefined} inert={!isUserMenuOpen}>
-                  <p className="mbn-menu-head">
-                    <strong>{user?.name || 'Utilisateur'}</strong>
-                    <span>{user?.email}</span>
-                  </p>
-                  <Link to="/dashboard"><LayoutDashboard size={18} aria-hidden="true" /> Mon espace</Link>
-                  {user?.role === 'admin' && (
-                    <Link to="/admin"><Settings size={18} aria-hidden="true" /> Administration</Link>
-                  )}
-                  <button type="button" onClick={handleLogout}>
-                    <LogOut size={18} aria-hidden="true" /> Déconnexion
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <>
-                <div className="mbn-auth">
-                  <Link to="/login" className="mbn-signin">Se connecter</Link>
-                  <Link to="/register" className="mbn-join">Rejoindre</Link>
-                </div>
-                <Link to="/login" className="mbn-icon-btn mbn-auth-compact" aria-label="Se connecter">
-                  <UserRound size={20} strokeWidth={2} aria-hidden="true" />
-                </Link>
-              </>
-            )}
-          </div>
+          <button
+            type="button"
+            className="mbn-round mbn-mobile"
+            aria-label={isMenuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
+            aria-expanded={isMenuOpen}
+            aria-controls="mbn-menu"
+            onClick={() => setIsMenuOpen((open) => !open)}
+          >
+            {isMenuOpen ? <X size={20} aria-hidden="true" /> : <Menu size={20} aria-hidden="true" />}
+          </button>
         </div>
+      </div>
 
-        {isSearchOpen && (
-          <div className="mbn-search">
-            <AdvancedSearch />
-          </div>
-        )}
-      </header>
-
-      {/* Boussole en portail vers <body> : l'enveloppe des transitions de page
-          (.page-transition-shell) porte un transform, qui ferait se positionner un élément
-          fixe par rapport à elle et non à l'écran */}
-      {createPortal(
-        <nav className="mbn-dock" aria-label="Navigation principale">
-          <div className="mbn-dock-track" ref={trackRef}>
-            <span
-              className="mbn-dock-indicator"
-              data-visible={indicator ? true : undefined}
-              style={indicator ? { width: indicator.width, transform: `translateX(${indicator.x}px)` } : undefined}
-              aria-hidden="true"
-            />
-
-            {dockItems.map((item) => {
-              const { to, label, icon: Icon } = item
-              return (
-                <Link
-                  key={to}
-                  to={to}
-                  data-key={to}
-                  className="mbn-dock-item"
-                  aria-current={isActive(item) ? 'page' : undefined}
-                  data-current={activeKey === to || undefined}
-                  title={label}
-                >
-                  <Icon size={20} strokeWidth={2} aria-hidden="true" />
-                  <span className="mbn-dock-label">{label}</span>
-                </Link>
-              )
-            })}
-          </div>
-        </nav>,
-        document.body
+      {isMenuOpen && (
+        <div id="mbn-menu" className="mbn-menu">
+          <nav aria-label="Menu">{links('mbn-menu-link')}</nav>
+          <Link to={isAuthenticated ? '/dashboard' : '/map'} className="mbn-menu-cta">
+            {isAuthenticated ? 'Mon espace' : 'Explorer l’atlas'} <ArrowRight size={18} aria-hidden="true" />
+          </Link>
+          {!isAuthenticated && (
+            <Link to="/login" className="mbn-menu-signin">
+              Se connecter
+            </Link>
+          )}
+        </div>
       )}
-    </>
+
+      {isSearchOpen && (
+        <div className="mbn-search">
+          <AdvancedSearch />
+        </div>
+      )}
+    </header>
   )
 }

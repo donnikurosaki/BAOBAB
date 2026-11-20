@@ -35,8 +35,8 @@
   --brand-voile: rgb(17 17 17 / 0.24);
 
   /* ponytail: polices gratuites de remplacement, à échanger contre GC Regain / ZT Nature quand les licences seront prêtes */
-  --font-titre: 'Solway', 'Roboto Slab', Georgia, serif;
-  --font-texte: 'Schibsted Grotesk', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-titre: 'Hepta Slab', 'Roboto Slab', Georgia, serif;
+  --font-texte: 'Hanken Grotesk', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
 
   --radius-sm: 8px;
   --radius-md: 16px;
@@ -52,7 +52,6 @@
   --page-max: 1200px;
   --page-gutter: clamp(16px, 5vw, 48px);
   --nav-h: 72px;
-  --dock-space: 104px; /* place réservée en bas pour la navbar boussole */
 }
 
 /* Masqué à l'écran, lu par les lecteurs d'écran */

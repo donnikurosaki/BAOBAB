@@ -156,13 +156,13 @@ La charte déconseille d'ajouter ou combiner d'autres polices. Pas de troisième
 
 > **Licence** : le PDF embarque `GCRegainDemo` (version démo). Acheter une licence web de GC Regain et de ZT Nature avant mise en production. Auto-héberger en `woff2` dans `public/fonts/` avec `font-display: swap`.
 
-**Polices gratuites de remplacement**, en attendant les licences (Google Fonts, chargées dans `index.html`) :
-- **Solway** 500/700 pour GC Regain : slab arrondi et large, le plus proche des affiches de la charte.
-- **Schibsted Grotesk** 400 à 800 pour ZT Nature : grotesque compacte, proche de la signature du logo.
+**Polices gratuites de remplacement**, en attendant les licences (Google Fonts, chargées dans `index.html`). Ce sont celles de la maquette Figma, qui fait foi :
+- **Hepta Slab** 700/800 pour GC Regain (titres).
+- **Hanken Grotesk** 400 à 700 pour ZT Nature (texte courant).
 
 ```css
---font-titre: 'Solway', 'Roboto Slab', Georgia, serif;
---font-texte: 'Schibsted Grotesk', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+--font-titre: 'Hepta Slab', 'Roboto Slab', Georgia, serif;
+--font-texte: 'Hanken Grotesk', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
 ```
 
 Quand les licences arrivent : ajouter les `@font-face` de GC Regain et ZT Nature, et les placer en tête de ces deux piles.
@@ -299,7 +299,7 @@ L'identité est **plate**. Pas d'ombres portées marquées, pas de glassmorphism
 **Boussole (navigation principale)** : pilule forêt flottante, fixée en bas au centre de l'écran (inspirée d'un dock). Éléments : Accueil, Explorer, Comprendre, Mémoires, Contribuer, puis Ressources après un séparateur. Un indicateur crème glisse sous l'élément actif, dont le texte passe en forêt (320 ms, `--ease-out`). Ressources ouvre un panneau crème vers le haut, depuis la boussole, avec une description par destination. Sous 900 px : icônes seules sauf l'élément actif ; sous 380 px : icônes seules. Les libellés masqués restent lus par les lecteurs d'écran. Rendue dans `<body>` (portail React), car l'enveloppe des transitions de page porte un `transform`. Le bas de chaque page réserve `--dock-space` (104 px) pour ne rien masquer.
 **Pied de page** : fond forêt, texte crème, motif courbes de niveau en filigrane, logo blanc.
 
-**Haut de la page d'accueil (« la carte devient la page »)** : hauteur d'écran complète. La carte d'Afrique, plus grande que la fenêtre, déborde en haut, à droite et en bas ; les courbes de niveau vivantes passent par-dessus. Le titre en Solway démesuré (jusqu'à 8.5rem, limité aussi par la hauteur d'écran) chevauche volontairement la carte. Le mot « l'Afrique » est souligné d'un trait sauge épais (accent par le trait, pas par la couleur du texte). Bouton « Explorer la carte » et recherche de pays côte à côte. Sur mobile, la carte passe derrière le texte, en bas, à 55 % d'opacité.
+**Haut de la page d'accueil** : carte verte arrondie à courbes de niveau vivantes (maquette Figma « Landing MonBaobab »). Titre sur trois lignes, « autrement. » en ambre ; à droite, le grand symbole de la marque avec une photo de baobabs dans l'œil. La navigation se pose dans la carte, en verre. Boutons « Explorer l'atlas » (ambre) et « Lire les récits » (verre).
 
 **Tags / filtres** : `--radius-pill`, fond vert pâle, texte forêt ; actif : fond forêt, texte crème.
 **Carte interactive (atlas)** : pays en sauge clair, survol/sélection forêt, frontières crème ; les accents secondaires servent à catégoriser (régions, thèmes), un par catégorie.
@@ -373,8 +373,8 @@ Sobre et utile, au service de la découverte.
   --color-danger: var(--brand-terre);
 
   /* Typo */
-  --font-titre: 'Solway', 'Roboto Slab', Georgia, serif; /* GC Regain en tête quand la licence est prête */
-  --font-texte: 'Schibsted Grotesk', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif; /* idem ZT Nature */
+  --font-titre: 'Hepta Slab', 'Roboto Slab', Georgia, serif; /* GC Regain en tête quand la licence est prête */
+  --font-texte: 'Hanken Grotesk', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif; /* idem ZT Nature */
 
   /* Formes */
   --radius-sm: 8px;

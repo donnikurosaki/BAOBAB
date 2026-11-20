@@ -1,592 +1,802 @@
-/* Hallmark · macrostructure: Map / Diagram · tone: curieux, accessible, contemporain · anchor hue: vert forêt
- * theme: DESIGN.md MonBaobab · nav: N11 mega-menu · footer: inchangé (hors périmètre) · enrichment: carte SVG réelle
- *
- * contrast-system.css force en thème clair, en !important, la couleur des titres, p, li, span,
- * label, dd, dt, small et figcaption via --readable-text / --readable-text-muted. Chaque élément
- * qui a sa propre couleur la déclare donc aussi dans --readable-text (voir .mbh h2, .mbh-close…).
- */
+/* Accueil d'après la maquette Figma « Landing MonBaobab ».
+ * contrast-system.css impose la couleur du texte : chaque bloc coloré redéfinit --readable-text. */
 
 .mbh {
-  --readable-text: var(--brand-encre);
-  --readable-text-muted: var(--brand-texte-doux);
-  --section-x: max(var(--page-gutter), calc((100% - var(--page-max)) / 2));
-
-  overflow-x: clip;
+  --readable-text: var(--brand-foret);
+  --mbh-wrap: min(var(--page-max), 100% - 2 * var(--page-gutter));
+  display: flex;
+  flex-direction: column;
   background: var(--brand-creme);
-  color: var(--brand-encre);
+  color: var(--brand-foret);
   font-family: var(--font-texte);
-}
-
-/* theme-overrides.css colore tous les liens en brun ; ici chaque lien hérite de son contexte */
-.mbh a {
-  color: inherit;
-}
-
-.mbh a:focus-visible {
-  outline: 2px solid var(--brand-foret) !important;
-  outline-offset: 3px;
+  overflow-x: clip;
 }
 
 .mbh h1,
 .mbh h2,
 .mbh h3 {
+  font-family: var(--font-titre);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.mbh h2 {
+  font-size: clamp(2.25rem, 4.6vw, 4rem);
+}
+
+/* ---------- Boutons ---------- */
+
+.mbh-btn {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 10px;
+  min-height: 52px;
+  padding: 0 24px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  font: 600 1rem var(--font-texte);
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform var(--duration-base) var(--ease-out), background-color var(--duration-base) var(--ease-out);
+}
+
+.mbh-btn:hover {
+  transform: translateY(-2px);
+}
+
+.mbh-btn svg {
+  transition: transform var(--duration-base) var(--ease-out);
+}
+
+.mbh-btn:hover svg {
+  transform: translateX(3px);
+}
+
+.mbh .mbh-btn--ambre {
   --readable-text: var(--brand-foret);
-  margin: 0;
-  color: var(--brand-foret);
-  text-wrap: balance;
+  background: var(--brand-ambre) !important;
+  color: var(--brand-foret) !important;
 }
 
-.mbh :where(p) {
-  margin: 0;
-  text-wrap: pretty;
+.mbh .mbh-btn--glass {
+  --readable-text: var(--brand-blanc);
+  border: 1px solid rgb(255 255 255 / 0.28);
+  background: rgb(255 255 255 / 0.1) !important;
+  color: var(--brand-blanc) !important;
 }
 
-.mbh :where(ul) {
-  margin: 0;
-  padding: 0;
-  list-style: none;
+.mbh .mbh-btn--foret {
+  --readable-text: var(--brand-blanc);
+  background: var(--brand-foret) !important;
+  color: var(--brand-blanc) !important;
 }
 
-/* --- Haut de page : l'atlas vivant --- */
+/* ---------- 1. Hero ---------- */
 
 .mbh-hero {
+  --readable-text: var(--brand-blanc);
   position: relative;
-  display: flex;
-  align-items: center;
-  min-height: 100svh;
-  padding: calc(var(--nav-h) + 16px) var(--section-x) calc(var(--dock-space) + 16px);
-  overflow: clip;
   isolation: isolate;
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+  align-items: center;
+  gap: 32px;
+  min-height: min(900px, 100svh);
+  margin: 16px;
+  padding: 134px clamp(24px, 5vw, 72px) 64px;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--brand-foret);
+  color: var(--brand-blanc);
 }
 
-/* La carte est plus grande que la fenêtre : on est dedans, pas devant */
-.mbh-map {
-  position: absolute;
-  z-index: -2;
-  top: 52%;
-  left: 42%;
-  width: calc(108svh * 1000 / 940);
-  transform: translateY(-50%);
-}
-
-/* Le relief passe par-dessus la carte : les courbes de niveau dessinent sur le continent */
 .mbh-topo {
   position: absolute;
   inset: 0;
   z-index: -1;
 }
 
-.mbh-hero-text {
-  position: relative;
-  max-width: min(40rem, 50vw);
+.mbh-hero .mbh-topo {
+  --topo-strong: var(--brand-sauge);
+  --topo-soft: #2f6a3e;
 }
 
 .mbh-hero h1 {
-  margin-bottom: 28px;
-  font-size: clamp(3.25rem, min(8.2vw, 12.5svh), 8.5rem);
-  line-height: 0.96 !important;
-  /* typography-human.css impose letter-spacing: 0 en !important sur les titres ;
-     à cette taille il faut resserrer (DESIGN.md §4) */
-  letter-spacing: -0.025em !important;
-  overflow-wrap: anywhere;
+  color: var(--brand-blanc);
+  font-size: clamp(2.75rem, 6.6vw, 6.5rem);
+  white-space: nowrap; /* une ligne par groupe de mots, comme sur la maquette */
 }
 
-/* L'accent porte sur le mot, par un trait sauge plutôt qu'une couleur de texte
-   (le sauge seul n'atteint pas 3:1 sur crème) */
 .mbh-hero h1 span {
-  white-space: nowrap;
-  text-decoration: underline;
-  text-decoration-color: var(--brand-sauge);
-  text-decoration-thickness: 0.09em;
-  text-underline-offset: 0.1em;
-  text-decoration-skip-ink: none;
+  --readable-text: var(--brand-ambre);
+  color: var(--brand-ambre);
 }
 
 .mbh-lead {
-  --readable-text: var(--brand-texte-doux);
-  max-width: 34ch;
-  margin-bottom: 32px;
-  color: var(--brand-texte-doux);
-  font-size: clamp(1.0625rem, 1.4vw, 1.25rem);
-  line-height: 1.5;
+  max-width: 34rem;
+  margin: 28px 0 0;
+  color: rgb(255 255 255 / 0.86);
+  font-size: 1.125rem;
+  line-height: 1.6;
 }
 
 .mbh-actions {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
   gap: 12px;
+  margin-top: 32px;
 }
 
-.mbh-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  min-height: 52px;
-  padding: 0 26px;
-  border-radius: var(--radius-pill);
-  background: var(--brand-foret);
-  font-size: 1.0625rem;
-  font-weight: 600;
-  text-decoration: none;
-  white-space: nowrap;
-  transition:
-    background-color var(--duration-fast) var(--ease-out),
-    transform var(--duration-fast) var(--ease-out);
+.mbh-mark {
+  justify-self: end;
+  width: min(100%, 640px);
+  height: auto;
+  overflow: visible;
 }
 
-.mbh .mbh-cta {
-  color: var(--brand-creme);
+/* ---------- Sections claires ---------- */
+
+.mbh-section {
+  width: var(--mbh-wrap);
+  margin: 0 auto;
+  padding: clamp(72px, 10vw, 128px) 0 0;
 }
 
-.mbh-cta svg {
-  transition: transform var(--duration-fast) var(--ease-out);
-}
-
-.mbh .mbh-cta-light {
-  background: var(--brand-creme);
-  color: var(--brand-foret);
-}
-
-.mbh-cta:active {
-  transform: scale(0.97);
-}
-
-/* Recherche de pays : l'équivalent clavier et lecteur d'écran de la carte */
-.mbh-finder {
-  position: relative;
-  flex: 1 1 220px;
-  max-width: 280px;
-}
-
-.mbh-finder-icon {
-  position: absolute;
-  top: 50%;
-  left: 18px;
-  color: var(--brand-texte-doux);
-  transform: translateY(-50%);
-  pointer-events: none;
-}
-
-.mbh-finder input {
-  width: 100%;
-  min-height: 52px;
-  padding: 0 18px 0 46px;
-  border: 1px solid var(--brand-trait-champ);
-  border-radius: var(--radius-pill);
-  background: var(--brand-blanc);
-  color: var(--brand-encre);
-  font: inherit;
-  font-size: 1rem;
-  box-shadow: none;
-  transition: border-color var(--duration-fast) var(--ease-out);
-}
-
-.mbh-finder input::placeholder {
-  color: var(--brand-texte-doux);
-  opacity: 1;
-}
-
-.mbh-finder input:focus {
-  border-color: var(--brand-foret);
-  outline: 2px solid var(--brand-foret);
-  outline-offset: 2px;
-}
-
-.mbh-results {
-  position: absolute;
-  z-index: 5;
-  top: calc(100% + 8px);
-  left: 0;
-  right: 0;
-  padding: 4px;
-  border: 1px solid var(--brand-trait);
-  border-radius: var(--radius-md);
-  background: var(--brand-blanc);
-  box-shadow: var(--shadow-float);
-}
-
-.mbh-results a {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 16px;
-  min-height: 44px;
-  padding: 10px 12px;
-  border-radius: var(--radius-sm);
-  text-decoration: none;
-  transition: background-color var(--duration-fast) var(--ease-out);
-}
-
-.mbh .mbh-results a {
-  color: var(--brand-foret);
-}
-
-.mbh-results span,
-.mbh-results-empty {
-  --readable-text: var(--brand-texte-doux);
-  color: var(--brand-texte-doux);
-  font-size: 0.875rem;
-}
-
-.mbh-results-empty {
-  padding: 12px;
-}
-
-.mbh-map-hint {
-  --readable-text: var(--brand-texte-doux);
-  position: absolute;
-  right: var(--section-x);
-  bottom: calc(var(--dock-space) + 8px);
-  color: var(--brand-texte-doux);
-  font-size: 0.8125rem;
-}
-
-/* --- Chiffres --- */
-
-.mbh-metrics {
-  padding: 0 var(--section-x);
-  border-block: 1px solid var(--brand-trait);
-}
-
-.mbh-metrics dl {
+.mbh-split {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 0 32px;
-  margin: 0;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.6fr);
+  gap: 32px 64px;
+  align-items: start;
 }
 
-.mbh-metrics div {
-  display: flex;
-  flex-direction: column-reverse;
-  gap: 6px;
-  padding: 28px 0;
+.mbh-split--end {
+  align-items: end;
 }
 
-.mbh-metrics dd {
+.mbh-split--end .mbh-btn {
+  justify-self: end;
+}
+
+.mbh-aside,
+.mbh-aside p {
   --readable-text: var(--brand-foret);
   margin: 0;
   color: var(--brand-foret);
-  font-family: var(--font-titre);
-  font-size: clamp(2rem, 4vw, 3rem);
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-  line-height: 1;
+  line-height: 1.6;
 }
 
-.mbh-metrics dt {
-  --readable-text: var(--brand-texte-doux);
-  color: var(--brand-texte-doux);
-  font-size: 0.9375rem;
+.mbh-aside p + p {
+  margin-top: 16px;
+  font-size: 0.875rem;
 }
 
-/* --- Sections --- */
-
-.mbh-section {
-  padding: clamp(64px, 9vw, 128px) var(--section-x) 0;
+.mbh-section .mbr-eyebrow {
+  margin-bottom: 16px;
 }
 
-.mbh-head {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 16px 48px;
-  margin-bottom: 40px;
-}
+/* ---------- 2. Manifeste ---------- */
 
-.mbh-head h2 {
-  max-width: 20ch;
-  font-size: clamp(1.75rem, 3.2vw, 2.5rem);
-  overflow-wrap: anywhere;
-  min-width: 0;
-}
-
-.mbh-head p {
-  --readable-text: var(--brand-texte-doux);
-  max-width: 46ch;
-  color: var(--brand-texte-doux);
-  font-size: 1.125rem;
-  line-height: 1.55;
-}
-
-.mbh-more {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  min-height: 44px;
-  font-weight: 600;
-  text-decoration: underline;
-  text-underline-offset: 0.2em;
-  white-space: nowrap;
-}
-
-.mbh .mbh-more {
-  color: var(--brand-foret);
-}
-
-.mbh-card {
-  display: block;
-  height: 100%;
-  border: 1px solid var(--brand-trait);
-  border-radius: var(--radius-md);
-  background: var(--brand-blanc);
-  text-decoration: none;
-  transition:
-    border-color var(--duration-fast) var(--ease-out),
-    transform var(--duration-fast) var(--ease-out);
-}
-
-/* Portes d'entrée */
-
-.mbh-doors {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
-}
-
-.mbh-door {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  min-height: 200px;
-  padding: 28px 28px 32px;
-}
-
-.mbh-door-icon {
+.mbh-manifesto h2 span {
+  --readable-text: var(--brand-sauge);
   color: var(--brand-sauge);
 }
 
-.mbh-door h3 {
-  margin-top: 12px;
-  font-size: 1.5rem;
+.mbh-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  margin: 72px 0 0;
 }
 
-.mbh-door p,
-.mbh-read-body p,
-.mbh-team p {
-  --readable-text: var(--brand-texte-doux);
-  color: var(--brand-texte-doux);
+.mbh-stats div {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 12px;
+  padding-top: 24px;
+  border-top: 1px solid var(--brand-trait-fort);
+}
+
+.mbh-stats dd {
+  margin: 0;
+  font: 800 clamp(3rem, 5vw, 4.5rem) / 1 var(--font-titre);
+  font-variant-numeric: tabular-nums;
+}
+
+.mbh-stats dt {
+  max-width: 22rem;
+  font-size: 0.875rem;
   line-height: 1.5;
 }
 
-.mbh-door p {
-  padding-right: 32px;
-}
+/* ---------- 3. Quatre portes ---------- */
 
-.mbh-door-arrow {
-  position: absolute;
-  right: 24px;
-  bottom: 24px;
-  color: var(--brand-foret);
-  transition: transform var(--duration-fast) var(--ease-out);
-}
-
-/* Lectures : actualités et sélection éditoriale */
-
-.mbh-reads {
+.mbh-doors {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+  margin: 48px 0 0;
+  padding: 0;
+  list-style: none;
 }
 
-.mbh-read {
+.mbh-door {
+  --readable-text: var(--door-ink);
+  position: relative;
   display: flex;
   flex-direction: column;
+  gap: 12px;
+  height: 100%;
+  min-height: 360px;
+  padding: 28px;
   overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--door-bg);
+  color: var(--door-ink);
+  text-decoration: none;
+  transition: transform 400ms var(--ease-out);
 }
 
-.mbh-read img {
-  display: block;
-  width: 100%;
-  aspect-ratio: 16 / 10;
-  object-fit: cover;
+a.mbh-door:hover {
+  transform: translateY(-6px) rotate(-0.6deg);
 }
 
-.mbh-read-body {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  gap: 8px;
-  padding: 20px 24px 24px;
+.mbh-door img {
+  margin-bottom: auto;
 }
 
-.mbh-read-body h3 {
-  font-size: 1.25rem;
+.mbh-door h3 {
+  color: inherit;
+  font-size: 1.75rem;
 }
 
-.mbh-read-body p {
-  display: -webkit-box;
-  overflow: hidden;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
+.mbh-door p {
+  margin: 0;
+  font-weight: 400;
+  color: inherit;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  opacity: 0.88;
 }
 
-.mbh .mbh-read-body .mbh-read-meta {
-  font-size: 0.8125rem;
-  font-weight: 600;
-}
-
-.mbh-read-out {
-  --readable-text: var(--brand-abysse);
+.mbh-door-cta {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  margin-top: auto;
-  padding-top: 8px;
-  color: var(--brand-abysse);
-  font-size: 0.875rem;
+  gap: 8px;
+  margin-top: 8px;
   font-weight: 600;
 }
 
-/* Équipe */
-
-.mbh-team ul {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
-  gap: 32px;
+.mbh-door--foret {
+  --door-bg: var(--brand-foret);
+  --door-ink: var(--brand-blanc);
 }
 
-.mbh-team img {
-  display: block;
-  width: 100%;
-  aspect-ratio: 4 / 5;
-  border-radius: var(--radius-md);
-  object-fit: cover;
-}
-
-.mbh-team h3 {
-  margin: 16px 0 4px;
-  font-size: 1.25rem;
-}
-
-.mbh .mbh-team .mbh-team-origin {
-  margin-top: 4px;
-  font-size: 0.875rem;
-}
-
-/* --- Clôture : une seule invitation à participer --- */
-
-.mbh-close {
-  --readable-text: var(--brand-creme);
-  position: relative;
-  margin-top: clamp(80px, 10vw, 144px);
-  padding: clamp(72px, 10vw, 128px) var(--section-x);
-  background: var(--brand-foret);
-  color: var(--brand-creme);
-  text-align: center;
-  isolation: isolate;
-}
-
-.mbh-close::before {
+/* Courbes de niveau discrètes sur la porte Atlas, comme sur la maquette */
+.mbh-door--foret::before {
   content: '';
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: url('/Motifs/Fichier%2062.svg') center / cover no-repeat;
-  opacity: 0.1;
+  background: url('/Motifs/Fichier%2062.svg') center / 260% no-repeat;
+  opacity: 0.12;
 }
 
-.mbh .mbh-close h2 {
-  --readable-text: var(--brand-creme);
-  max-width: 18ch;
-  margin: 0 auto 20px;
-  color: var(--brand-creme);
-  font-size: clamp(2rem, 4.5vw, 3.5rem);
+.mbh-door--foret {
+  isolation: isolate;
 }
 
-.mbh-close p {
-  max-width: 48ch;
-  margin: 0 auto 36px;
-  font-size: 1.125rem;
+.mbh-door--ambre {
+  --door-bg: var(--brand-ambre);
+  --door-ink: var(--brand-foret);
+}
+
+.mbh-door--terre {
+  --door-bg: var(--brand-terre);
+  --door-ink: var(--brand-blanc);
+}
+
+.mbh-door--sauge {
+  --door-bg: #a5c094;
+  --door-ink: var(--brand-foret);
+}
+
+/* ---------- 4. Atlas ---------- */
+
+.mbh-atlas {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: 48px;
+  align-items: center;
+  margin: clamp(72px, 10vw, 128px) 16px 0;
+  padding: clamp(40px, 6vw, 96px) clamp(24px, 6vw, 96px);
+  border-radius: var(--radius-lg);
+  background: var(--brand-vert-pale);
+}
+
+.mbh-atlas-text > p {
+  margin: 24px 0 32px;
+  line-height: 1.6;
+}
+
+.mbh-territories {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0 0 32px;
+  padding: 0;
+  list-style: none;
+}
+
+.mbh-territory {
+  display: grid;
+  grid-template-columns: 12px minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: 14px;
+  padding: 14px 18px;
+  border-radius: var(--radius-md);
+  color: var(--brand-foret);
+  text-decoration: none;
+  transition: background-color var(--duration-base) var(--ease-out), box-shadow var(--duration-base) var(--ease-out);
+}
+
+.mbh-territory::before {
+  content: '';
+  grid-row: span 2;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--dot);
+}
+
+.mbh-territory strong {
+  font: 700 1.375rem var(--font-titre);
+}
+
+.mbh-territory span {
+  grid-column: 2;
+  font-size: 0.8125rem;
+  opacity: 0.8;
+}
+
+.mbh-territory svg {
+  grid-column: 3;
+  grid-row: 1 / span 2;
+}
+
+.mbh-territory[data-active] {
+  background: var(--brand-blanc);
+  box-shadow: var(--shadow-float);
+}
+
+.mbh-map {
+  position: relative;
+}
+
+.mbh-map-canvas {
+  position: relative;
+  width: min(100%, 560px);
+  margin: 0 0 0 auto;
+}
+
+.mbh-map-canvas svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.mbh-africa-fill {
+  fill: var(--brand-foret);
+}
+
+.mbh-africa-line {
+  fill: none;
+  stroke: var(--brand-sauge);
+  stroke-width: 2;
+}
+
+.mbh-pin {
+  --readable-text: var(--brand-foret);
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  translate: -50% -50%;
+}
+
+.mbh-pin i {
+  width: 18px;
+  height: 18px;
+  border: 4px solid var(--brand-blanc);
+  border-radius: 50%;
+  background: var(--dot);
+  transition: scale var(--duration-base) var(--ease-out);
+}
+
+.mbh-pin::before {
+  content: '';
+  position: absolute;
+  inset: -13px;
+  border-radius: 50%;
+  background: var(--dot);
+  opacity: 0.28;
+}
+
+.mbh-pin b {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  padding: 7px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--brand-blanc);
+  box-shadow: var(--shadow-float);
+  color: var(--brand-foret);
+  font-size: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.mbh-pin[data-active] i {
+  scale: 1.25;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .mbh-pin[data-active]::before {
+    animation: mbh-pulse 1.8s var(--ease-out) infinite;
+  }
+}
+
+@keyframes mbh-pulse {
+  from {
+    scale: 0.6;
+    opacity: 0.5;
+  }
+
+  to {
+    scale: 1.6;
+    opacity: 0;
+  }
+}
+
+.mbh-teaser {
+  position: absolute;
+  right: 0;
+  bottom: -24px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 260px;
+  padding: 10px 10px 18px;
+  border-radius: 20px;
+  background: var(--brand-blanc);
+  box-shadow: var(--shadow-float);
+  color: var(--brand-foret);
+  text-decoration: none;
+}
+
+.mbh-teaser img {
+  height: 150px;
+  margin-bottom: 8px;
+  border-radius: 14px;
+  object-fit: cover;
+}
+
+.mbh-teaser .mbr-meta {
+  --readable-text: var(--brand-abysse);
+  padding: 0 8px;
+  color: var(--brand-abysse);
+}
+
+.mbh-teaser strong {
+  padding: 0 8px;
+  font: 800 1.375rem / 1.1 var(--font-titre);
+}
+
+/* ---------- 5. Récits ---------- */
+
+.mbh-stories {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  margin: 56px 0 0;
+  padding: 0 0 64px;
+  list-style: none;
+}
+
+.mbh-story {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  color: var(--brand-foret);
+  text-decoration: none;
+}
+
+.mbh-story-media {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 4 / 5;
+  margin-bottom: 8px;
+  overflow: hidden;
+  border-radius: 20px;
+}
+
+.mbh-story-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: scale 700ms var(--ease-out);
+}
+
+.mbh-story:hover .mbh-story-media img {
+  scale: 1.05;
+}
+
+.mbh-story-media--plain {
+  --readable-text: var(--brand-ambre);
+  background: var(--brand-foret) url('/Motifs/Fichier%2062.svg') center / 300% no-repeat;
+  color: var(--brand-ambre);
+  font: 800 6rem var(--font-titre);
+}
+
+.mbh-story h3 {
+  font-size: 1.5rem;
+  line-height: 1.15;
+}
+
+.mbh-story p:not(.mbr-meta) {
+  margin: 0;
+  font-size: 0.875rem;
   line-height: 1.55;
 }
 
-/* --- Survol (souris uniquement) --- */
+/* ---------- 6. Valeurs ---------- */
 
-@media (hover: hover) and (pointer: fine) {
-  .mbh-cta:hover {
-    background: var(--brand-foret-hover);
+.mbh-values {
+  text-align: center;
+}
+
+.mbh-pills {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 28px 40px;
+  max-width: 900px;
+  margin: 56px auto;
+  padding: 0;
+  list-style: none;
+}
+
+.mbh-pill {
+  --readable-text: var(--pill-ink);
+  padding: 14px 32px;
+  border-radius: var(--radius-pill);
+  background: var(--pill-bg);
+  color: var(--pill-ink);
+  font: 800 clamp(1.375rem, 2.4vw, 2rem) var(--font-titre);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.mbh-pill:active {
+  cursor: grabbing;
+}
+
+.mbh-pill--ambre { --pill-bg: var(--brand-ambre); --pill-ink: var(--brand-foret); rotate: -4deg; }
+.mbh-pill--turquoise { --pill-bg: var(--brand-turquoise); --pill-ink: var(--brand-blanc); rotate: 3deg; }
+.mbh-pill--abysse { --pill-bg: var(--brand-abysse); --pill-ink: var(--brand-blanc); rotate: -3deg; }
+.mbh-pill--desert { --pill-bg: var(--brand-desert); --pill-ink: var(--brand-foret); rotate: 3deg; }
+.mbh-pill--terre { --pill-bg: var(--brand-terre); --pill-ink: var(--brand-blanc); rotate: -3deg; }
+
+.mbh-values > p {
+  max-width: 36rem;
+  margin: 0 auto;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+/* ---------- 7. Équipe ---------- */
+
+.mbh-team {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  margin: 56px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mbh-team img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  margin-bottom: 16px;
+  border-radius: 20px;
+  object-fit: cover;
+}
+
+.mbh-team h3 {
+  margin: 6px 0;
+  font-size: 1.5rem;
+}
+
+.mbh-team p:not(.mbr-meta) {
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+/* ---------- 8. Lettre ---------- */
+
+.mbh-letter {
+  --readable-text: var(--brand-foret);
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  margin: clamp(72px, 10vw, 128px) 16px 0;
+  padding: clamp(56px, 8vw, 112px) 24px;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--brand-ambre);
+  text-align: center;
+}
+
+.mbh-letter .mbh-topo {
+  --topo-strong: var(--brand-blanc);
+  --topo-soft: #f3d47b;
+}
+
+.mbh-letter-mark {
+  width: 64px;
+  filter: brightness(0) saturate(100%) invert(18%) sepia(26%) saturate(1270%) hue-rotate(95deg) brightness(92%) contrast(92%);
+}
+
+.mbh-letter h2 {
+  max-width: 14ch;
+}
+
+.mbh-letter p,
+.mbh-letter small {
+  margin: 0;
+  color: var(--brand-foret);
+}
+
+.mbh-letter small {
+  font-size: 0.75rem;
+}
+
+/* Formulaire de la maquette : pastille blanche, champ et bouton sombre à l'intérieur */
+.mbh-letter-form {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: min(100%, 463px);
+  margin-top: 8px;
+  padding: 8px 8px 8px 28px;
+  border-radius: var(--radius-pill);
+  background: var(--brand-blanc);
+}
+
+.mbh-letter-form input {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--brand-foret);
+  font: 400 1rem / 1.5 var(--font-texte);
+  outline: none;
+}
+
+.mbh-letter-form input::placeholder {
+  color: var(--brand-foret);
+  opacity: 1;
+}
+
+.mbh-letter-form:focus-within {
+  outline: 2px solid var(--brand-foret);
+  outline-offset: 3px;
+}
+
+.mbh-letter-form .mbh-btn {
+  flex: none;
+  padding: 0 28px;
+}
+
+/* Sous 600 px, le bouton passe sous le champ, sur toute la largeur (maquette mobile) */
+@media (max-width: 600px) {
+  .mbh-letter-form {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding: 0;
+    background: none;
   }
 
-  .mbh-cta-light:hover {
+  .mbh-letter-form input {
+    min-height: 58px;
+    padding: 0 24px;
+    border-radius: var(--radius-pill);
     background: var(--brand-blanc);
   }
 
-  .mbh-cta:hover svg,
-  .mbh-card:hover .mbh-door-arrow {
-    transform: translateX(3px);
-  }
-
-  .mbh-results a:hover {
-    background: color-mix(in srgb, var(--brand-sauge) 22%, var(--brand-creme));
-  }
-
-  .mbh-card:hover {
-    border-color: var(--brand-trait-fort);
-    transform: translateY(-2px);
-  }
-}
-
-/* --- Points de rupture --- */
-
-@media (max-width: 899px) {
-  /* La carte passe derrière le texte, en bas, et s'efface un peu pour la lisibilité */
-  .mbh-hero {
-    align-items: flex-start;
-  }
-
-  .mbh-map {
-    top: auto;
-    bottom: calc(var(--dock-space) - 22svh);
-    left: 50%;
-    width: max(120vw, 62svh);
-    opacity: 0.55;
-    transform: translateX(-38%);
-  }
-
-  .mbh-hero-text {
-    max-width: none;
-  }
-
-  .mbh-hero h1 {
-    font-size: clamp(2.75rem, 12vw, 4.5rem);
-  }
-
-  .mbh-finder {
-    max-width: none;
-  }
-
-  .mbh-map-hint {
-    display: none;
-  }
-
-  .mbh-doors {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 559px) {
-  .mbh-doors {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .mbh-door {
-    min-height: 0;
-  }
-
-  .mbh-cta {
-    width: 100%;
+  .mbh-letter-form .mbh-btn {
     justify-content: center;
+    align-self: stretch;
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .mbh-cta:active,
-  .mbh-card:hover,
-  .mbh-cta:hover svg,
-  .mbh-card:hover .mbh-door-arrow {
-    transform: none;
+/* ---------- Mobile ---------- */
+
+@media (max-width: 900px) {
+  .mbh-hero {
+    grid-template-columns: 1fr;
+    min-height: 0;
+    margin: 8px;
+    padding-top: 94px;
+  }
+
+  .mbh-mark {
+    grid-row: 1;
+    justify-self: center;
+    width: min(70%, 320px);
+  }
+
+  .mbh-split,
+  .mbh-atlas {
+    grid-template-columns: 1fr;
+  }
+
+  .mbh-split--end .mbh-btn {
+    justify-self: start;
+  }
+
+  .mbh-stats,
+  .mbh-stories,
+  .mbh-team {
+    grid-template-columns: 1fr;
+  }
+
+  /* Les portes défilent à l'horizontale, comme sur la maquette mobile */
+  .mbh-doors {
+    grid-template-columns: none;
+    grid-auto-columns: 78%;
+    grid-auto-flow: column;
+    margin-inline: calc(-1 * var(--page-gutter));
+    padding: 0 var(--page-gutter) 8px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    /* Sans cela, l'accroche colle la première carte au bord de l'écran */
+    scroll-padding-inline: var(--page-gutter);
+  }
+
+  .mbh-doors li {
+    scroll-snap-align: start;
+  }
+
+  .mbh-atlas {
+    margin-inline: 8px;
+  }
+
+  /* Laisse de la place à gauche pour l'étiquette du Cap-Vert, placé au large du continent */
+  .mbh-map-canvas {
+    width: 86%;
+  }
+
+  .mbh-teaser {
+    position: static;
+    width: auto;
+    margin-top: 24px;
+  }
+
+  .mbh-pills {
+    gap: 16px;
+  }
+
+  .mbh-letter {
+    margin-inline: 8px;
   }
 }
