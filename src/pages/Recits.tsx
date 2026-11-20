@@ -1,190 +1,161 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowRight, Search } from 'lucide-react'
+import { ArrowRight, ChevronDown, Search } from 'lucide-react'
 import { Layout } from '../components/Layout/Layout'
-import { RubriqueSection } from '../components/UX/RubriqueSection'
 import { TypeChips } from '../components/UX/TypeChips'
 import { useParamState } from '../hooks/useParamState'
-import { blogService, collectionService, storyService } from '../services/api'
-import { fetchLists, joinMeta } from '../utils'
-import './Rubriques.css'
+import { DOSSIERS, RECITS, type RecitCard } from '../data/recitsContent'
+import { joinMeta } from '../utils'
+import './Recits.css'
 
-// Récits rassemble trois anciennes rubriques (clean.md) :
-// les articles (/blog), les histoires (/stories) et les dossiers (/collections).
-type RecitType = 'articles' | 'histoires' | 'dossiers'
-
-interface Recit {
-  id: string
-  type: RecitType
-  title: string
-  excerpt: string
-  image?: string
-  meta: string
-  to: string
-}
+// Récits d'après la maquette Figma « Récits / Desktop 1440 » et « Mobile 390 ».
+// Le contenu affiché est exactement celui de la maquette : les contributions
+// de la base arriveront quand les pages de détail existeront.
 
 const TYPES = [
   { key: 'tous', label: 'Tous' },
   { key: 'articles', label: 'Articles' },
-  { key: 'histoires', label: 'Histoires' },
+  { key: 'temoignages', label: 'Témoignages' },
   { key: 'dossiers', label: 'Dossiers' },
 ] as const
 
-const minutes = (value?: number) => (value ? `${value} min` : undefined)
-
-const normalize = (blogs: any[], stories: any[], collections: any[]): Recit[] => [
-  ...blogs.map((post) => ({
-    id: post._id,
-    type: 'articles' as const,
-    title: post.title,
-    excerpt: post.excerpt || '',
-    image: post.image || undefined,
-    meta: joinMeta(post.category || 'Article', minutes(post.readTime)),
-    to: `/blog/${post._id}`,
-  })),
-  ...stories.map((story) => ({
-    id: story._id,
-    type: 'histoires' as const,
-    title: story.title,
-    excerpt: story.description || story.subtitle || '',
-    image: story.coverImage || undefined,
-    meta: joinMeta(story.category || 'Histoire', minutes(story.readingTime)),
-    to: `/stories/${story._id}`,
-  })),
-  ...collections.map((collection) => ({
-    id: collection._id,
-    type: 'dossiers' as const,
-    title: collection.title,
-    excerpt: collection.shortDescription || collection.description || '',
-    image: collection.coverImage || undefined,
-    meta: joinMeta('Dossier', collection.items?.length ? `${collection.items.length} éléments` : undefined),
-    to: `/collections/${collection._id}`,
-  })),
-]
-
 export const Recits = () => {
-  const [recits, setRecits] = useState<Recit[]>([])
-  const [loading, setLoading] = useState(true)
   const [query, setQuery] = useState('')
-  const [active, setType] = useParamState<RecitType | 'tous'>('type', 'tous')
+  const [pays, setPays] = useState('')
+  const [theme, setTheme] = useState('')
+  const [type, setType] = useParamState<(typeof TYPES)[number]['key']>('type', 'tous')
 
-  useEffect(() => {
-    let cancelled = false
-    fetchLists([
-      [blogService.getAll(), 'blogs'],
-      [storyService.getAll(), 'stories'],
-      [collectionService.getAll(), 'collections'],
-    ]).then(([blogs, stories, collections]) => {
-      if (cancelled) return
-      setRecits(normalize(blogs, stories, collections))
-      setLoading(false)
-    })
-    return () => {
-      cancelled = true
-    }
-  }, [])
+  const paysOptions = useMemo(() => [...new Set([...RECITS, ...DOSSIERS].map((r) => r.pays).filter(Boolean))].sort(), [])
+  const themeOptions = useMemo(() => [...new Set([...RECITS, ...DOSSIERS].map((r) => r.theme).filter(Boolean))].sort(), [])
 
-  const counts = useMemo(() => {
-    const byType = { tous: recits.length, articles: 0, histoires: 0, dossiers: 0 }
-    recits.forEach((recit) => (byType[recit.type] += 1))
-    return byType
-  }, [recits])
+  const keep = (recit: RecitCard) =>
+    (type === 'tous' || recit.type === type) &&
+    (!pays || recit.pays === pays) &&
+    (!theme || recit.theme === theme) &&
+    (!query.trim() || `${recit.title} ${recit.excerpt}`.toLowerCase().includes(query.trim().toLowerCase()))
 
-  const visible = useMemo(() => {
-    const needle = query.trim().toLowerCase()
-    return recits.filter(
-      (recit) =>
-        (active === 'tous' || recit.type === active) &&
-        (!needle || `${recit.title} ${recit.excerpt}`.toLowerCase().includes(needle))
-    )
-  }, [recits, active, query])
-
-  const stories = visible.filter((recit) => recit.type !== 'dossiers')
-  const dossiers = visible.filter((recit) => recit.type === 'dossiers')
-  const [feature, ...rest] = stories
+  const visible = RECITS.filter(keep)
+  const visibleDossiers = DOSSIERS.filter(keep)
+  const counts = {
+    tous: RECITS.length + DOSSIERS.length,
+    articles: RECITS.filter((r) => r.type === 'articles').length,
+    temoignages: RECITS.filter((r) => r.type === 'temoignages').length,
+    dossiers: DOSSIERS.length,
+  }
+  const [feature, ...rest] = visible
 
   return (
-    <Layout>
-      <div className="mbr">
-        <header className="mbr-intro">
-          <div>
-            <p className="mbr-eyebrow">Récits</p>
-            <h1>Des histoires qui créent des liens</h1>
-          </div>
-          <p>Articles, histoires et dossiers pour comprendre les lieux, les voix et les héritages du continent.</p>
+    <Layout fullWidth>
+      <div className="mrc">
+        <header className="mrc-intro">
+          <h1>Des histoires qui créent des liens</h1>
+          <p>Articles, témoignages et dossiers pour comprendre les lieux, les voix et les héritages du continent.</p>
         </header>
 
-        <div className="mbr-filters">
-          <TypeChips label="Type de récit" options={TYPES} counts={counts} active={active} onChange={setType} />
-          <label className="mbr-search">
-            <Search size={16} aria-hidden="true" />
-            <input
-              type="search"
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              placeholder="Rechercher un récit"
-              aria-label="Rechercher un récit"
-            />
-          </label>
+        {feature ? (
+          <Link to={feature.to} className="mrc-feature">
+            {feature.image && (
+              <img className="mrc-feature-media" src={feature.image} alt={feature.title} width={680} height={440} />
+            )}
+            <div className="mrc-feature-body">
+              <p className="mrc-kicker">{feature.meta}</p>
+              <h2>{feature.title}</h2>
+              {feature.excerpt && <p className="mrc-feature-text">{feature.excerpt}</p>}
+              {feature.pays && <p className="mrc-meta">{joinMeta(feature.pays, feature.theme)}</p>}
+              <span className="mrc-btn">
+                Lire le récit <ArrowRight size={18} aria-hidden="true" />
+              </span>
+            </div>
+          </Link>
+        ) : (
+          visibleDossiers.length === 0 && <p className="mrc-empty">Aucun récit ne correspond pour l’instant.</p>
+        )}
+
+        <div className="mrc-filters">
+          <TypeChips label="Type de récit" options={TYPES} counts={counts} active={type} onChange={setType} />
+          <div className="mrc-refine">
+            <label className="mrc-select">
+              <span className="sr-only">Filtrer par pays</span>
+              <select value={pays} onChange={(event) => setPays(event.target.value)}>
+                <option value="">Pays : tous</option>
+                {paysOptions.map((name) => (
+                  <option key={name} value={name}>
+                    Pays : {name}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown size={16} strokeWidth={1.6} aria-hidden="true" />
+            </label>
+            <label className="mrc-select">
+              <span className="sr-only">Filtrer par thème</span>
+              <select value={theme} onChange={(event) => setTheme(event.target.value)}>
+                <option value="">Thème : tous</option>
+                {themeOptions.map((name) => (
+                  <option key={name} value={name}>
+                    Thème : {name}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown size={16} strokeWidth={1.6} aria-hidden="true" />
+            </label>
+            <label className="mrc-search">
+              <Search size={16} strokeWidth={1.6} aria-hidden="true" />
+              <input
+                type="search"
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                placeholder="Rechercher un récit"
+                aria-label="Rechercher un récit"
+              />
+            </label>
+          </div>
         </div>
 
-        {loading ? (
-          <p className="mbr-empty">Chargement des récits…</p>
-        ) : visible.length === 0 ? (
-          <p className="mbr-empty">Aucun récit ne correspond pour l’instant.</p>
-        ) : (
-          <>
-            {feature && (
-              <Link to={feature.to} className={`mbr-feature${feature.image ? '' : ' mbr-feature--plain'}`}>
-                {feature.image && (
-                  <div className="mbr-feature-media" style={{ backgroundImage: `url(${feature.image})` }} aria-hidden="true" />
-                )}
-                <div className="mbr-feature-body">
-                  <p className="mbr-meta">À la une · {feature.meta}</p>
-                  <h2>{feature.title}</h2>
-                  {feature.excerpt && <p>{feature.excerpt}</p>}
-                  <span className="mbr-button">
-                    Lire le récit <ArrowRight size={18} aria-hidden="true" />
-                  </span>
-                </div>
+        {rest.length > 0 && (
+          <ul className="mrc-grid">
+            {rest.map((recit) => (
+              <li key={recit.id}>
+                <Link to={recit.to} className="mrc-card">
+                  {recit.image && <div className="mrc-card-media" style={{ backgroundImage: `url(${recit.image})` }} aria-hidden="true" />}
+                  <div className="mrc-card-body">
+                    <p className="mrc-kicker">{recit.meta}</p>
+                    <h3>{recit.title}</h3>
+                    {recit.excerpt && <p className="mrc-card-text">{recit.excerpt}</p>}
+                  </div>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
+
+        {visibleDossiers.length > 0 && (
+          <section className="mrc-dossiers">
+            <header className="mrc-dossiers-head">
+              <div>
+                <h2>Dossiers</h2>
+                <p>Des récits rassemblés autour d’un même sujet.</p>
+              </div>
+              <Link to="/recits?type=dossiers" className="mrc-more">
+                Tous les dossiers <ArrowRight size={16} aria-hidden="true" />
               </Link>
-            )}
-
-            {rest.length > 0 && (
-              <ul className="mbr-grid">
-                {rest.map((recit) => (
-                  <li key={recit.id}>
-                    <Link to={recit.to} className={`mbr-card${recit.image ? '' : ' mbr-card--plain'}`}>
-                      {recit.image && (
-                        <div className="mbr-card-media" style={{ backgroundImage: `url(${recit.image})` }} aria-hidden="true" />
-                      )}
-                      <div className="mbr-card-body">
-                        <p className="mbr-meta">{recit.meta}</p>
-                        <h3>{recit.title}</h3>
-                        {recit.excerpt && <p>{recit.excerpt}</p>}
-                      </div>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            )}
-
-            {dossiers.length > 0 && (
-              <RubriqueSection id="mbr-dossiers" title="Dossiers" subtitle="Des récits rassemblés autour d’un même sujet.">
-                <ul className="mbr-dossiers">
-                  {dossiers.map((dossier) => (
-                    <li key={dossier.id}>
-                      <Link to={dossier.to} className="mbr-dossier">
-                        <p className="mbr-meta">{dossier.meta}</p>
-                        <h3>{dossier.title}</h3>
-                        {dossier.excerpt && <p>{dossier.excerpt}</p>}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </RubriqueSection>
-            )}
-          </>
+            </header>
+            <ul className="mrc-dossiers-list">
+              {visibleDossiers.map((dossier) => (
+                <li key={dossier.id}>
+                  <Link to={dossier.to} className="mrc-dossier">
+                    {dossier.image && <img className="mrc-dossier-img" src={dossier.image} alt="" loading="lazy" />}
+                    <div className="mrc-dossier-body">
+                      <p className="mrc-kicker">{dossier.meta}</p>
+                      <h3>{dossier.title}</h3>
+                      <span className="mrc-dossier-link">
+                        Ouvrir le dossier <ArrowRight size={16} aria-hidden="true" />
+                      </span>
+                    </div>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
         )}
       </div>
     </Layout>
