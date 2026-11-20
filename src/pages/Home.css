@@ -95,10 +95,18 @@
   color: var(--brand-blanc);
 }
 
+/* Canvas au-dessus du fond mais sous le contenu : les enfants montent en z-index 1
+ * (plus fiable qu'un z-index négatif, quel que soit l'empilement des feuilles globales) */
 .mbh-topo {
   position: absolute;
   inset: 0;
-  z-index: -1;
+  z-index: 0;
+}
+
+.mbh-hero > :not(.mbh-topo),
+.mbh-letter > :not(.mbh-topo) {
+  position: relative;
+  z-index: 1;
 }
 
 .mbh-hero .mbh-topo {
