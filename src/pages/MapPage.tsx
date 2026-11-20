@@ -7,20 +7,14 @@ import { AfricaRelief } from '../components/AfricaRelief/AfricaRelief'
 import { TypeChips } from '../components/UX/TypeChips'
 import { useParamState } from '../hooks/useParamState'
 import { allAfricanCountries } from '../data/allAfricanCountries'
-import { getCountryDiscoveryDefault, regionOf, type AfricaRegion } from '../data/countryDiscoveryDefaults'
+import { getCountryDiscoveryDefault, REGION_LABELS, regionOf, type AfricaRegion } from '../data/countryDiscoveryDefaults'
 import { CAPITAL_COORDS, ENRICHED_TERRITORIES, projectOnAfrica } from '../data/africaGeo'
-import { joinMeta } from '../utils'
+import { joinMeta, readableQuantity } from '../utils'
 import './MapPage.css'
 
 // Page Explorer d'après la maquette Figma « Explorer / Desktop 1440 », « Mobile 390 » et « Pays sélectionné ».
 
-const REGIONS: Record<AfricaRegion, string> = {
-  nord: 'Afrique du Nord',
-  ouest: 'Afrique de l’Ouest',
-  centre: 'Afrique centrale',
-  est: 'Afrique de l’Est',
-  australe: 'Afrique australe',
-}
+const REGIONS = REGION_LABELS
 
 const CHIPS = [
   { key: 'toutes', label: 'Toutes' },
@@ -36,8 +30,6 @@ const VIEW = { x: -70, y: -44, w: 783, h: 752 }
 const ZOOMS = [1, 1.6, 2.4]
 
 const normalize = (text: string) => text.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase()
-// « 21M » → « 21 M », « 274K » → « 274 000 »
-const readable = (value: string) => value.replace(/(\d)M/, '$1 M').replace(/(\d+)K/, '$1 000')
 
 const COUNTRIES = allAfricanCountries
   .map((country) => ({
@@ -202,7 +194,7 @@ export const MapPage = () => {
 
           {selected && (
             <article className="mbx-preview" aria-live="polite">
-              {selected.enriched?.photo && <img src={selected.enriched.photo} alt="" />}
+              {selected.enriched?.gallery?.[0] && <img src={selected.enriched.gallery[0].src} alt="" />}
               <div className="mbx-preview-body">
                 <button type="button" className="mbx-close" aria-label="Fermer l’aperçu" onClick={() => setSelectedCode('')}>
                   <X size={18} aria-hidden="true" />
@@ -211,7 +203,7 @@ export const MapPage = () => {
                 <h2>{selected.nameFr}</h2>
                 {summary && <p className="mbx-summary">{summary}</p>}
                 <p className="mbx-facts">
-                  {joinMeta(selected.capital, `${readable(selected.population)} hab.`, readable(selected.area))}
+                  {joinMeta(selected.capital, `${readableQuantity(selected.population)} hab.`, readableQuantity(selected.area))}
                 </p>
                 <Link to={`/country/${selected.code.toLowerCase()}`} className="mbx-open">
                   Ouvrir la fiche <ArrowRight size={18} aria-hidden="true" />

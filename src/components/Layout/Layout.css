@@ -16,6 +16,8 @@
 
 /* Pages éditoriales qui composent leurs propres marges et sections pleine largeur. */
 .layout-main--full {
+  display: flex;
+  flex-direction: column;
   width: 100%;
   max-width: none !important;
   margin: 0 !important;

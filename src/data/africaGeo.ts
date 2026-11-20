@@ -19,9 +19,23 @@ export const CAPITAL_COORDS: Record<string, [number, number]> = {
 /** Projette une position sur le contour (unités du viewBox AFRICA_VIEWBOX), calée sur la maquette Figma. */
 export const projectOnAfrica = ([lat, lon]: [number, number]) => ({ x: 9.209 * lon + 161.1, y: -9.183 * lat + 344.2 })
 
-/** Pays dont la fiche est enrichie, avec la couleur de leur territoire (logotypes de la charte). */
-export const ENRICHED_TERRITORIES: Record<string, { color: string; tagline: string; photo?: string }> = {
-  BF: { color: 'var(--brand-terre)', tagline: 'Le pays des hommes intègres', photo: '/content/home/tiebele.webp' },
+type Photo = { src: string; caption: string }
+
+/** Pays dont la fiche est enrichie : couleur de leur territoire (logotypes de la charte) et photos. */
+export const ENRICHED_TERRITORIES: Record<string, { color: string; tagline: string; gallery?: Photo[] }> = {
+  BF: {
+    color: 'var(--brand-terre)',
+    tagline: 'Le pays des hommes intègres',
+    gallery: [
+      { src: '/content/home/tiebele.webp', caption: 'Tiébélé, cour royale kasséna' },
+      { src: '/content/home/faso-dan-fani.webp', caption: 'Le Faso Dan Fani sur le métier' },
+      { src: '/content/home/baobabs.webp', caption: 'Baobabs au soleil couchant' },
+    ],
+  },
   CI: { color: 'var(--brand-desert)', tagline: 'Entre lagunes, forêts et savanes' },
-  CV: { color: 'var(--brand-abysse)', tagline: 'Dix îles au large de l’Atlantique', photo: '/content/home/cap-vert.webp' },
+  CV: {
+    color: 'var(--brand-abysse)',
+    tagline: 'Dix îles au large de l’Atlantique',
+    gallery: [{ src: '/content/home/cap-vert.webp', caption: 'Falaises et criques de l’archipel' }],
+  },
 }

@@ -1356,6 +1356,13 @@ const eastAfricaIds = new Set(['SS', 'ER', 'DJ', 'ET', 'SO', 'KE', 'UG', 'RW', '
 
 /** Les cinq régions de la page Explorer ; un pays absent des quatre premières est en Afrique australe. */
 export type AfricaRegion = 'nord' | 'ouest' | 'centre' | 'est' | 'australe'
+export const REGION_LABELS: Record<AfricaRegion, string> = {
+  nord: 'Afrique du Nord',
+  ouest: 'Afrique de l’Ouest',
+  centre: 'Afrique centrale',
+  est: 'Afrique de l’Est',
+  australe: 'Afrique australe',
+}
 export const regionOf = (id: string): AfricaRegion => {
   const code = id.toUpperCase()
   if (northAfricaIds.has(code)) return 'nord'

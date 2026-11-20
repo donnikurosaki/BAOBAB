@@ -33,6 +33,9 @@ export const fetchLists = async (requests: Array<[Promise<{ data: unknown }>, st
   )
 }
 
+/** « 21M » → « 21 M », « 274K km² » → « 274 000 km² » (formats courts du catalogue des pays) */
+export const readableQuantity = (value = '') => value.replace(/(\d)M/, '$1 M').replace(/(\d+)K/, '$1 000')
+
 /**
  * Assemble une ligne de méta (« Mali · Mémoire · 6 min ») en ignorant les parties vides.
  */

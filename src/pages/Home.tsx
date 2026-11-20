@@ -8,6 +8,7 @@ import { allAfricanCountries } from '../data/allAfricanCountries'
 import { AfricaRelief } from '../components/AfricaRelief/AfricaRelief'
 import { CAPITAL_COORDS, ENRICHED_TERRITORIES, projectOnAfrica } from '../data/africaGeo'
 import { EYE_PATH, MARK_PATH, MARK_VIEWBOX } from '../data/brandMark'
+import { FEATURED_STORIES as STORIES } from '../data/featuredStories'
 import { useHomeMotion } from '../hooks/useHomeMotion'
 import { useNotifications } from '../hooks/useNotifications'
 import { newsletterService } from '../services/api'
@@ -37,13 +38,6 @@ const TERRITORIES = Object.entries(ENRICHED_TERRITORIES).map(([code, t]) => {
   const { x, y } = projectOnAfrica(CAPITAL_COORDS[code])
   return { id: code.toLowerCase(), name: TERRITORY_NAMES[code], tagline: t.tagline, color: t.color, x: (x / 633.6) * 100, y: (y / 663.961) * 100 }
 })
-
-// Section « Des histoires qui créent des liens » : textes et photos de la maquette
-const STORIES = [
-  { meta: 'Savoir-faire · 7 min', title: 'Le Faso Dan Fani, un pagne tissé d’histoires', text: 'Sur le métier à tisser, chaque bande de coton porte un motif, un message, une fierté.', image: '/content/home/faso-dan-fani.webp' },
-  { meta: 'Patrimoine · 9 min', title: 'Tiébélé, les maisons peintes des femmes kasséna', text: 'Dans la cour royale, les murs de terre se couvrent de motifs transmis de mère en fille.', image: '/content/home/tiebele.webp' },
-  { meta: 'Savoir-faire · 5 min', title: 'La calebasse, du champ à l’atelier', text: 'Séchée, gravée puis peinte, elle devient bol, instrument ou objet de fête.', image: '/content/home/calebasses.webp' },
-]
 
 const VALUES = [
   { label: 'Curieuse', tone: 'ambre' },
