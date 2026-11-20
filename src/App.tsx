@@ -41,6 +41,7 @@ const CollectionDetail = lazy(() => import('./pages/CollectionDetail').then(modu
 const TimelineDetail = lazy(() => import('./pages/TimelineDetail').then(module => ({ default: module.TimelineDetail })))
 const StoryDetail = lazy(() => import('./pages/StoryDetail').then(module => ({ default: module.StoryDetail })))
 const Recits = lazy(() => import('./pages/Recits').then(module => ({ default: module.Recits })))
+const RecitDetail = lazy(() => import('./pages/RecitDetail').then(module => ({ default: module.RecitDetail })))
 const Reperes = lazy(() => import('./pages/Reperes').then(module => ({ default: module.Reperes })))
 const MapPage = lazy(() => import('./pages/MapPage').then(module => ({ default: module.MapPage })))
 const SearchResults = lazy(() => import('./pages/SearchResults').then(module => ({ default: module.SearchResults })))
@@ -162,6 +163,14 @@ function App() {
           element={
             <Suspense fallback={<LoadingFallback />}>
               <Recits />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/recit/:id"
+          element={
+            <Suspense fallback={<LoadingFallback />}>
+              <RecitDetail />
             </Suspense>
           }
         />

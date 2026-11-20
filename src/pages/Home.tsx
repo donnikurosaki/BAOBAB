@@ -235,7 +235,7 @@ export const Home = () => {
           <ul className="mbh-stories">
             {STORIES.map((story) => (
               <li key={story.title} data-reveal>
-                <Link to="/recits" className="mbh-story">
+                <Link to={`/recit/${story.id}`} className="mbh-story">
                   <img src={story.image} alt="" loading="lazy" width="384" height="480" />
                   <p className="mbh-story-meta">{story.meta}</p>
                   <h3>{story.title}</h3>

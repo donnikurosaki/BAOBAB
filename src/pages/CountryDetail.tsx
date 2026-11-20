@@ -444,7 +444,7 @@ export const CountryDetail = () => {
             {tab === 'culture' && (
               <>
                 {view.stories[0] && (
-                  <Link to="/recits" className="mbp-feature">
+                  <Link to={`/recit/${view.stories[0].id}`} className="mbp-feature">
                     <img src={view.stories[0].image} alt="" />
                     <span>
                       <span className="mbp-kicker">{view.stories[0].meta} · à la une</span>
@@ -607,7 +607,7 @@ export const CountryDetail = () => {
               <div className="mbp-stories">
                 <h2>Récits liés</h2>
                 {view.stories.map((story) => (
-                  <Link key={story.title} to="/recits" className="mbp-story">
+                  <Link key={story.title} to={`/recit/${story.id}`} className="mbp-story">
                     <img src={story.image} alt="" loading="lazy" />
                     <span>
                       <span className="mbp-kicker">{story.meta}</span>
