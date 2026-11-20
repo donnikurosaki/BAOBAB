@@ -3,6 +3,7 @@ import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { Home } from './pages/Home'
 import { BlogPostPage } from './pages/BlogPost'
 import { Login } from './pages/Login'
+import { ForgotPassword } from './pages/ForgotPassword'
 import { Register } from './pages/Register'
 // En pause (voir clean.md) : boutique, panier, paiement, commandes, cercles, fil social et quiz.
 // Les pages restent dans src/pages, mais elles ne sont plus routées.
@@ -236,6 +237,7 @@ function App() {
           }
         />
         <Route path="/login" element={<Login />} />
+        <Route path="/mot-de-passe-oublie" element={<ForgotPassword />} />
         <Route path="/register" element={<Register />} />
         <Route path="/auth/login" element={<Navigate to="/login" replace />} />
         <Route path="/auth/register" element={<Navigate to="/register" replace />} />
