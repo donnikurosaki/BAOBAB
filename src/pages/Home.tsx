@@ -306,7 +306,9 @@ export const Home = () => {
         {/* 8. Lettre */}
         <section className="mbh-letter" aria-labelledby="mbh-letter">
           <TopoField className="mbh-topo" />
-          <img src="/Logo/Fichier%204.svg" alt="" className="mbh-letter-mark" data-motion="float" />
+          <svg className="mbh-letter-mark" viewBox={MARK_VIEWBOX} aria-hidden="true">
+            <path d={MARK_PATH} />
+          </svg>
           <h2 id="mbh-letter">Chaque découverte éveille une curiosité.</h2>
           <p>Recevez chaque mois un territoire, un récit et un savoir-faire à découvrir.</p>
           <form className="mbh-letter-form" onSubmit={subscribe}>

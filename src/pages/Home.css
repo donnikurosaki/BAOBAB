@@ -15,6 +15,8 @@
 .mbh h1,
 .mbh h2,
 .mbh h3 {
+  /* human-design.css impose l'interligne des titres via cette variable, en !important */
+  --human-title-line: 1;
   font-family: var(--font-titre);
   font-weight: 800;
   line-height: 1;
@@ -33,10 +35,11 @@
   align-self: flex-start;
   gap: 10px;
   min-height: 52px;
-  padding: 0 24px;
+  padding: 0 28px;
   border: 0;
-  border-radius: var(--radius-pill);
-  font: 600 1rem var(--font-texte);
+  /* production-ergonomics.css arrondit tous les <button> en !important : on rétablit la pilule */
+  border-radius: var(--radius-pill) !important;
+  font: 600 1rem / 1 var(--font-texte);
   text-decoration: none;
   cursor: pointer;
   transition: transform var(--duration-base) var(--ease-out), background-color var(--duration-base) var(--ease-out);
@@ -107,6 +110,7 @@
   color: var(--brand-blanc);
   font-size: clamp(2.75rem, 6.6vw, 6.5rem);
   white-space: nowrap; /* une ligne par groupe de mots, comme sur la maquette */
+  line-height: 1 !important; /* human-design.css force 1.08 sur les h1 en mobile */
 }
 
 .mbh-hero h1 span {
@@ -626,10 +630,11 @@ a.mbh-door:hover {
   font-size: 0.875rem;
 }
 
-/* ---------- 8. Lettre ---------- */
+/* ---------- 8. Lettre (maquette « Appel à l'action ») ---------- */
 
 .mbh-letter {
   --readable-text: var(--brand-foret);
+  --letter-ink: #0c2513;
   position: relative;
   isolation: isolate;
   display: flex;
@@ -651,7 +656,8 @@ a.mbh-door:hover {
 
 .mbh-letter-mark {
   width: 64px;
-  filter: brightness(0) saturate(100%) invert(18%) sepia(26%) saturate(1270%) hue-rotate(95deg) brightness(92%) contrast(92%);
+  height: auto;
+  fill: var(--brand-foret);
 }
 
 .mbh-letter h2 {
@@ -660,15 +666,23 @@ a.mbh-door:hover {
 
 .mbh-letter p,
 .mbh-letter small {
+  --readable-text: var(--letter-ink);
   margin: 0;
-  color: var(--brand-foret);
+  color: var(--letter-ink);
+}
+
+.mbh-letter p {
+  font-size: 1.0625rem;
+  line-height: 1.5;
 }
 
 .mbh-letter small {
-  font-size: 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
 }
 
-/* Formulaire de la maquette : pastille blanche, champ et bouton sombre à l'intérieur */
+/* Desktop : pastille blanche (8 8 8 28), champ et bouton sombre à l'intérieur */
 .mbh-letter-form {
   display: flex;
   align-items: center;
@@ -680,12 +694,16 @@ a.mbh-door:hover {
   background: var(--brand-blanc);
 }
 
+/* form-system.css et production-ergonomics.css habillent tous les champs : on revient à la maquette */
 .mbh-letter-form input {
   flex: 1;
   min-width: 0;
+  min-height: 0;
   padding: 0;
-  border: 0;
-  background: transparent;
+  border: 0 !important;
+  border-radius: var(--radius-pill) !important;
+  background: transparent !important;
+  box-shadow: none !important;
   color: var(--brand-foret);
   font: 400 1rem / 1.5 var(--font-texte);
   outline: none;
@@ -703,24 +721,46 @@ a.mbh-door:hover {
 
 .mbh-letter-form .mbh-btn {
   flex: none;
-  padding: 0 28px;
 }
 
-/* Sous 600 px, le bouton passe sous le champ, sur toute la largeur (maquette mobile) */
+/* Mobile : champ et bouton empilés, chacun en pilule pleine largeur */
 @media (max-width: 600px) {
+  .mbh-letter {
+    padding: 56px 20px 40px;
+  }
+
+  .mbh-letter-mark {
+    width: 58px;
+  }
+
+  .mbh-letter h2 {
+    --human-title-line: 1.06;
+    font-size: 2.25rem;
+    line-height: 1.06;
+    letter-spacing: -0.02em;
+  }
+
   .mbh-letter-form {
     flex-direction: column;
     align-items: stretch;
     gap: 10px;
-    padding: 0;
+    padding: 8px 0 0;
     background: none;
+  }
+
+  .mbh-letter-form:focus-within {
+    outline: none;
   }
 
   .mbh-letter-form input {
     min-height: 58px;
-    padding: 0 24px;
-    border-radius: var(--radius-pill);
-    background: var(--brand-blanc);
+    padding: 17px 24px;
+    background: var(--brand-blanc) !important;
+  }
+
+  .mbh-letter-form input:focus-visible {
+    outline: 2px solid var(--brand-foret);
+    outline-offset: 2px;
   }
 
   .mbh-letter-form .mbh-btn {

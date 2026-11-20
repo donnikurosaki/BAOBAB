@@ -111,9 +111,6 @@ export const useHomeMotion = (scope: RefObject<HTMLElement | null>, storyCount: 
             gsap.to(this.target, { scale: 1, duration: 0.3 })
           },
         })
-
-        // 8. Lettre : le symbole flotte doucement
-        gsap.to(one('[data-motion="float"]'), { y: -10, duration: 2.4, ease: 'sine.inOut', yoyo: true, repeat: -1 })
       })
     },
     { scope }

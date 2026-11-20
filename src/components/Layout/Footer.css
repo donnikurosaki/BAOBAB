@@ -23,12 +23,13 @@
 
 .mbf-watermark {
   position: absolute;
-  right: -60px;
-  bottom: -140px;
+  top: 40px;
+  left: calc(900 / 1408 * 100%);
   z-index: -1;
   width: 585px;
+  height: auto;
   fill: var(--brand-blanc);
-  opacity: 0.05;
+  opacity: 0.06;
 }
 
 .mbf-top {
@@ -98,7 +99,7 @@
   justify-content: space-between;
   gap: 12px 24px;
   padding-top: 28px;
-  border-top: 1px solid rgb(255 255 255 / 0.25);
+  border-top: 1px solid var(--brand-blanc);
 }
 
 .mbf-bottom p {
@@ -109,6 +110,7 @@
   letter-spacing: 0.01em;
 }
 
+/* Mobile : valeurs du cadre « Mobile 390 » */
 @media (max-width: 760px) {
   .mbf {
     padding: 8px;
@@ -116,13 +118,45 @@
 
   .mbf-card {
     gap: 40px;
-    padding: 40px 20px 28px;
+    padding: 48px 24px 28px;
     border-radius: 32px;
   }
 
+  .mbf-watermark {
+    top: 16px;
+    left: 150px;
+    width: 355px;
+  }
+
+  .mbf-top {
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .mbf-brand {
+    gap: 20px;
+  }
+
+  .mbf-brand img {
+    width: 131.55px;
+  }
+
+  .mbf-brand p {
+    font-size: 1.625rem;
+    line-height: 1.14;
+  }
+
+  /* Naviguer et Territoires côte à côte, MonBaobab en dessous */
   .mbf-columns {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 32px 24px;
+    gap: 40px 24px;
+  }
+
+  .mbf-bottom {
+    flex-direction: column;
+    gap: 8px;
+    padding-top: 24px;
+    border-top-color: rgb(255 255 255 / 0.16);
   }
 }
