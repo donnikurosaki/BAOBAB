@@ -1,10 +1,14 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import type { FormEvent } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { ArrowRight, Menu, Search, Settings, X } from 'lucide-react'
+import gsap from 'gsap'
+import { useGSAP } from '@gsap/react'
 import { useAuthStore } from '../../stores/authStore'
 import { useSettingsStore } from '../../stores/settingsStore'
 import './Header.css'
+
+gsap.registerPlugin(useGSAP)
 
 // Navigation de la maquette Figma : composant « Navigation/Claire », sa variante posée sur la hero,
 // et le cadre « Mobile 390 / Menu ouvert ».
@@ -28,12 +32,22 @@ export const Header = ({ overlay = false }: HeaderProps) => {
   const { isAuthenticated, user } = useAuthStore()
   const { settings, fetchSettings } = useSettingsStore()
   const [isSearchOpen, setIsSearchOpen] = useState(false)
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [query, setQuery] = useState('')
   const searchInput = useRef<HTMLInputElement>(null)
   const location = useLocation()
   const navigate = useNavigate()
   const platformName = settings?.platformName || 'MonBaobab'
+
+  /* Menu mobile en trois phases pour pouvoir animer la fermeture :
+   * « open » affiche la carte verte, « closing » joue le rabattement avant de retourner à « closed ». */
+  const [menuPhase, setMenuPhase] = useState<'closed' | 'open' | 'closing'>('closed')
+  const headerRef = useRef<HTMLElement>(null)
+  const barRef = useRef<HTMLDivElement>(null)
+  const menuRef = useRef<HTMLDivElement>(null)
+  const menuTl = useRef<gsap.core.Timeline | null>(null)
+  const barRect = useRef<DOMRect | null>(null)
+  const reducedMotion = useMemo(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches, [])
+  const menuOpen = menuPhase !== 'closed'
 
   useEffect(() => {
     fetchSettings()
@@ -41,18 +55,122 @@ export const Header = ({ overlay = false }: HeaderProps) => {
 
   useEffect(() => {
     setIsSearchOpen(false)
-    setIsMenuOpen(false)
+    setMenuPhase((phase) => (phase === 'closed' ? phase : 'closing'))
   }, [location.pathname])
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key !== 'Escape') return
       setIsSearchOpen(false)
-      setIsMenuOpen(false)
+      setMenuPhase((phase) => (phase === 'closed' ? phase : 'closing'))
     }
     document.addEventListener('keydown', onKeyDown)
     return () => document.removeEventListener('keydown', onKeyDown)
   }, [])
+
+  const toggleMenu = () => {
+    if (menuPhase === 'closed') {
+      // Mesure avant le rendu de la carte : sert au FLIP qui suit
+      barRect.current = barRef.current?.getBoundingClientRect() ?? null
+      setMenuPhase('open')
+    } else {
+      setMenuPhase('closing')
+    }
+  }
+
+  /* Morphose du menu : la barre reste immobile (FLIP) pendant que la carte verte
+   * se déploie et que les liens montent en cascade. Le logo et les pastilles se
+   * fondent en CSS ; sans GSAP (mouvement réduit), le CSS bascule directement. */
+  useGSAP(
+    () => {
+      const header = headerRef.current
+      const bar = barRef.current
+      const menu = menuRef.current
+      if (!header || !bar || !menu) return
+      const items = Array.from(menu.querySelectorAll('.mbn-menu-link, .mbn-menu-cta, .mbn-menu-signin'))
+      menuTl.current?.kill()
+      gsap.killTweensOf([header, bar, menu, ...items])
+
+      // FLIP : compense le décalage du passage en carte flottante (inset 8 px).
+      // Mesure capturée une fois : l'ouverture et la fermeture la consument à tour de rôle.
+      const pendingRect: DOMRect | null = barRect.current
+      barRect.current = null
+      const flip = { x: 0, y: 0 }
+      if (pendingRect) {
+        const last = bar.getBoundingClientRect()
+        flip.x = pendingRect.left - last.left
+        flip.y = pendingRect.top - last.top
+      }
+
+      if (reducedMotion) {
+        if (menuPhase === 'closing') setMenuPhase('closed')
+        return
+      }
+
+      if (menuPhase === 'open') {
+        menuTl.current = gsap
+          .timeline()
+          .fromTo(
+            header,
+            {
+              backgroundColor: overlay ? 'rgb(23 65 35 / 0)' : '#f7f6f2',
+              borderRadius: '0px',
+              boxShadow: '0 24px 64px rgb(17 17 17 / 0)',
+            },
+            {
+              backgroundColor: '#174123',
+              borderRadius: '32px',
+              boxShadow: '0 24px 64px rgb(17 17 17 / 0.3)',
+              duration: 0.5,
+              ease: 'power2.out',
+            },
+            0,
+          )
+          .from(bar, { ...flip, duration: 0.5, ease: 'power3.out' }, 0)
+          .fromTo(menu, { clipPath: 'inset(0 0 100% 0)' }, { clipPath: 'inset(0 0 0% 0)', duration: 0.55, ease: 'power3.inOut' }, 0)
+          .fromTo(items, { y: 26, autoAlpha: 0 }, { y: 0, autoAlpha: 1, stagger: 0.055, duration: 0.45, ease: 'power2.out' }, 0.14)
+      }
+
+      if (menuPhase === 'closing') {
+        menuTl.current = gsap
+          .timeline({
+            onComplete: () => {
+              // Mesure avant le retour en flux, pour le FLIP de fermeture
+              barRect.current = bar.getBoundingClientRect()
+              setMenuPhase('closed')
+            },
+          })
+          .to(items, { y: -16, autoAlpha: 0, stagger: 0.03, duration: 0.2, ease: 'power2.in' }, 0)
+          .to(menu, { clipPath: 'inset(0 0 100% 0)', duration: 0.4, ease: 'power3.inOut' }, 0.08)
+          .to(
+            header,
+            {
+              backgroundColor: overlay ? 'rgb(23 65 35 / 0)' : '#f7f6f2',
+              borderRadius: '0px',
+              boxShadow: '0 24px 64px rgb(17 17 17 / 0)',
+              duration: 0.4,
+              ease: 'power2.in',
+            },
+            0.1,
+          )
+      }
+
+      if (menuPhase === 'closed') {
+        // Rendu propre au CSS : les styles inline de l'animation partent
+        gsap.set([header, menu, ...items], { clearProps: 'all' })
+        if (pendingRect) {
+          const last = bar.getBoundingClientRect()
+          gsap.from(bar, {
+            x: pendingRect.left - last.left,
+            y: pendingRect.top - last.top,
+            duration: 0.45,
+            ease: 'power3.out',
+          })
+        }
+      }
+    },
+    { dependencies: [menuPhase, overlay], scope: headerRef },
+  )
 
   // La loupe s'allonge en champ ; une fois ouvert, le même bouton lance la recherche
   useEffect(() => {
@@ -95,10 +213,12 @@ export const Header = ({ overlay = false }: HeaderProps) => {
     ))
 
   return (
-    <header className="mbn" data-overlay={overlay || undefined} data-menu-open={isMenuOpen || undefined}>
-      <div className="mbn-bar">
+    <header ref={headerRef} className="mbn" data-overlay={overlay || undefined} data-menu-open={menuOpen || undefined}>
+      <div className="mbn-bar" ref={barRef}>
         <Link to="/" className="mbn-logo" aria-label={`${platformName}, accueil`}>
-          <img src={overlay || isMenuOpen ? '/Logo/Fichier%207.svg' : '/Logo/Fichier%203.svg'} alt="" width="144" height="48" />
+          {/* Les deux versions empilées se fondent l'une dans l'autre (hero, menu ouvert) */}
+          <img src="/Logo/Fichier%203.svg" alt="" width="144" height="48" />
+          <img src="/Logo/Fichier%207.svg" alt="" width="144" height="48" />
         </Link>
 
         <nav className="mbn-links" aria-label="Navigation principale">
@@ -139,29 +259,37 @@ export const Header = ({ overlay = false }: HeaderProps) => {
           <button
             type="button"
             className="mbn-round mbn-mobile"
-            aria-label={isMenuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
-            aria-expanded={isMenuOpen}
+            aria-label={menuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
+            aria-expanded={menuOpen}
             aria-controls="mbn-menu"
-            onClick={() => setIsMenuOpen((open) => !open)}
+            onClick={toggleMenu}
           >
-            {isMenuOpen ? <X size={20} aria-hidden="true" /> : <Menu size={20} aria-hidden="true" />}
+            {/* Burger et croix empilés : fondu + rotation d'un état à l'autre */}
+            <span className="mbn-toggle-icons" aria-hidden="true">
+              <Menu size={20} strokeWidth={1.8} />
+              <X size={20} strokeWidth={1.8} />
+            </span>
           </button>
         </div>
       </div>
 
-      {isMenuOpen && (
-        <div id="mbn-menu" className="mbn-menu">
-          <nav aria-label="Menu">{links('mbn-menu-link')}</nav>
-          <Link to={isAuthenticated ? '/dashboard' : '/map'} className="mbn-menu-cta">
-            {isAuthenticated ? 'Mon espace' : 'Explorer l’atlas'} <ArrowRight size={18} aria-hidden="true" />
+      {/* Toujours monté : GSAP anime l'ouverture et la fermeture, le CSS cache par défaut */}
+      <div id="mbn-menu" ref={menuRef} className="mbn-menu">
+        <nav
+          aria-label="Menu"
+          onClick={() => setMenuPhase((phase) => (phase === 'closed' ? phase : 'closing'))}
+        >
+          {links('mbn-menu-link')}
+        </nav>
+        <Link to={isAuthenticated ? '/dashboard' : '/map'} className="mbn-menu-cta">
+          {isAuthenticated ? 'Mon espace' : 'Explorer l’atlas'} <ArrowRight size={18} aria-hidden="true" />
+        </Link>
+        {!isAuthenticated && (
+          <Link to="/login" className="mbn-menu-signin">
+            Se connecter
           </Link>
-          {!isAuthenticated && (
-            <Link to="/login" className="mbn-menu-signin">
-              Se connecter
-            </Link>
-          )}
-        </div>
-      )}
+        )}
+      </div>
     </header>
   )
 }

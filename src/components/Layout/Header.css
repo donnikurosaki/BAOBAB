@@ -51,15 +51,38 @@
   height: 86px;
 }
 
+/* Les deux logos empilés dans la même cellule : le vert (pages claires) et le
+   blanc (hero, menu ouvert) se fondent l'un dans l'autre */
 .mbn-logo {
-  display: inline-flex;
+  display: inline-grid;
   justify-self: start;
 }
 
 .mbn-logo img {
   display: block;
+  grid-area: 1 / 1;
   width: 144px;
   height: auto;
+  transition: opacity var(--duration-base) var(--ease-out);
+}
+
+.mbn-logo img + img {
+  opacity: 0;
+}
+
+.mbn[data-overlay] .mbn-logo img:first-child,
+.mbn[data-menu-open] .mbn-logo img:first-child {
+  opacity: 0;
+}
+
+.mbn[data-overlay] .mbn-logo img + img,
+.mbn[data-menu-open] .mbn-logo img + img {
+  opacity: 1;
+}
+
+/* Panneau du menu mobile : monté en permanence, caché par défaut (GSAP anime) */
+.mbn-menu {
+  display: none;
 }
 
 /* Pastille centrale des liens */
@@ -120,6 +143,8 @@
   background: var(--mbn-pill) !important;
   box-shadow: none !important;
   color: var(--mbn-ink) !important;
+  /* La pastille se teinte en verre quand le menu s'ouvre */
+  transition: background-color var(--duration-base) var(--ease-out), color var(--duration-base) var(--ease-out);
   cursor: pointer;
 }
 
@@ -312,6 +337,13 @@
     z-index: -1;
     background: url('/Motifs/Fichier%2062.svg') center / 320% no-repeat;
     opacity: 0.1;
+    animation: mbn-motif-in var(--duration-base) var(--ease-out);
+  }
+
+  @keyframes mbn-motif-in {
+    from {
+      opacity: 0;
+    }
   }
 
   .mbn[data-menu-open] .mbn-search,
@@ -320,9 +352,42 @@
   }
 
   .mbn-menu {
-    display: flex;
     flex-direction: column;
     padding: 0 20px;
+    clip-path: inset(0 0 100% 0);
+  }
+
+  /* Fermé, le panneau ne réserve aucune place (display: none de la base) ;
+     ouvert, il reprend le flux à l'intérieur de la carte fixée */
+  .mbn[data-menu-open] .mbn-menu {
+    display: flex;
+    clip-path: inset(0 0 0% 0);
+  }
+
+  /* Burger et croix superposés : fondu + rotation d'une icône à l'autre */
+  .mbn-toggle-icons {
+    display: grid;
+    place-items: center;
+  }
+
+  .mbn-toggle-icons > * {
+    grid-area: 1 / 1;
+    transition: opacity var(--duration-fast) var(--ease-out), transform var(--duration-base) var(--ease-out);
+  }
+
+  .mbn-toggle-icons > :last-child {
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.55);
+  }
+
+  .mbn[data-menu-open] .mbn-toggle-icons > :last-child {
+    opacity: 1;
+    transform: none;
+  }
+
+  .mbn[data-menu-open] .mbn-toggle-icons > :first-child {
+    opacity: 0;
+    transform: rotate(90deg) scale(0.55);
   }
 
   .mbn .mbn-menu-link {
