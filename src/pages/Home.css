@@ -384,23 +384,6 @@ a.mbh-door:hover {
   margin: 0 0 0 auto;
 }
 
-.mbh-map-canvas svg {
-  display: block;
-  width: 100%;
-  height: auto;
-  overflow: visible;
-}
-
-.mbh-africa-fill {
-  fill: var(--brand-foret);
-}
-
-.mbh-africa-line {
-  fill: none;
-  stroke: var(--brand-sauge);
-  stroke-width: 2;
-}
-
 .mbh-pin {
   --readable-text: var(--brand-foret);
   position: absolute;

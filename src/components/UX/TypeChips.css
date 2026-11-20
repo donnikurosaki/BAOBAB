@@ -4,7 +4,7 @@
   gap: 8px;
 }
 
-/* button-system.css impose une couleur aux boutons : on la reprend ici */
+/* button-system.css impose une couleur aux boutons, production-ergonomics.css un arrondi : on les reprend ici */
 .mbr-chips .mbr-chip {
   --readable-text: var(--brand-foret);
   display: inline-flex;
@@ -13,7 +13,7 @@
   min-height: 40px;
   padding: 8px 14px;
   border: 0;
-  border-radius: 999px;
+  border-radius: 999px !important;
   background: var(--brand-blanc);
   color: var(--brand-foret) !important;
   font: 500 0.875rem/1.4 var(--font-texte);
@@ -41,7 +41,7 @@
   min-height: 48px;
   padding: 0 0 12px;
   border-bottom: 3px solid transparent;
-  border-radius: 0;
+  border-radius: 0 !important;
   background: none;
   color: var(--brand-texte-doux) !important;
   font-weight: 600;

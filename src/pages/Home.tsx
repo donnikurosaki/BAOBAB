@@ -5,7 +5,8 @@ import { ArrowRight } from 'lucide-react'
 import { Layout } from '../components/Layout/Layout'
 import { TopoField } from '../components/TopoField/TopoField'
 import { allAfricanCountries } from '../data/allAfricanCountries'
-import { AFRICA_PATH, AFRICA_VIEWBOX } from '../data/africaOutline'
+import { AfricaRelief } from '../components/AfricaRelief/AfricaRelief'
+import { CAPITAL_COORDS, ENRICHED_TERRITORIES, projectOnAfrica } from '../data/africaGeo'
 import { EYE_PATH, MARK_PATH, MARK_VIEWBOX } from '../data/brandMark'
 import { useHomeMotion } from '../hooks/useHomeMotion'
 import { useNotifications } from '../hooks/useNotifications'
@@ -30,12 +31,12 @@ const DOORS = [
   { title: 'Savoir-faire', text: 'Tissage, poterie, musique, cuisine : les gestes des artisans et de celles et ceux qui les transmettent.', tone: 'sauge', icon: '/Icons/Fichier%2042.svg' },
 ]
 
-// Repères placés sur le contour, en % du viewBox (positions de la maquette)
-const TERRITORIES = [
-  { id: 'bf', name: 'Burkina Faso', tagline: 'Le pays des hommes intègres', color: 'var(--brand-terre)', x: 23.2, y: 34.6 },
-  { id: 'ci', name: 'Côte d’Ivoire', tagline: 'Entre lagunes, forêts et savanes', color: 'var(--brand-desert)', x: 17.5, y: 41.6 },
-  { id: 'cv', name: 'Cap-Vert', tagline: 'Dix îles au large de l’Atlantique', color: 'var(--brand-abysse)', x: -8.8, y: 30.9 },
-]
+// Les trois territoires à fiche enrichie, placés sur leur capitale (en % du contour)
+const TERRITORY_NAMES: Record<string, string> = { BF: 'Burkina Faso', CI: 'Côte d’Ivoire', CV: 'Cap-Vert' }
+const TERRITORIES = Object.entries(ENRICHED_TERRITORIES).map(([code, t]) => {
+  const { x, y } = projectOnAfrica(CAPITAL_COORDS[code])
+  return { id: code.toLowerCase(), name: TERRITORY_NAMES[code], tagline: t.tagline, color: t.color, x: (x / 633.6) * 100, y: (y / 663.961) * 100 }
+})
 
 // Section « Des histoires qui créent des liens » : textes et photos de la maquette
 const STORIES = [
@@ -74,7 +75,7 @@ export const Home = () => {
   const team = settings?.team ?? []
 
   return (
-    <Layout fullWidth>
+    <Layout fullWidth overlayHeader>
       <div className="mbh" ref={scope}>
         {/* 1. Hero */}
         <section className="mbh-hero" aria-labelledby="mbh-title">
@@ -207,16 +208,7 @@ export const Home = () => {
           <div className="mbh-map">
             {/* Le contour et les repères partagent le même cadre : les % des repères suivent la carte */}
             <div className="mbh-map-canvas" aria-hidden="true">
-              <svg viewBox={AFRICA_VIEWBOX}>
-                <defs>
-                  <clipPath id="mbh-africa">
-                    <path d={AFRICA_PATH} />
-                  </clipPath>
-                </defs>
-                <path d={AFRICA_PATH} className="mbh-africa-fill" data-motion="africa-fill" />
-                <image href="/Motifs/Fichier%2062.svg" x="-200" y="-40" width="1100" height="700" clipPath="url(#mbh-africa)" opacity="0.14" />
-                <path d={AFRICA_PATH} className="mbh-africa-line" data-motion="africa-line" />
-              </svg>
+              <AfricaRelief id="mbh-africa" />
               {TERRITORIES.map((t) => (
                 <span
                   key={t.id}
