@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import type { CSSProperties, FormEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
@@ -9,14 +9,12 @@ import { AFRICA_PATH, AFRICA_VIEWBOX } from '../data/africaOutline'
 import { EYE_PATH, MARK_PATH, MARK_VIEWBOX } from '../data/brandMark'
 import { useHomeMotion } from '../hooks/useHomeMotion'
 import { useNotifications } from '../hooks/useNotifications'
-import { newsletterService, storyService } from '../services/api'
+import { newsletterService } from '../services/api'
 import { useSettingsStore } from '../stores/settingsStore'
-import { joinMeta, listFrom } from '../utils'
 import './Rubriques.css'
 import './Home.css'
 
 // Accueil d'après la maquette Figma « Landing MonBaobab / Desktop 1440 » (7:133) et « Mobile 390 » (14:147).
-
 
 const STATS = [
   { value: allAfricanCountries.length, suffix: '', label: 'pays à parcourir, des côtes atlantiques à l’océan Indien' },
@@ -39,6 +37,13 @@ const TERRITORIES = [
   { id: 'cv', name: 'Cap-Vert', tagline: 'Dix îles au large de l’Atlantique', color: 'var(--brand-abysse)', x: -8.8, y: 30.9 },
 ]
 
+// Section « Des histoires qui créent des liens » : textes et photos de la maquette
+const STORIES = [
+  { meta: 'Savoir-faire · 7 min', title: 'Le Faso Dan Fani, un pagne tissé d’histoires', text: 'Sur le métier à tisser, chaque bande de coton porte un motif, un message, une fierté.', image: '/content/home/faso-dan-fani.webp' },
+  { meta: 'Patrimoine · 9 min', title: 'Tiébélé, les maisons peintes des femmes kasséna', text: 'Dans la cour royale, les murs de terre se couvrent de motifs transmis de mère en fille.', image: '/content/home/tiebele.webp' },
+  { meta: 'Savoir-faire · 5 min', title: 'La calebasse, du champ à l’atelier', text: 'Séchée, gravée puis peinte, elle devient bol, instrument ou objet de fête.', image: '/content/home/calebasses.webp' },
+]
+
 const VALUES = [
   { label: 'Curieuse', tone: 'ambre' },
   { label: 'Accessible', tone: 'turquoise' },
@@ -51,17 +56,9 @@ export const Home = () => {
   const scope = useRef<HTMLDivElement>(null)
   const { settings } = useSettingsStore()
   const { success, error } = useNotifications()
-  const [stories, setStories] = useState<any[]>([])
   const [territory, setTerritory] = useState('bf')
   const [email, setEmail] = useState('')
-  useHomeMotion(scope, stories.length)
-
-  useEffect(() => {
-    storyService
-      .getAll({ limit: 3 })
-      .then((res) => setStories(listFrom(res.data, 'stories').slice(0, 3)))
-      .catch(() => setStories([]))
-  }, [])
+  useHomeMotion(scope)
 
   const subscribe = async (event: FormEvent) => {
     event.preventDefault()
@@ -242,30 +239,29 @@ export const Home = () => {
         </section>
 
         {/* 5. Récits */}
-        {stories.length > 0 && (
-          <section className="mbh-section" aria-labelledby="mbh-stories">
-            <div className="mbh-split mbh-split--end">
-              <h2 id="mbh-stories">Des histoires qui créent des liens</h2>
-              <Link to="/recits" className="mbh-btn mbh-btn--foret">
-                Tous les récits <ArrowRight size={18} aria-hidden="true" />
-              </Link>
-            </div>
-            <ul className="mbh-stories">
-              {stories.map((story) => (
-                <li key={story._id} data-motion="story">
-                  <Link to={`/stories/${story._id}`} className="mbh-story">
-                    <div className={`mbh-story-media${story.coverImage ? '' : ' mbh-story-media--plain'}`}>
-                      {story.coverImage ? <img src={story.coverImage} alt="" loading="lazy" /> : <span aria-hidden="true">«</span>}
-                    </div>
-                    <p className="mbr-meta">{joinMeta(story.category, story.readTime && `${story.readTime} min`)}</p>
-                    <h3>{story.title}</h3>
-                    {story.summary && <p>{story.summary}</p>}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </section>
-        )}
+        <section className="mbh-section mbh-stories-section" aria-labelledby="mbh-stories">
+          <div className="mbh-split mbh-split--end">
+            <h2 id="mbh-stories">Des histoires qui créent des liens</h2>
+            <Link to="/recits" className="mbh-btn mbh-btn--foret mbh-stories-all">
+              Tous les récits <ArrowRight size={18} aria-hidden="true" />
+            </Link>
+          </div>
+          <ul className="mbh-stories">
+            {STORIES.map((story) => (
+              <li key={story.title} data-reveal>
+                <Link to="/recits" className="mbh-story">
+                  <img src={story.image} alt="" loading="lazy" width="384" height="480" />
+                  <p className="mbh-story-meta">{story.meta}</p>
+                  <h3>{story.title}</h3>
+                  <p>{story.text}</p>
+                </Link>
+              </li>
+            ))}
+          </ul>
+          <Link to="/recits" className="mbh-btn mbh-btn--foret mbh-stories-all--mobile">
+            Tous les récits <ArrowRight size={18} aria-hidden="true" />
+          </Link>
+        </section>
 
         {/* 6. Valeurs */}
         <section className="mbh-section mbh-values" aria-labelledby="mbh-values">

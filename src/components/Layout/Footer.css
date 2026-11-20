@@ -51,7 +51,7 @@
   height: auto;
 }
 
-.mbf-brand p {
+.mbf .mbf-brand p {
   margin: 0;
   color: var(--brand-blanc);
   font: 700 clamp(1.75rem, 3vw, 2.25rem) / 1.12 var(--font-titre);
@@ -64,7 +64,7 @@
   gap: 40px 72px;
 }
 
-.mbf-title {
+.mbf .mbf-title {
   --readable-text: var(--brand-sauge);
   margin: 0 0 14px;
   color: var(--brand-sauge);
@@ -141,7 +141,7 @@
     width: 131.55px;
   }
 
-  .mbf-brand p {
+  .mbf .mbf-brand p {
     font-size: 1.625rem;
     line-height: 1.14;
   }

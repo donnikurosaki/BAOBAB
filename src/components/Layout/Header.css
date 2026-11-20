@@ -34,14 +34,17 @@
 }
 
 .mbn-bar {
+  --mbn-pad: clamp(16px, 4vw, 40px);
+  position: relative;
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  /* colonnes latérales égales et bornées : la pastille de liens reste centrée quand la recherche s'ouvre */
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
   gap: 16px;
   max-width: 1328px;
   height: 96px;
   margin: 0 auto;
-  padding: 0 clamp(16px, 4vw, 40px);
+  padding: 0 var(--mbn-pad);
 }
 
 .mbn[data-overlay] .mbn-bar {
@@ -69,6 +72,7 @@
 }
 
 .mbn[data-overlay] .mbn-links,
+.mbn[data-overlay] .mbn-search,
 .mbn[data-overlay] .mbn-round {
   border: 1px solid rgb(255 255 255 / 0.22);
   backdrop-filter: blur(24px);
@@ -153,10 +157,85 @@
   display: none !important;
 }
 
+/* Recherche : la loupe ronde s'allonge en champ (largeur animée), puis le même bouton lance la recherche */
 .mbn-search {
-  max-width: 1328px;
-  margin: 0 auto;
-  padding: 0 clamp(16px, 4vw, 40px) 16px;
+  display: flex;
+  align-items: center;
+  width: 46px;
+  height: 46px;
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+  background: var(--mbn-pill);
+  transition: width 420ms var(--ease-out), right 420ms var(--ease-out), background-color var(--duration-base) var(--ease-out);
+}
+
+.mbn-search[data-open] {
+  width: clamp(170px, 20vw, 300px);
+}
+
+/* Ouvert, le champ prend la place des boutons voisins */
+.mbn-search[data-open] ~ .mbn-desktop {
+  display: none !important;
+}
+
+.mbn .mbn-search-btn {
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  width: 46px;
+  min-width: 0;
+  height: 46px;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-pill) !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: var(--mbn-ink) !important;
+  cursor: pointer;
+}
+
+/* form-system.css et production-ergonomics.css habillent tous les champs : on les neutralise ici */
+.mbn .mbn-search input {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  padding: 0 18px 0 0;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: var(--mbn-ink);
+  font: 500 0.875rem var(--font-texte);
+  outline: none;
+  opacity: 0;
+  transition: opacity 200ms var(--ease-out);
+}
+
+.mbn .mbn-search[data-open] input {
+  opacity: 1;
+  transition-delay: 150ms;
+}
+
+.mbn .mbn-search input::placeholder {
+  color: var(--mbn-ink-soft);
+}
+
+.mbn .mbn-search input::-webkit-search-cancel-button {
+  display: none;
+}
+
+.mbn-search:focus-within {
+  outline: 2px solid var(--mbn-ink);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mbn-search,
+  .mbn .mbn-search input {
+    transition: none;
+  }
 }
 
 /* ---------- Mobile ---------- */
@@ -178,6 +257,30 @@
   .mbn-links,
   .mbn-desktop {
     display: none !important;
+  }
+
+  /* La recherche se pose au-dessus de la barre : elle part de la loupe et s'étend jusqu'au logo */
+  .mbn-actions {
+    padding-left: 56px;
+  }
+
+  .mbn-search {
+    position: absolute;
+    top: 50%;
+    right: calc(var(--mbn-pad) + 56px);
+    z-index: 2;
+    translate: 0 -50%;
+  }
+
+  .mbn-search[data-open] {
+    right: var(--mbn-pad);
+    width: calc(100% - 2 * var(--mbn-pad));
+    background: var(--brand-blanc);
+  }
+
+  .mbn[data-overlay] .mbn-search[data-open],
+  .mbn[data-menu-open] .mbn-search[data-open] {
+    background: var(--brand-foret);
   }
 
   .mbn-mobile {
@@ -211,6 +314,7 @@
     opacity: 0.1;
   }
 
+  .mbn[data-menu-open] .mbn-search,
   .mbn[data-menu-open] .mbn-round {
     border: 1px solid rgb(255 255 255 / 0.22);
   }

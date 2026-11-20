@@ -14,7 +14,7 @@ gsap.registerPlugin(useGSAP, ScrollTrigger, SplitText, DrawSVGPlugin, Draggable,
 const MOTION_OK = '(prefers-reduced-motion: no-preference)'
 const formatNumber = (value: number) => new Intl.NumberFormat('fr-FR').format(value)
 
-export const useHomeMotion = (scope: RefObject<HTMLElement | null>, storyCount: number) => {
+export const useHomeMotion = (scope: RefObject<HTMLElement | null>) => {
   useGSAP(
     () => {
       const q = gsap.utils.selector(scope)
@@ -73,7 +73,7 @@ export const useHomeMotion = (scope: RefObject<HTMLElement | null>, storyCount: 
           })
         })
 
-        // Apparitions groupées : portes, statistiques, équipe, carte du Cap-Vert
+        // Apparitions groupées : statistiques, portes, récits, équipe, carte du Cap-Vert
         const reveals = q('[data-reveal]')
         gsap.set(reveals, { autoAlpha: 0, y: 40 })
         ScrollTrigger.batch(reveals, {
@@ -114,23 +114,5 @@ export const useHomeMotion = (scope: RefObject<HTMLElement | null>, storyCount: 
       })
     },
     { scope }
-  )
-
-  // 5. Récits : les cartes arrivent après l'API, elles glissent à des vitesses différentes au défilement
-  useGSAP(
-    () => {
-      if (!storyCount) return
-      gsap.matchMedia().add(MOTION_OK, () => {
-        gsap.utils.selector(scope)('[data-motion="story"]').forEach((card, index) => {
-          const depth = index % 3 === 1 ? 90 : 30
-          gsap.fromTo(
-            card,
-            { y: depth },
-            { y: -depth / 2, ease: 'none', scrollTrigger: { trigger: card, start: 'top bottom', end: 'bottom top', scrub: true } }
-          )
-        })
-      })
-    },
-    { scope, dependencies: [storyCount] }
   )
 }

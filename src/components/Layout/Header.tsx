@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { useEffect, useRef, useState } from 'react'
+import type { FormEvent } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { ArrowRight, Menu, Search, Settings, X } from 'lucide-react'
 import { useAuthStore } from '../../stores/authStore'
 import { useSettingsStore } from '../../stores/settingsStore'
-import { AdvancedSearch } from '../Search/AdvancedSearch'
 import './Header.css'
 
 // Navigation de la maquette Figma : composant « Navigation/Claire », sa variante posée sur la hero,
@@ -29,7 +29,10 @@ export const Header = ({ overlay = false }: HeaderProps) => {
   const { settings, fetchSettings } = useSettingsStore()
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [query, setQuery] = useState('')
+  const searchInput = useRef<HTMLInputElement>(null)
   const location = useLocation()
+  const navigate = useNavigate()
   const platformName = settings?.platformName || 'MonBaobab'
 
   useEffect(() => {
@@ -50,6 +53,27 @@ export const Header = ({ overlay = false }: HeaderProps) => {
     document.addEventListener('keydown', onKeyDown)
     return () => document.removeEventListener('keydown', onKeyDown)
   }, [])
+
+  // La loupe s'allonge en champ ; une fois ouvert, le même bouton lance la recherche
+  useEffect(() => {
+    if (isSearchOpen) searchInput.current?.focus()
+  }, [isSearchOpen])
+
+  const closeSearch = () => {
+    setIsSearchOpen(false)
+    setQuery('')
+  }
+
+  const submitSearch = (event: FormEvent) => {
+    event.preventDefault()
+    const q = query.trim()
+    if (!isSearchOpen || !q) {
+      setIsSearchOpen(true)
+      return
+    }
+    navigate(`/search?q=${encodeURIComponent(q)}`)
+    closeSearch()
+  }
 
   const matches = (to: string) =>
     to === '/' ? location.pathname === '/' : location.pathname === to || location.pathname.startsWith(`${to}/`)
@@ -82,15 +106,28 @@ export const Header = ({ overlay = false }: HeaderProps) => {
         </nav>
 
         <div className="mbn-actions">
-          <button
-            type="button"
-            className="mbn-round"
-            aria-label="Rechercher"
-            aria-expanded={isSearchOpen}
-            onClick={() => setIsSearchOpen((open) => !open)}
+          <form
+            role="search"
+            className="mbn-search"
+            data-open={isSearchOpen || undefined}
+            onSubmit={submitSearch}
+            onBlur={(event) => {
+              if (!query.trim() && !event.currentTarget.contains(event.relatedTarget as Node)) closeSearch()
+            }}
           >
-            <Search size={20} strokeWidth={1.8} aria-hidden="true" />
-          </button>
+            <button type="submit" className="mbn-search-btn" aria-label={isSearchOpen ? 'Lancer la recherche' : 'Rechercher'}>
+              <Search size={20} strokeWidth={1.8} aria-hidden="true" />
+            </button>
+            <input
+              ref={searchInput}
+              type="search"
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder="Un pays, un récit, un proverbe…"
+              aria-label="Rechercher sur MonBaobab"
+              tabIndex={isSearchOpen ? 0 : -1}
+            />
+          </form>
           {user?.role === 'admin' && (
             <Link to="/admin" className="mbn-round mbn-desktop" aria-label="Administration">
               <Settings size={20} strokeWidth={1.8} aria-hidden="true" />
@@ -123,12 +160,6 @@ export const Header = ({ overlay = false }: HeaderProps) => {
               Se connecter
             </Link>
           )}
-        </div>
-      )}
-
-      {isSearchOpen && (
-        <div className="mbn-search">
-          <AdvancedSearch />
         </div>
       )}
     </header>

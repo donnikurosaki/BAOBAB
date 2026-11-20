@@ -498,61 +498,83 @@ a.mbh-door:hover {
   font: 800 1.375rem / 1.1 var(--font-titre);
 }
 
-/* ---------- 5. Récits ---------- */
+/* ---------- 5. Récits (maquette « Récits » : 3 colonnes de 384, celle du milieu descend de 64 px) ---------- */
+
+.mbh-stories-section {
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+}
 
 .mbh-stories {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 24px;
-  margin: 56px 0 0;
-  padding: 0 0 64px;
+  align-items: start;
+  margin: 0;
+  padding: 0;
   list-style: none;
+}
+
+.mbh-stories li:nth-child(3n + 2) {
+  padding-top: 64px;
 }
 
 .mbh-story {
   display: flex;
   flex-direction: column;
-  gap: 10px;
   color: var(--brand-foret);
   text-decoration: none;
 }
 
-.mbh-story-media {
-  display: grid;
-  place-items: center;
-  aspect-ratio: 4 / 5;
-  margin-bottom: 8px;
-  overflow: hidden;
-  border-radius: 20px;
-}
-
-.mbh-story-media img {
+.mbh-story img {
   width: 100%;
-  height: 100%;
+  height: auto;
+  aspect-ratio: 384 / 480;
+  margin-bottom: 20px;
+  border-radius: 28px;
   object-fit: cover;
   transition: scale 700ms var(--ease-out);
 }
 
-.mbh-story:hover .mbh-story-media img {
-  scale: 1.05;
+.mbh-story:hover img {
+  scale: 1.02;
 }
 
-.mbh-story-media--plain {
-  --readable-text: var(--brand-ambre);
-  background: var(--brand-foret) url('/Motifs/Fichier%2062.svg') center / 300% no-repeat;
-  color: var(--brand-ambre);
-  font: 800 6rem var(--font-titre);
+.mbh-story-meta,
+.mbh-story h3,
+.mbh-story p {
+  padding: 0 4px;
+}
+
+.mbh-story .mbh-story-meta {
+  --readable-text: var(--brand-sauge);
+  margin: 0 0 10px;
+  color: var(--brand-sauge);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
 }
 
 .mbh-story h3 {
+  margin: 0 0 10px;
   font-size: 1.5rem;
-  line-height: 1.15;
+  font-weight: 700;
+  line-height: 1.22 !important; /* human-design.css force 1.16 sur tous les h3 */
+  letter-spacing: -0.01em;
 }
 
-.mbh-story p:not(.mbr-meta) {
+.mbh-story p:not(.mbh-story-meta) {
   margin: 0;
-  font-size: 0.875rem;
-  line-height: 1.55;
+  color: var(--brand-foret);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.mbh-stories-all--mobile {
+  display: none !important;
 }
 
 /* ---------- 6. Valeurs ---------- */
@@ -798,6 +820,36 @@ a.mbh-door:hover {
   .mbh-stories,
   .mbh-team {
     grid-template-columns: 1fr;
+  }
+
+  /* Récits mobile : cartes empilées (40 px), bouton « Tous les récits » en bas, pleine largeur */
+  .mbh-stories-section {
+    gap: 36px;
+  }
+
+  .mbh-stories {
+    gap: 40px;
+  }
+
+  .mbh-stories li:nth-child(3n + 2) {
+    padding-top: 0;
+  }
+
+  .mbh-stories-section h2 {
+    --human-title-line: 1.06;
+    font-size: 2.25rem;
+    line-height: 1.06;
+    letter-spacing: -0.02em;
+  }
+
+  .mbh-stories-all {
+    display: none !important;
+  }
+
+  .mbh-stories-all--mobile {
+    display: inline-flex !important;
+    align-self: stretch;
+    justify-content: center;
   }
 
   /* Les portes défilent à l'horizontale, comme sur la maquette mobile */
