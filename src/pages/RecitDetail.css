@@ -209,6 +209,14 @@
   line-height: 1.5;
 }
 
+/* contrast-system.css force les <p> en gris chaud : on réaffirme le vert forêt de la maquette */
+.mrd-text p,
+.mrd-fact p,
+.mrd-source-text p,
+.mrd-next-body p {
+  color: var(--brand-foret);
+}
+
 .mrd .mrd-quote {
   display: flex;
   gap: 20px;

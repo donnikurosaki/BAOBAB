@@ -48,7 +48,10 @@ export const RecitDetail = () => {
     )
   }
 
-  const toc = [...story.sections.map((section) => ({ id: section.id, label: section.title })), { id: 'sources', label: 'Sources' }]
+  const toc = [
+    ...story.sections.map((section) => ({ id: section.id, label: section.title || 'Introduction' })),
+    { id: 'sources', label: 'Sources' },
+  ]
   const others = RECITS.filter((recit) => recit.id !== story.id)
 
   return (
@@ -99,7 +102,7 @@ export const RecitDetail = () => {
           <article className="mrd-text">
             {story.sections.map((section) => (
               <section key={section.id} id={section.id}>
-                <h2>{section.title}</h2>
+                {section.title && <h2>{section.title}</h2>}
                 {section.blocks.map((block, index) =>
                   block.kind === 'quote' ? (
                     <blockquote key={index} className="mrd-quote">
@@ -107,7 +110,7 @@ export const RecitDetail = () => {
                     </blockquote>
                   ) : block.kind === 'fact' ? (
                     <aside key={index} className="mrd-fact">
-                      <p className="mrd-kicker">Le saviez-vous ?</p>
+                      <p className="mrd-kicker">Le saviez-vous</p>
                       <p>{block.text}</p>
                     </aside>
                   ) : (

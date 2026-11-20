@@ -23,7 +23,8 @@ export interface StoryBlock {
 
 export interface StorySection {
   id: string
-  title: string
+  /** Le premier bloc de la maquette commence sans intertitre */
+  title?: string
   blocks: StoryBlock[]
 }
 
@@ -141,7 +142,6 @@ const STORIES: StoryArticle[] = [
     sections: [
       {
         id: 'introduction',
-        title: 'Introduction',
         blocks: [
           {
             kind: 'para',
@@ -187,8 +187,8 @@ const STORIES: StoryArticle[] = [
       },
     ],
     sources: [
-      { type: 'Institution', label: 'Ministère de la Culture, des Arts et du Tourisme du Burkina Faso' },
-      { type: 'Tradition orale', label: 'Tisserandes de Saaba, entretiens recueillis à Ouagadougou' },
+      { type: 'Référence écrite', label: 'Ministère de la Culture, des Arts et du Tourisme du Burkina Faso' },
+      { type: 'Témoignage', label: 'Tisserandes de Saaba, entretiens recueillis à Ouagadougou' },
     ],
   },
   {
@@ -226,10 +226,6 @@ const STORIES: StoryArticle[] = [
             text: 'Chez les Kasséna, la décoration des maisons revient aux femmes. Après la saison des pluies, quand les murs sont refaits, elles repaintent les façades au tas de pisé lissé. Chaque motif raconte quelque chose : la fécondité, la bravoure, la vie de la maison.',
           },
           {
-            kind: 'quote',
-            text: 'Un mur de Tiébélé se lit comme on écoute un ancien : en silence, et jusqu’au bout.',
-          },
-          {
             kind: 'para',
             text: 'La cour royale, avec ses cases aux silos intégrés et ses enceintes basses, forme un ensemble que les habitants entretiennent collectivement — un patrimoine vivant, classé sur la liste indicative de l’UNESCO, où l’on visite autant qu’on accueille.',
           },
@@ -237,8 +233,8 @@ const STORIES: StoryArticle[] = [
       },
     ],
     sources: [
-      { type: 'Institution', label: 'Liste indicative du patrimoine mondial de l’UNESCO, « Cour royale de Tiébélé »' },
-      { type: 'Tradition orale', label: 'Femmes peintres de la cour royale, récits de village' },
+      { type: 'Référence écrite', label: 'Liste indicative du patrimoine mondial de l’UNESCO, « Cour royale de Tiébélé »' },
+      { type: 'Témoignage', label: 'Femmes peintres de la cour royale, récits de village' },
     ],
   },
   {
@@ -276,17 +272,13 @@ const STORIES: StoryArticle[] = [
             text: 'Récoltée à maturité, la calebasse passe des semaines au soleil. Sa chair se vide, sa paroi durcit : c’est seulement alors que l’artisan la grave au canif, la polit à la pierre et, pour les plus belles, la peint de motifs simples au feu ou au pigment.',
           },
           {
-            kind: 'fact',
-            text: 'Demi-calebasse retournée et frottée, elle devient tambour d’aisselle ou rafta : l’objet du quotidien se change en instrument de fête.',
-          },
-          {
             kind: 'para',
             text: 'Dans les ateliers de Bamako, la même matière se décline désormais en lampes, en bijoux, en boîtes : la tradition ne se garde pas sous verre, elle se retravaille.',
           },
         ],
       },
     ],
-    sources: [{ type: 'Tradition orale', label: 'Artisans calebassiers du marché de Ségou' }],
+    sources: [{ type: 'Témoignage', label: 'Artisans calebassiers du marché de Ségou' }],
   },
   {
     id: 'mansa-musa',
@@ -323,14 +315,6 @@ const STORIES: StoryArticle[] = [
             text: 'En 1324, il entreprend le hajj, le pèlerinage de La Mecque. Les chroniqueurs arabes, dont Al-Omari qui recueille les récits au Caire, décrivent une caravane de milliers de personnes, de chameaux chargés d’or et de vivres, précédée de serviteurs portant des staffs d’or.',
           },
           {
-            kind: 'quote',
-            text: 'Il donna tant d’or au Caire que son cours en baissa pendant des années.',
-          },
-          {
-            kind: 'fact',
-            text: 'Ce passage au Caire fit chuter la valeur de l’or pendant plusieurs années : sans le vouloir, le pèlerin déplaça l’économie d’une métropole.',
-          },
-          {
             kind: 'para',
             text: 'De retour, le souverain ramène des savants et des architectes, dont Abou Ishaq es-Sahéli, à qui l’on doit les mosquées de Tombouctou et de Djenné telles que la tradition les retient. Le voyage de piété devient un geste de politique culturelle.',
           },
@@ -338,8 +322,8 @@ const STORIES: StoryArticle[] = [
       },
     ],
     sources: [
-      { type: 'Source historique', label: 'Al-Omari, « Masalik al-absar » (récits recueillis au Caire, XIVe siècle)' },
-      { type: 'Institution', label: 'UNESCO, vieux centres de Tombouctou et Djenné' },
+      { type: 'Référence écrite', label: 'Al-Omari, « Masalik al-absar » (récits recueillis au Caire, XIVe siècle)' },
+      { type: 'Référence écrite', label: 'UNESCO, vieux centres de Tombouctou et Djenné' },
     ],
   },
 ]
